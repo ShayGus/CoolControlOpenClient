@@ -10,7 +10,6 @@ def create_types_class(types: Union[Dict[str, str], List[str]]) -> BaseTypes:
 
     return ListTypes(types)
 
-
 class BaseTypes(ABC):
     def __init__(self, data: Union[Dict[str, str], List[str]]) -> None:
         self.data = data
@@ -18,7 +17,6 @@ class BaseTypes(ABC):
     @abstractmethod
     def get(self, key: Union[str, int]) -> str:
         pass
-
 
 class DictTypes(BaseTypes):
     def __init__(self, data: Dict[str, str]) -> None:        
@@ -29,7 +27,6 @@ class DictTypes(BaseTypes):
 
     def get_inverse(self, key: str) -> str:
         return self.data.inverse.get(key)
-
 
 
 class ListTypes(BaseTypes):
