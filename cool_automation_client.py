@@ -1,5 +1,8 @@
-import multiprocessing
 from pprint import pprint
+from typing import Dict
+import websocket
+import rel
+import json
 
 from swagger_client import UnitControlApi, UnitControlSwitchesBody
 from swagger_client.api.services_api import ServicesApi
@@ -15,6 +18,7 @@ from client.swagger_client.models.unit_control_swings_body import UnitControlSwi
 
 from dictionaries import DictTypes
 from utils.singleton import Singleton
+from updatable import Updatable
 
 
 class CoolAutomationClient(Singleton):
@@ -24,6 +28,7 @@ class CoolAutomationClient(Singleton):
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
+    SOCKET_URI = "wss://api.coolremote.net/api/v1/"
 
     def __init__(
         self,
@@ -40,6 +45,8 @@ class CoolAutomationClient(Singleton):
         self.swing_modes = DictTypes(self._dictionaries.swing_modes)
         # self.device_types = DictTypes(self._dictionaries.device_types)
         # self.brands = DictTypes(self._dictionaries.hvac_brands)
+        self.socket = None
+        self._registered_units: Dict[str, Updatable] = {}
 
     @classmethod
     def authenticate(cls, username: str, password: str) -> str:
@@ -117,11 +124,46 @@ class CoolAutomationClient(Singleton):
 
         try:
             # set unit operation status
-            api_response = api_instance.units_unit_id_controls_setpoint_put(
+            api_response = api_instance.units_unit_id_controls_setpoints_put(
                 x_access_token=self.token, body=body, unit_id=unit_id
             )
         except ApiException as api_exception:
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
+
+    def register_for_updates(self, unit: Updatable):
+        self._registered_units[unit.get_updatable_id()] = unit
+
+    def on_open_socket(self, ws):
+        pass
+
+    def on_close_socket(self, ws, message):
+        pass
+
+    def on_message_socket(self, ws, message):
+        loaded_json = json.loads(message)
+        pprint(loaded_json)
+        if loaded_json.get("type", None) == "ping":
+            ws.send('{"type":"pong"}')
+            return
+
+    def on_error_socket(self, ws, message):
+        print(message)
+
+    def open_socket(self):
+        try:
+            # websocket.enableTrace(True)
+            self.socket = websocket.WebSocketApp(
+                self.SOCKET_URI,
+                on_open=self.on_open_socket,
+                on_message=self.on_message_socket,
+                on_error=self.on_error_socket,
+                on_close=self.on_close_socket,
+            )
+
+            self.socket.run_forever(dispatcher=rel)  # Set dispatcher to automatic reconnection
+            self.socket.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
+        except Exception as socket_exception:
+            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {socket_exception}\n")
 
 
 # api = CoolAutomationClient()

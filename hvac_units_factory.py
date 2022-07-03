@@ -2,6 +2,7 @@ from pprint import pprint
 from typing import List
 from cool_automation_client import CoolAutomationClient
 from unit import HVACUnit
+import rel
 
 
 class HVACUnitsFactiory:
@@ -33,6 +34,9 @@ class HVACUnitsFactiory:
         return hvac_units
 
 
-# factory = HVACUnitsFactiory()
-# units = factory.generate_units_from_api()
+factory = HVACUnitsFactiory()
+units = factory.generate_units_from_api()
+factory._client.open_socket()
+rel.signal(2, rel.abort)  # Keyboard Interrupt
+rel.dispatch()
 # # units[0].set_operation_status('off')

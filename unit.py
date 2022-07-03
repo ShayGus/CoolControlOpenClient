@@ -1,9 +1,11 @@
 from typing import List
 
+from updatable import Updatable
 from cool_automation_client import CoolAutomationClient
 
 
-class HVACUnit:
+
+class HVACUnit(Updatable):
     def __init__(
         self,
         id: str,
@@ -39,6 +41,7 @@ class HVACUnit:
         self._supported_fan_modes = supported_fan_modes
         self._supported_swing_modes = supported_swing_modes
         self._client = client
+        self._client.register_for_updates(self)
 
     def set_operation_status(self, status):
         self._client.set_operation_status(unit_id=self._id, status=status)
@@ -51,6 +54,12 @@ class HVACUnit:
 
     def set_temperature_set_point(self, setpoint):
         self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
+
+    def notify(self, message):
+        pass
+
+    def get_updatable_id(self):
+        return self._id
 
     def __str__(self):
         return "%s(%s)" % (type(self).__name__, ", ".join("%s=%s" % item for item in vars(self).items()))
