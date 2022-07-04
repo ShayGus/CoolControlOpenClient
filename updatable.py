@@ -24,6 +24,7 @@ from marshmallow import Schema, fields, post_load, ValidationError
 
 
 class UnitUpdate(Schema):
+    """Class representation of the update data from CoolAutomation"""
     ambient_temperature = fields.Integer(required=False, data_key = "ambientTemperature")
     unit_id = fields.Str(required=True, data_key = "unitId")
     fan = fields.Integer(reuired=True)

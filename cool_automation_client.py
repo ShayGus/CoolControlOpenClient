@@ -64,6 +64,12 @@ class CoolAutomationClient(Singleton):
         return result.data["token"]
 
     def get_dictionary(self) -> TypesResponseData:
+        """
+        Pulls dictionary from the API
+
+        Returns:
+            TypesResponseData: Dictionary from api service
+        """
         api = ServicesApi()
         thread = api.services_types_get(self.token, async_req=True)
         service_types: TypesResponse = thread.get()
@@ -80,6 +86,13 @@ class CoolAutomationClient(Singleton):
         return units
 
     def set_operation_status(self, unit_id: str, status: str):
+        """
+        Set the operation status of the device
+
+        Args:
+            unit_id (str): Unit ID
+            status (str): Status 
+        """
         api_instance = UnitControlApi()
         status = self.operation_statuses.get_inverse(status)
         body = UnitControlSwitchesBody(status)
@@ -93,6 +106,13 @@ class CoolAutomationClient(Singleton):
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
     def set_operation_mode(self, unit_id: str, mode: str):
+        """
+        Sets the operation mode of the HVAC unit
+
+        Args:
+            unit_id (str): The ID of the unit
+            mode (str): The mode to set the unit to
+        """
         api_instance = UnitControlApi()
         status = self.operation_modes.get_inverse(mode)
         body = UnitControlModesBody(status)
@@ -106,6 +126,12 @@ class CoolAutomationClient(Singleton):
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
     def set_swing_mode(self, unit_id: str, mode: str):
+        """Set the swing mode of the HVAC unit
+
+        Args:
+            unit_id (str): Unit ID
+            mode (str): The swing mode to set on the device
+        """
         api_instance = UnitControlApi()
         mode = self.swing_modes.get_inverse(mode)
         body = UnitControlSwingsBody(mode)
@@ -119,6 +145,12 @@ class CoolAutomationClient(Singleton):
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
     def set_temperature_set_point(self, unit_id: str, temp: int):
+        """Set the desired setpoint on the HVAC unit
+
+        Args:
+            unit_id (str): The identifier of the unit
+            temp (int): The desired setpoint temperature
+        """
         api_instance = UnitControlApi()
         body = UnitControlSetpointsBody(temp)
 
@@ -131,6 +163,11 @@ class CoolAutomationClient(Singleton):
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
     def register_for_updates(self, unit: Updatable):
+        """Register an HVAC unit to receive updates from service calls or WebSocket
+
+        Args:
+            unit (Updatable): The identifier of the unit
+        """
         self._registered_units[unit.get_updatable_id()] = unit
 
     def on_open_socket(self, ws):
@@ -140,16 +177,27 @@ class CoolAutomationClient(Singleton):
         pass
 
     def on_message_socket(self, ws, message):
+        """Handle message received from socket
+
+        Args:
+            ws (_type_): WebSocket instance
+            message (_type_): Received message
+        """
         loaded_json = json.loads(message)
         pprint(loaded_json)
         if loaded_json.get("type", None) == "ping":
             ws.send('{"type":"pong"}')
             return
 
+        self._handle_ws_message(loaded_json)
+
     def on_error_socket(self, ws, message):
         print(message)
 
     def open_socket(self):
+        """
+        Open a websocket to the CoolAutomationsServer
+        """
         try:
             # websocket.enableTrace(True)
             self.socket = websocket.WebSocketApp(
