@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import List
 from cool_automation_client import CoolAutomationClient
 from unit import HVACUnit

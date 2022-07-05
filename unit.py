@@ -1,8 +1,8 @@
+import pprint
 from typing import List
 
-from updatable import Updatable
+from updatable import UnitUpdateMessage, Updatable
 from cool_automation_client import CoolAutomationClient
-
 
 
 class HVACUnit(Updatable):
@@ -55,8 +55,16 @@ class HVACUnit(Updatable):
     def set_temperature_set_point(self, setpoint):
         self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
 
-    def notify(self, message):
-        pass
+    def notify(self, message: UnitUpdateMessage):
+        self._update_unit(message)
+
+    def _update_unit(self, message: UnitUpdateMessage):
+        self._active_operation_mode = message.operation_mode
+        self._active_fan_mode = message.fan_mode
+        self._active_operation_status = message.operation_status
+        self._active_setpoint = message.setpoint
+        self._active_swing_mode = message.swing
+        pprint(self)
 
     def get_updatable_id(self):
         return self._id

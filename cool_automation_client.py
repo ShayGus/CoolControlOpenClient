@@ -1,8 +1,11 @@
 from pprint import pprint
 from typing import Dict
+import marshmallow
+import marshmallow_dataclass
 import websocket
 import rel
 import json
+from dataclasses import dataclass, field
 
 from swagger_client import UnitControlApi, UnitControlSwitchesBody
 from swagger_client.api.services_api import ServicesApi
@@ -19,6 +22,38 @@ from client.swagger_client.models.unit_control_swings_body import UnitControlSwi
 from dictionaries import DictTypes
 from utils.singleton import Singleton
 from updatable import Updatable
+
+
+
+@dataclass
+class UnitUpdateMessage:
+    ###
+    # {'data': {'ambientTemperature': 29,
+    #           'deviceId': '61bb087a212f1c7c42b9e76a',
+    #           'fan': 3,
+    #           'filter': False,
+    #           'internalId': '283B960300D4:31303336',
+    #           'operationMode': 0,
+    #           'operationStatus': 2,
+    #           'serviceUnits': [],
+    #           'setpoint': 25,
+    #           'site': '61f8e091a8a31c1966b33a29',
+    #           'swing': 6,
+    #           'temperatureScale': 1,
+    #           'unitId': '61f8e56960bf483d1e5b0743'},
+    #  'name': 'UPDATE_UNIT'}
+    ###
+    ambient_temperature: int = field(metadata={"required": False, "data_key": "ambientTemperature"})
+    unit_id: str = field(metadata={"required": True, "data_key": "unitId"})
+    fan_mode: int = field(metadata={"required": True, "data_key": "fan"})
+    filter: bool = field(metadata={"required": False, "data_key": "filter"})
+    operation_mode: int = field(metadata={"required": True, "data_key": "operationMode"})
+    operation_status: int = field(metadata={"required": True, "data_key": "operationStatus"})
+    setpoint: int = field(metadata={"required": True, "data_key": "setpoint"})
+    swing: int = field(metadata={"required": True, "data_key": "swing"})
+    temperature_scale: int = field(metadata={"required": True, "data_key": "temperatureScale"})
+
+UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
 
 
 class CoolAutomationClient(Singleton):
@@ -91,7 +126,7 @@ class CoolAutomationClient(Singleton):
 
         Args:
             unit_id (str): Unit ID
-            status (str): Status 
+            status (str): Status
         """
         api_instance = UnitControlApi()
         status = self.operation_statuses.get_inverse(status)
@@ -185,11 +220,22 @@ class CoolAutomationClient(Singleton):
         """
         loaded_json = json.loads(message)
         pprint(loaded_json)
+        self._handle_ping_pong(ws, loaded_json)
+        self._handle_ws_message(loaded_json)
+
+    def _handle_ping_pong(self, ws, loaded_json):
         if loaded_json.get("type", None) == "ping":
             ws.send('{"type":"pong"}')
-            return
 
-        self._handle_ws_message(loaded_json)
+    def _handle_ws_message(self, loaded_json):
+        data = loaded_json.get("data", None)
+        if data is not None:
+            pprint(data)
+            update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(data, unknown=marshmallow.EXCLUDE)
+            if update_message is not None:
+                unit = self._registered_units.get(update_message.unit_id)
+                unit.notify(update_message)
+                
 
     def on_error_socket(self, ws, message):
         print(message)
