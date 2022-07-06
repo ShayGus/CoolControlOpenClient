@@ -1,11 +1,13 @@
-import pprint
+from pprint import pprint
 from typing import List
 
-from updatable import UnitUpdateMessage, Updatable
-from cool_automation_client import CoolAutomationClient
+from updatable import Updatable
+from cool_automation_client import CoolAutomationClient, UnitUpdateMessage
 
 
 class HVACUnit(Updatable):
+    """The logical clas repressentation of the HVAC unit
+    """
     def __init__(
         self,
         id: str,
@@ -43,16 +45,36 @@ class HVACUnit(Updatable):
         self._client = client
         self._client.register_for_updates(self)
 
-    def set_operation_status(self, status):
+    def set_operation_status(self, status: str):
+        """Set the operation status of the HVAC unit
+
+        Args:
+            status (str): String representation of the operation status
+        """
         self._client.set_operation_status(unit_id=self._id, status=status)
 
-    def set_opration_mode(self, mode):
+    def set_opration_mode(self, mode: str):
+        """Set the operation mode of the HVAC unit
+
+        Args:
+            mode (str): String representation of the operation mode
+        """
         self._client.set_operation_mode(unit_id=self._id, mode=mode)
 
-    def set_swing_mode(self, mode):
+    def set_swing_mode(self, mode: str):
+        """Set the swing mode of the HVAC unit
+
+        Args:
+            mode (str): String representation of the swing mode
+        """
         self._client.set_swing_mode(unit_id=self._id, mode=mode)
 
-    def set_temperature_set_point(self, setpoint):
+    def set_temperature_set_point(self, setpoint:int):
+        """Set the set point temperature of the HVAC unit
+
+        Args:
+            setpoint (int): The desired setpoint of the HVAC unit
+        """
         self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
 
     def notify(self, message: UnitUpdateMessage):
@@ -64,7 +86,6 @@ class HVACUnit(Updatable):
         self._active_operation_status = message.operation_status
         self._active_setpoint = message.setpoint
         self._active_swing_mode = message.swing
-        pprint(self)
 
     def get_updatable_id(self):
         return self._id

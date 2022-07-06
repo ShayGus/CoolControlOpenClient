@@ -1,5 +1,6 @@
+from email import message
 from pprint import pprint
-from typing import Dict
+from typing import Dict, Union
 import marshmallow
 import marshmallow_dataclass
 import websocket
@@ -23,34 +24,35 @@ from dictionaries import DictTypes
 from utils.singleton import Singleton
 from updatable import Updatable
 
-
+###
+# {'data': {'ambientTemperature': 29,
+#           'deviceId': '61bb087a212f1c7c42b9e76a',
+#           'fan': 3,
+#           'filter': False,
+#           'internalId': '283B960300D4:31303336',
+#           'operationMode': 0,
+#           'operationStatus': 2,
+#           'serviceUnits': [],
+#           'setpoint': 25,
+#           'site': '61f8e091a8a31c1966b33a29',
+#           'swing': 6,
+#           'temperatureScale': 1,
+#           'unitId': '61f8e56960bf483d1e5b0743'},
+#  'name': 'UPDATE_UNIT'}
+###
 
 @dataclass
 class UnitUpdateMessage:
-    ###
-    # {'data': {'ambientTemperature': 29,
-    #           'deviceId': '61bb087a212f1c7c42b9e76a',
-    #           'fan': 3,
-    #           'filter': False,
-    #           'internalId': '283B960300D4:31303336',
-    #           'operationMode': 0,
-    #           'operationStatus': 2,
-    #           'serviceUnits': [],
-    #           'setpoint': 25,
-    #           'site': '61f8e091a8a31c1966b33a29',
-    #           'swing': 6,
-    #           'temperatureScale': 1,
-    #           'unitId': '61f8e56960bf483d1e5b0743'},
-    #  'name': 'UPDATE_UNIT'}
-    ###
+    """  Data class representing the update message received from the server
+    """
     ambient_temperature: int = field(metadata={"required": False, "data_key": "ambientTemperature"})
     unit_id: str = field(metadata={"required": True, "data_key": "unitId"})
-    fan_mode: int = field(metadata={"required": True, "data_key": "fan"})
+    fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
     filter: bool = field(metadata={"required": False, "data_key": "filter"})
-    operation_mode: int = field(metadata={"required": True, "data_key": "operationMode"})
-    operation_status: int = field(metadata={"required": True, "data_key": "operationStatus"})
+    operation_mode: Union[str, int] = field(metadata={"required": True, "data_key": "operationMode"})
+    operation_status: Union[str, int] = field(metadata={"required": True, "data_key": "operationStatus"})
     setpoint: int = field(metadata={"required": True, "data_key": "setpoint"})
-    swing: int = field(metadata={"required": True, "data_key": "swing"})
+    swing: Union[str, int] = field(metadata={"required": True, "data_key": "swing"})
     temperature_scale: int = field(metadata={"required": True, "data_key": "temperatureScale"})
 
 UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
@@ -234,8 +236,9 @@ class CoolAutomationClient(Singleton):
             update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(data, unknown=marshmallow.EXCLUDE)
             if update_message is not None:
                 unit = self._registered_units.get(update_message.unit_id)
+                update_message = self._transform_message(update_message)
                 unit.notify(update_message)
-                
+
 
     def on_error_socket(self, ws, message):
         print(message)
@@ -259,6 +262,12 @@ class CoolAutomationClient(Singleton):
         except Exception as socket_exception:
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {socket_exception}\n")
 
+    def _transform_message(self, message: UnitUpdateMessage) -> UnitUpdateMessage:
+        message.fan_mode = self.fan_modes.get(message.fan_mode)
+        message.swing = self.swing_modes.get(message.swing)
+        message.operation_mode = self.operation_modes.get(message.operation_mode)
+        message.operation_status = self.operation_statuses.get(message.operation_status)
+        return message
 
 # api = CoolAutomationClient()
 # dictionaries = api.get_dictionary()
