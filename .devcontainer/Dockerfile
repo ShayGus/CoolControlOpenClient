@@ -10,6 +10,7 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 COPY requirements.txt /tmp/pip-tmp/
+COPY devrequirements.txt /tmp/pip-tmp/
 COPY src/ /tmp/src/
 WORKDIR /tmp
 
