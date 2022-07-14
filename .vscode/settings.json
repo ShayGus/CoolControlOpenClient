@@ -1,0 +1,9 @@
+{
+    "python.analysis.diagnosticSeverityOverrides": {},
+    "python.analysis.extraPaths": [
+        "/workspaces/CoolControlOpenClient/src"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": false
+}
