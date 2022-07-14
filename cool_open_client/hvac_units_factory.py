@@ -38,9 +38,9 @@ class HVACUnitsFactory:
         return hvac_units
 
 
-factory = HVACUnitsFactory()
-units = factory.generate_units_from_api()
-factory._client.open_socket()
-rel.signal(2, rel.abort)  # Keyboard Interrupt
-rel.dispatch()
+# factory = HVACUnitsFactory()
+# units = factory.generate_units_from_api()
+# factory._client.open_socket()
+# rel.signal(2, rel.abort)  # Keyboard Interrupt
+# rel.dispatch()
 # units[0].set_operation_status('off')
