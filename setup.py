@@ -9,7 +9,7 @@ path_to_client = str(pathlib.Path(__file__).parent.absolute())
 
 setup(
     name="cool-open-client",
-    version="0.0.2",
+    version="0.0.4",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",
@@ -18,13 +18,13 @@ setup(
     url="https://github.com/ShayGus/CoolControlOpenClient",
     license="GPLv3+",
     classifiers=[
-        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
         "Natural Language :: English",
     ],
-    python_requires=">=3.10",
+    python_requires=">=3.9",
     include_package_data=True,
     packages=find_packages(),
     install_requires=[
@@ -37,6 +37,6 @@ setup(
         "websocket-client >= 1.3.3",
         "marshmallow >= 3.17.0",
         "marshmallow-dataclass >= 8.5.8",
-        "typeguard >= 2.13.3"
+        "typeguard >= 2.13.3",
     ],
 )
