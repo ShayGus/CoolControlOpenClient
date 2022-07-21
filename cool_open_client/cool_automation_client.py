@@ -61,8 +61,7 @@ UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
 
 class CoolAutomationClient(Singleton):
     """
-    The coolautomation_client for CoolAutomationCloud service
-    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjhkYmFlYThhMzFjMTk2NmIxZWNlYyIsImlhdCI6MTY0OTc2MDQxNiwiZXhwIjoxNjgxMzE4MDE2fQ.RLwz3qiZgLBRwHYpPQGrYtPC3t34axQBh2C7pP_wdVU
+    The coolautomation_client for CoolAutomationCloud service    
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
@@ -70,10 +69,12 @@ class CoolAutomationClient(Singleton):
 
     def __init__(
         self,
-        token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjhkYmFlYThhMzFjMTk2NmIxZWNlYyIsImlhdCI6MTY0OTc2MDQxNiwiZXhwIjoxNjgxMzE4MDE2fQ.RLwz3qiZgLBRwHYpPQGrYtPC3t34axQBh2C7pP_wdVU",
+        token=None,
         username=None,
         password=None,
     ):
+        if token is None and username is None and password is None:
+            raise ValueError("Toke or Username and Password must be provided")
         self.token = token if not username else self.authenticate(username=username, password=password)
         self._dictionaries: TypesResponseData = self.get_dictionary()
         self.temperature_scale = DictTypes(self._dictionaries.temperature_scale)
