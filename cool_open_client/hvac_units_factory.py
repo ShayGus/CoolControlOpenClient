@@ -6,8 +6,8 @@ from cool_open_client.unit import HVACUnit
 
 
 class HVACUnitsFactory:
-    def __init__(self) -> None:
-        self._client = CoolAutomationClient()
+    def __init__(self, token=None) -> None:
+        self._client = CoolAutomationClient(token=token)
 
     def generate_units_from_api(self) -> List[HVACUnit]:
         units = self._client.get_controllable_units()
