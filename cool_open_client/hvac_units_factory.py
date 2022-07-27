@@ -1,4 +1,3 @@
-import rel
 from typing import List
 
 from cool_open_client.cool_automation_client import CoolAutomationClient
@@ -9,8 +8,8 @@ class HVACUnitsFactory:
     def __init__(self, token=None) -> None:
         self._client = CoolAutomationClient(token=token)
 
-    def generate_units_from_api(self) -> List[HVACUnit]:
-        units = self._client.get_controllable_units()
+    async def generate_units_from_api(self) -> List[HVACUnit]:
+        units = await self._client.get_controllable_units()
         hvac_units: List[HVACUnit] = []
         for id, unit in units.data.items():
             if unit["type"] == 1:

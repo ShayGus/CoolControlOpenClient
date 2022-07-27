@@ -1,3 +1,4 @@
+import asyncio
 from pprint import pprint
 from typing import Dict, Union
 import marshmallow
@@ -14,7 +15,6 @@ from cool_open_client.client.models.types_response_data import TypesResponseData
 from cool_open_client.client.models.units_response import UnitsResponse
 from cool_open_client.client.rest import ApiException
 from cool_open_client.client.api.authentication_api import AuthenticationApi
-from cool_open_client.client.models.types_response import TypesResponse
 from cool_open_client.client.models.unit_control_modes_body import UnitControlModesBody
 from cool_open_client.client.models.unit_control_setpoints_body import UnitControlSetpointsBody
 from cool_open_client.client.models.unit_control_swings_body import UnitControlSwingsBody
@@ -61,7 +61,7 @@ UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
 
 class CoolAutomationClient(Singleton):
     """
-    The coolautomation_client for CoolAutomationCloud service    
+    The coolautomation_client for CoolAutomationCloud service
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
@@ -88,21 +88,20 @@ class CoolAutomationClient(Singleton):
         self._registered_units: Dict[str, Updatable] = {}
 
     @classmethod
-    def authenticate(cls, username: str, password: str) -> str:
+    async def authenticate(cls, username: str, password: str) -> str:
         """
         Perform Authentication
         """
         body = {"username": username, "password": password}
         api = AuthenticationApi()
         try:
-            thread = api.authenticate_post(body, async_req=True)
-            result = thread.get()
+            result = await api.authenticate_post(body)
         except ApiException as error:
             if error.status == cls.UNAUTHORIZES_ERROR_CODE:
                 return "Unauthorized"
-        return result.data["token"]
+        return result.data.token
 
-    def get_dictionary(self) -> TypesResponseData:
+    async def get_dictionary(self) -> TypesResponseData:
         """
         Pulls dictionary from the API
 
@@ -110,21 +109,19 @@ class CoolAutomationClient(Singleton):
             TypesResponseData: Dictionary from api service
         """
         api = ServicesApi()
-        thread = api.services_types_get(self.token, async_req=True)
-        service_types: TypesResponse = thread.get()
-        return service_types.data
+        response = await api.services_types_get(self.token)
+        return response.data
 
-    def get_controllable_units(self) -> UnitsResponse:
+    async def get_controllable_units(self) -> UnitsResponse:
         """
         Retrieves the controllable units from the web api
         """
         # pp = pprint.PrettyPrinter(indent=4).pprint
         api = UnitsApi()
-        thread = api.units_get(self.token, async_req=True)
-        units: UnitsResponse = thread.get()
+        units: UnitsResponse = await api.units_get(self.token)
         return units
 
-    def set_operation_status(self, unit_id: str, status: str):
+    async def set_operation_status(self, unit_id: str, status: str):
         """
         Set the operation status of the device
 
@@ -138,13 +135,13 @@ class CoolAutomationClient(Singleton):
 
         try:
             # set unit operation status
-            api_response = api_instance.units_unit_id_controls_switches_put(
+            api_response = await api_instance.units_unit_id_controls_switches_put(
                 x_access_token=self.token, body=body, unit_id=unit_id
             )
         except ApiException as api_exception:
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
-    def set_operation_mode(self, unit_id: str, mode: str):
+    async def set_operation_mode(self, unit_id: str, mode: str):
         """
         Sets the operation mode of the HVAC unit
 
@@ -158,13 +155,13 @@ class CoolAutomationClient(Singleton):
 
         try:
             # set unit operation status
-            api_response = api_instance.units_unit_id_controls_modes_put(
+            api_response = await api_instance.units_unit_id_controls_modes_put(
                 x_access_token=self.token, body=body, unit_id=unit_id
             )
         except ApiException as api_exception:
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
-    def set_swing_mode(self, unit_id: str, mode: str):
+    async def set_swing_mode(self, unit_id: str, mode: str):
         """Set the swing mode of the HVAC unit
 
         Args:
@@ -177,13 +174,13 @@ class CoolAutomationClient(Singleton):
 
         try:
             # set unit operation status
-            api_response = api_instance.units_unit_id_controls_swings_put(
+            api_response = await api_instance.units_unit_id_controls_swings_put(
                 x_access_token=self.token, body=body, unit_id=unit_id
             )
         except ApiException as api_exception:
             print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
 
-    def set_temperature_set_point(self, unit_id: str, temp: int):
+    async def set_temperature_set_point(self, unit_id: str, temp: int):
         """Set the desired setpoint on the HVAC unit
 
         Args:
@@ -195,7 +192,7 @@ class CoolAutomationClient(Singleton):
 
         try:
             # set unit operation status
-            api_response = api_instance.units_unit_id_controls_setpoints_put(
+            api_response = await api_instance.units_unit_id_controls_setpoints_put(
                 x_access_token=self.token, body=body, unit_id=unit_id
             )
         except ApiException as api_exception:
@@ -271,9 +268,16 @@ class CoolAutomationClient(Singleton):
         return message
 
 
-# api = CoolAutomationClient()
-# dictionaries = api.get_dictionary()
-# fan_modes = create_types_class(dictionaries.fan_modes)
-# # pprint(fan_modes.get_inverse('LOW'))
-# units = api.get_controllable_units()
-# pprint(units)
+# async def t():
+#     api = CoolAutomationClient
+#     r = await api.authenticate(username="aa", password="aaa")
+#     return r
+
+# loop = asyncio.get_event_loop()
+# res = loop.run_until_complete(asyncio.gather(t()))
+# pprint(res)
+# # dictionaries = api.get_dictionary()
+# # fan_modes = create_types_class(dictionaries.fan_modes)
+# # # pprint(fan_modes.get_inverse('LOW'))
+# # units = api.get_controllable_units()
+# # pprint(units)

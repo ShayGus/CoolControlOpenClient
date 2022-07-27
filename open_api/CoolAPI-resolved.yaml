@@ -1,0 +1,4491 @@
+---
+openapi: 3.0.0
+info:
+  title: OpenClientCoolAutomationAPI
+  description: Cool platform REST API
+  contact:
+    name: Info
+    email: info@coolautomation.com
+  version: 1.0.2
+servers:
+- url: https://api.coolremote.net/api/v1
+- url: https://virtserver.swaggerhub.com/ShayGus/CoolAPI/1.0.2
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: authentication
+  description: authentication operations
+- name: websocket
+  description: websocket connection endpoint
+- name: admins
+  description: admin operations
+- name: customers
+  description: customers operations
+- name: customer
+  description: customer operations
+- name: customer sites
+  description: site operations with relation to owner customer
+- name: customer users
+  description: user operations with relation to owner customer
+- name: sites
+  description: sites operations
+- name: site
+  description: site operations
+- name: site devices
+  description: device operations with relation to owner site
+- name: site zones
+  description: zone operations with relation to owner site
+- name: site systems
+  description: system operations with relation to owner site
+- name: site users
+  description: user operations with relation to owner site
+- name: devices
+  description: devices operations
+- name: device
+  description: device operations
+- name: device units
+  description: unit operations with relation to owner device
+- name: zones
+  description: zones operations
+- name: zone
+  description: zone operations
+- name: zone control
+  description: zone control
+- name: zone units
+  description: unit operations with relation to owner zone
+- name: systems
+  description: systems operations
+- name: system
+  description: system operations
+- name: system control
+  description: system control
+- name: system units
+  description: unit operations with relation to owner system
+- name: units
+  description: units operations
+- name: unit
+  description: unit operations
+- name: unit control
+  description: unit control
+- name: users
+  description: users operations
+- name: user
+  description: user operations
+- name: me
+  description: me operations
+- name: types
+  description: system types operations
+paths:
+  /:
+    get:
+      tags:
+      - websocket
+      summary: Websocket connection endpoint
+      description: Websocket connection endpoint
+      responses:
+        "200":
+          description: OK
+  /admins/customers:
+    post:
+      tags:
+      - admins
+      summary: create customer
+      description: Create customer
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customerResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /customers:
+    get:
+      tags:
+      - customers
+      summary: get my customers
+      description: Get all the customers caller has permissions to see
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customersResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /customers/{customerId}:
+    get:
+      tags:
+      - customer
+      summary: get customer
+      description: Get customer
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: customer ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/customerResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - customer
+      summary: update customer
+      description: update customer
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: customer ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: properties to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateCustomerRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - customer
+      summary: create customer
+      description: create customer
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: customer ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: properties to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCustomerRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - customer
+      summary: delete customer
+      description: delete customer
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: customer ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /customers/{customerId}/sites:
+    get:
+      tags:
+      - customer sites
+      summary: get customer sites
+      description: get customer sites
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sitesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - customer sites
+      summary: create customer site
+      description: create customer site
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: customer ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createSiteRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /customers/{customerId}/users:
+    get:
+      tags:
+      - customer users
+      summary: get customer users
+      description: get customer users
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - customer users
+      summary: create customer user
+      description: create customer user
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: customerId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/createUserRequestBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites:
+    get:
+      tags:
+      - sites
+      summary: get my sites
+      description: get my sites
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/sitesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites/{siteId}:
+    get:
+      tags:
+      - site
+      summary: get site
+      description: get site
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/siteResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - site
+      summary: update site
+      description: update site
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateSiteRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - site
+      summary: delete site
+      description: delete site
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites/{siteId}/devices:
+    get:
+      tags:
+      - site devices
+      summary: get site devices
+      description: get site devices
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/devicesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - site devices
+      summary: add device to site
+      description: add device to site
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createDeviceRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /devices:
+    get:
+      tags:
+      - devices
+      summary: get my devices
+      description: get my devices
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/devicesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /devices/{deviceId}:
+    get:
+      tags:
+      - device
+      summary: get device
+      description: get device
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/deviceResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - device
+      summary: update device
+      description: update device
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateDeviceRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - device
+      summary: delete device
+      description: delete device
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites/{siteId}/zones:
+    get:
+      tags:
+      - site zones
+      summary: get site zones
+      description: get site zones
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/zonesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - site zones
+      summary: create site zone
+      description: create site zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createZoneRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones:
+    get:
+      tags:
+      - zones
+      summary: get my zones
+      description: get my zones
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/zonesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}:
+    get:
+      tags:
+      - zone
+      summary: get zone
+      description: get zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/zoneResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - zone
+      summary: update zone
+      description: update zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: zone ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateZoneRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - zone
+      summary: delete zone
+      description: delete zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/controls/setpoints:
+    put:
+      tags:
+      - zone control
+      summary: set zone active temperature setpoint for all units
+      description: set zone active temperature setpoint for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: zone ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/zoneControlSetpointsBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/controls/fans:
+    put:
+      tags:
+      - zone control
+      summary: set zone active fan mode for all units
+      description: set zone active fan mode for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: zone ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/zoneControlFansBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/controls/switches:
+    put:
+      tags:
+      - zone control
+      summary: set zone active operation status for all units
+      description: set zone active operation status for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: zone ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/zoneControlSwitchesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/controls/modes:
+    put:
+      tags:
+      - zone control
+      summary: set zone active operation mode for all units
+      description: set zone active operation mode for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: zone ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/zoneControlModesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites/{siteId}/systems:
+    get:
+      tags:
+      - site systems
+      summary: get site systems
+      description: get site systems
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/systemsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - site systems
+      summary: create site system
+      description: create site system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createSystemRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /sites/{siteId}/users:
+    get:
+      tags:
+      - site users
+      summary: get site users
+      description: get site users
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    post:
+      tags:
+      - site users
+      summary: create site user
+      description: create site user
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: siteId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/createUserRequestBody'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithId'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems:
+    get:
+      tags:
+      - systems
+      summary: get my systems
+      description: get my systems
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/systemsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems/{systemId}:
+    get:
+      tags:
+      - system
+      summary: get system
+      description: get system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/systemResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - system
+      summary: update system
+      description: update system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateSystemRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - system
+      summary: delete system
+      description: delete system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems/{systemId}/controls/modes:
+    put:
+      tags:
+      - system control
+      summary: set system active operation mode for all units
+      description: set system active operation mode for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/systemControlModesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems/{systemId}/controls/switches:
+    put:
+      tags:
+      - system control
+      summary: set system active operation status for all units
+      description: set system active operation status for all units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/systemControlSwitchesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/units:
+    get:
+      tags:
+      - zone units
+      summary: get zone units
+      description: get zone units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unitsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /zones/{zoneId}/units/{unitId}:
+    post:
+      tags:
+      - zone units
+      summary: add unit to zone
+      description: add unit to zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - zone units
+      summary: remove unit from zone
+      description: remove unit from zone
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: zoneId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems/{systemId}/units:
+    get:
+      tags:
+      - system units
+      summary: get system units
+      description: get system units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unitsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /systems/{systemId}/units/{unitId}:
+    post:
+      tags:
+      - system units
+      summary: add unit to system
+      description: add unit to system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - system units
+      summary: remove unit from system
+      description: remove unit from system
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: systemId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /devices/{deviceId}/units:
+    get:
+      tags:
+      - device units
+      summary: get device units
+      description: get device units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unitsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units:
+    get:
+      tags:
+      - units
+      summary: get my units
+      description: get my units
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unitsResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}:
+    get:
+      tags:
+      - unit
+      summary: get unit
+      description: get unit
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unitResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - unit
+      summary: update unit
+      description: update unit
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUnitRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}/controls/setpoints:
+    put:
+      tags:
+      - unit control
+      summary: set unit temperature setpoint
+      description: set unit temperature setpoint
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unitControlSetpointsBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}/controls/modes:
+    put:
+      tags:
+      - unit control
+      summary: set unit operation mode
+      description: set unit operation mode
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unitControlModesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}/controls/fans:
+    put:
+      tags:
+      - unit control
+      summary: set unit fan mode
+      description: set unit fan mode
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unitControlFansBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}/controls/swings:
+    put:
+      tags:
+      - unit control
+      summary: set unit louver mode
+      description: set unit louver mode
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unitControlSwingsBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /units/{unitId}/controls/switches:
+    put:
+      tags:
+      - unit control
+      summary: set unit operation status
+      description: set unit operation status
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: unitId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/unitControlSwitchesBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /users:
+    get:
+      tags:
+      - users
+      summary: get my users
+      description: get my users
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/usersResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /users/{userId}:
+    get:
+      tags:
+      - user
+      summary: get user
+      description: get user
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    put:
+      tags:
+      - user
+      summary: update user
+      description: update user
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUserRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+    delete:
+      tags:
+      - user
+      summary: delete user
+      description: delete user
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: userId
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "403":
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        "404":
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /me:
+    get:
+      tags:
+      - me
+      summary: get me
+      description: get me
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /me/tree:
+    get:
+      tags:
+      - me
+      summary: get my control tree
+      description: get my control tree
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/controlTreeResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /services/types:
+    get:
+      tags:
+      - services
+      summary: get system types for enumerations used in protocol
+      description: get system types
+      parameters:
+      - name: x-access-token
+        in: header
+        description: access token
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/typesResponse'
+        "401":
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+  /authenticate:
+    post:
+      tags:
+      - authentication
+      summary: authenticate
+      description: get access token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authenticateRequestBody'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponseWithToken'
+        "400":
+          description: parameter error
+        "500":
+          description: server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
+      deprecated: false
+components:
+  schemas:
+    okresponse:
+      title: OK response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+      example:
+        success: true
+    okresponseWithId:
+      title: OK response with id
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/okresponseWithId_data'
+    okresponseWithToken:
+      title: OK response with token
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/okresponseWithToken_data'
+    badResponse401:
+      title: bad response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        message:
+          type: string
+          description: text message describing the error
+      example:
+        success: false
+        message: access token expired
+    badResponse403:
+      title: bad response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        message:
+          type: string
+          description: text message describing the error
+      example:
+        success: false
+        message: user does not have sufficient permissions to perform this action
+    badResponse404:
+      title: bad response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        message:
+          type: string
+          description: text message describing the error
+      example:
+        success: false
+        message: the requested resource was not found action
+    badResponse500:
+      title: bad response
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        message:
+          type: string
+          description: text message describing the error
+      example:
+        success: false
+        message: server internal error 1003
+    customersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/customersResponse_data'
+    customerResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/customerResponseData'
+    customerResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: customer ID
+        name:
+          type: string
+          description: customer name
+        description:
+          type: string
+          description: customer descriptions
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this customer
+        sites:
+          type: array
+          description: array of child site IDs
+          items:
+            type: string
+    sitesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/sitesResponse_data'
+    siteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/siteResponseData'
+    siteResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: site ID
+        name:
+          type: string
+          description: site name
+        description:
+          type: string
+          description: site description
+        country:
+          type: string
+          description: site address - country
+        city:
+          type: string
+          description: site address - city
+        postalCode:
+          type: string
+          description: site address - postal code
+        address:
+          type: string
+          description: site address - freeform text
+        timezone:
+          type: string
+          description: site timezone
+        customer:
+          type: string
+          description: parent customer id
+        devices:
+          type: array
+          description: array of child device IDs
+          items:
+            type: string
+        zones:
+          type: array
+          description: array of child zone IDs
+          items:
+            type: string
+        systems:
+          type: array
+          description: array of child system IDs
+          items:
+            type: string
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this site
+    devicesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/devicesResponse_data'
+    deviceResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/deviceResponseData'
+    deviceResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: device ID
+        serial:
+          type: string
+          description: device serial number
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this device
+        site:
+          type: string
+          description: parent site id
+        units:
+          type: array
+          description: array of child unit IDs
+          items:
+            type: string
+    zonesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/zonesResponse_data'
+    zoneResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/zoneResponseData'
+    zoneResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: zone ID
+        name:
+          type: string
+          description: zone name
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this zone
+        site:
+          type: string
+          description: parent site id
+        units:
+          type: array
+          description: array of child unit IDs
+          items:
+            type: string
+    systemsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/systemsResponse_data'
+    systemResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/systemResponseData'
+    systemResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: system ID
+        name:
+          type: string
+          description: system name
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this system
+        site:
+          type: string
+          description: parent site id
+        units:
+          type: array
+          description: array of child unit IDs
+          items:
+            type: string
+    unitsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/unitsResponse_data'
+    unitResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/unitResponseData'
+    unitResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: unit ID
+        name:
+          type: string
+          description: system name
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this unit
+        device:
+          type: string
+          description: parent device id
+    usersResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/usersResponse_data'
+    userResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/userResponseData'
+    userResponseData:
+      type: object
+      properties:
+        id:
+          type: string
+          description: user ID
+        username:
+          type: string
+          description: user identifier
+        email:
+          type: string
+          description: user email
+        phone:
+          type: string
+          description: user phone number
+        role:
+          type: object
+          properties: {}
+          description: caller permissions for this user
+        permissions:
+          type: object
+          properties: {}
+          description: user permissions
+    typesResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/typesResponseData'
+    typesResponseData:
+      type: object
+      properties:
+        temperatureScale:
+          $ref: '#/components/schemas/typesResponseData_temperatureScale'
+        operationStatuses:
+          $ref: '#/components/schemas/typesResponseData_operationStatuses'
+        operationModes:
+          $ref: '#/components/schemas/typesResponseData_operationModes'
+        fanModes:
+          $ref: '#/components/schemas/typesResponseData_fanModes'
+        swingModes:
+          $ref: '#/components/schemas/typesResponseData_swingModes'
+        weekDays:
+          $ref: '#/components/schemas/typesResponseData_weekDays'
+        permissions:
+          $ref: '#/components/schemas/typesResponseData_permissions'
+        resources:
+          $ref: '#/components/schemas/typesResponseData_resources'
+        roles:
+          $ref: '#/components/schemas/typesResponseData_roles'
+        unitTypes:
+          $ref: '#/components/schemas/typesResponseData_unitTypes'
+        hvacBrands:
+          $ref: '#/components/schemas/typesResponseData_hvacBrands'
+        deviceTypes:
+          $ref: '#/components/schemas/typesResponseData_deviceTypes'
+    controlTreeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: success status
+        data:
+          $ref: '#/components/schemas/controlTreeResponseData'
+    controlTreeResponseData:
+      type: object
+      properties:
+        customers:
+          $ref: '#/components/schemas/controlTreeResponseData_customers'
+    createCustomerRequestBody:
+      title: create customer request body
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: customer name
+        description:
+          type: string
+          description: customer description
+    updateCustomerRequestBody:
+      title: update customer request body
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: customer name
+        description:
+          type: string
+          description: customer description
+    createSiteRequestBody:
+      title: create site request body
+      required:
+      - name
+      - timezone
+      type: object
+      properties:
+        name:
+          type: string
+          description: site name
+        description:
+          type: string
+          description: site description
+        country:
+          type: string
+          description: site country address
+        city:
+          type: string
+          description: site city address
+        postalCode:
+          type: string
+          description: site postal code address
+        address:
+          type: string
+          description: site freetext address
+        timezone:
+          type: string
+          description: site timezone
+    updateSiteRequestBody:
+      title: create site request body
+      type: object
+      properties:
+        name:
+          type: string
+          description: site name
+        description:
+          type: string
+          description: site description
+        country:
+          type: string
+          description: site country address
+        city:
+          type: string
+          description: site city address
+        postalCode:
+          type: string
+          description: site postal code address
+        address:
+          type: string
+          description: site freetext address
+        timezone:
+          type: string
+          description: site timezone
+    createUserRequestBody:
+      title: create user request body
+      required:
+      - password
+      - permissions
+      - temperatureScale
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+          description: user identifier
+        password:
+          type: string
+          description: user password
+        temperatureScale:
+          type: integer
+          description: user preffered temperature scale from the temperature scale enumeration
+        permissions:
+          type: object
+          properties: {}
+          description: user permissions
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+        email:
+          type: string
+          description: user email
+        phone:
+          type: string
+          description: user phone number
+    updateUserRequestBody:
+      title: update user request body
+      type: object
+      properties:
+        username:
+          type: string
+          description: user identifier
+        temperatureScale:
+          type: integer
+          description: user preffered temperature scale from the temperature scale enumeration
+        permissions:
+          type: object
+          properties: {}
+          description: user permissions
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+        email:
+          type: string
+          description: user email
+        phone:
+          type: string
+          description: user phone number
+    createDeviceRequestBody:
+      title: add device to site request body
+      required:
+      - pin
+      - serial
+      type: object
+      properties:
+        name:
+          type: string
+          description: device name
+        serial:
+          type: string
+          description: serial number of the device
+        pin:
+          type: string
+          description: device pin
+    updateDeviceRequestBody:
+      title: update device request body
+      type: object
+      properties:
+        name:
+          type: string
+          description: device name
+    createZoneRequestBody:
+      title: create zone request body
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: zone name
+        description:
+          type: string
+          description: zone description
+    updateZoneRequestBody:
+      title: create zone request body
+      type: object
+      properties:
+        name:
+          type: string
+          description: zone name
+        description:
+          type: string
+          description: zone description
+    zoneControlSetpointsBody:
+      title: set zone setpoint for all units
+      required:
+      - setpoint
+      type: object
+      properties:
+        setpoint:
+          type: integer
+          description: requested temperature on the same scale the acting user is configured to work with
+    zoneControlFansBody:
+      title: set zone fan mode for all units
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested fan mode from the fan modes enumeration
+    zoneControlModesBody:
+      title: set zone operation mode for all units
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation mode from the operation modes enumeration
+    zoneControlSwitchesBody:
+      title: set zone switch mode for all units (operation status)
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation status from the operation status enumeration
+    createSystemRequestBody:
+      title: create system request body
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: system name
+        description:
+          type: string
+          description: system description
+    updateSystemRequestBody:
+      title: create system request body
+      type: object
+      properties:
+        name:
+          type: string
+          description: system name
+        description:
+          type: string
+          description: system description
+    systemControlModesBody:
+      title: set system operation mode for all units
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation mode from the operation modes enumeration
+    systemControlSwitchesBody:
+      title: set system switch mode for all units (operation status)
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation status from the operation status enumeration
+    unitControlSetpointsBody:
+      title: set unit setpoint
+      required:
+      - setpoint
+      type: object
+      properties:
+        setpoint:
+          type: integer
+          description: requested temperature on the same scale the acting user is configured to work with
+    unitControlFansBody:
+      title: set unit fan mode
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested fan mode from the fan modes enumeration
+    unitControlModesBody:
+      title: set unit operation mode
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation mode from the operation modes enumeration
+    unitControlSwitchesBody:
+      title: set unit switch mode (operation status)
+      required:
+      - operationStatus
+      type: object
+      properties:
+        operationStatus:
+          type: integer
+          description: requested operation status from the operation status enumeration
+    unitControlSwingsBody:
+      title: set unit swing mode (louver)
+      required:
+      - mode
+      type: object
+      properties:
+        mode:
+          type: integer
+          description: requested operation status from the swing mode enumeration
+    updateUnitRequestBody:
+      title: update unit request body
+      type: object
+      properties:
+        name:
+          type: string
+          description: unit name
+        type:
+          type: integer
+          description: unit type from the unit type enumeration
+        supportedSwitchModes:
+          type: array
+          description: operation status the unit supports - array of integers from the operation status enumeration
+          items:
+            type: integer
+        supportedModes:
+          type: array
+          description: operation modes the unit supports - array of integers from the operation modes enumeration
+          items:
+            type: integer
+        supportedFanModes:
+          type: array
+          description: fan modes the unit supports - array of integers from the fan modes enumeration
+          items:
+            type: integer
+        supportedSwingModes:
+          type: array
+          description: swing modes the unit supports - array of integers from the swing modes enumeration
+          items:
+            type: integer
+        temperatureLimits:
+          type: object
+          properties: {}
+          description: TBD
+    authenticateRequestBody:
+      title: authentication request body
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    okresponseWithId_data:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of created entity
+    okresponseWithToken_data:
+      type: object
+      properties:
+        token:
+          type: string
+          description: access token
+    customersResponse_data:
+      type: object
+      properties:
+        <customerId>:
+          $ref: '#/components/schemas/customerResponseData'
+      description: map of customers
+    sitesResponse_data:
+      type: object
+      properties:
+        <siteId>:
+          $ref: '#/components/schemas/siteResponseData'
+      description: map of sites
+    devicesResponse_data:
+      type: object
+      properties:
+        <deviceId>:
+          $ref: '#/components/schemas/deviceResponseData'
+      description: dictionary of devices
+    zonesResponse_data:
+      type: object
+      properties:
+        <zoneId>:
+          $ref: '#/components/schemas/zoneResponseData'
+      description: dictionary of zones
+    systemsResponse_data:
+      type: object
+      properties:
+        <systemId>:
+          $ref: '#/components/schemas/systemResponseData'
+      description: dictionary of systems
+    unitsResponse_data:
+      type: object
+      properties:
+        <unitId>:
+          $ref: '#/components/schemas/unitResponseData'
+      additionalProperties: true
+      description: dictionary of units
+    usersResponse_data:
+      type: object
+      properties:
+        <userId>:
+          $ref: '#/components/schemas/userResponseData'
+      description: dictionary of units
+    typesResponseData_temperatureScale:
+      type: object
+      properties:
+        scale:
+          type: string
+          description: temperature scale name
+      additionalProperties: true
+      description: map of supported temperature scale enums
+    typesResponseData_operationStatuses:
+      type: object
+      properties:
+        status:
+          type: string
+          description: operation status name
+      additionalProperties: true
+      description: map of supported operation status enums
+    typesResponseData_operationModes:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: operation mode name
+      additionalProperties: true
+      description: map of supported operation mode enums
+    typesResponseData_fanModes:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: fan mode name
+      additionalProperties: true
+      description: map of supported fan mode enums
+    typesResponseData_swingModes:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: swing mode name
+      additionalProperties: true
+      description: map of supported swing (louver) mode enums
+    typesResponseData_weekDays:
+      type: object
+      properties:
+        weekday:
+          type: string
+          description: weekday name
+      additionalProperties: true
+      description: map of week days used for scheduling
+    typesResponseData_permissions:
+      type: object
+      properties:
+        permission:
+          type: string
+          description: permission name
+      additionalProperties: true
+      description: map of permission names used in permissions
+    typesResponseData_resources:
+      type: object
+      properties:
+        resource:
+          type: string
+          description: resource name
+      additionalProperties: true
+      description: map of resource names used in permissions
+    typesResponseData_roles:
+      type: object
+      properties:
+        role ID:
+          type: array
+          items:
+            type: string
+            description: permission
+      additionalProperties: true
+      description: map of role names used in permissions
+    typesResponseData_unitTypes:
+      type: object
+      properties:
+        type_id:
+          type: string
+          description: type name
+      additionalProperties: true
+      description: map of type names used in unit types
+    typesResponseData_hvacBrands:
+      type: array
+      description: array of hvac brands
+      items:
+        $ref: '#/components/schemas/typesResponseData_hvacBrands_inner'
+    typesResponseData_deviceTypes:
+      type: object
+      properties:
+        type ID:
+          type: string
+          description: type name
+        type_object:
+          $ref: '#/components/schemas/typesResponseData_deviceTypes_type_object'
+      additionalProperties: true
+      description: map of type names used in device types
+    controlTreeResponseData_customers_customer_id_sites_site_id:
+      type: object
+      properties:
+        name:
+          type: string
+          description: site name
+        id:
+          type: string
+          description: site id
+        role:
+          type: string
+          description: user role for this site
+        devices:
+          type: array
+          description: array of associated device IDs
+          items:
+            type: integer
+        zones:
+          type: array
+          description: array of associated zone IDs
+          items:
+            type: integer
+        systems:
+          type: array
+          description: array of associated system IDs
+          items:
+            type: integer
+      description: single site properties
+    controlTreeResponseData_customers_customer_id_sites:
+      type: object
+      properties:
+        site id:
+          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id_sites_site_id'
+      description: dictionary of accessible customers
+    controlTreeResponseData_customers_customer_id:
+      type: object
+      properties:
+        name:
+          type: string
+          description: customer name
+        id:
+          type: string
+          description: customer id
+        role:
+          type: string
+          description: user role for this customer
+        sites:
+          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id_sites'
+      description: single customer properties
+    controlTreeResponseData_customers:
+      type: object
+      properties:
+        customer id:
+          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id'
+      description: dictionary of accessible customers
+    typesResponseData_hvacBrands_inner:
+      type: object
+      properties:
+        value:
+          type: integer
+          description: hvac type id
+        type:
+          type: string
+          description: Brand type
+        name:
+          type: string
+          description: Brand Name
+        isWaterHeater:
+          type: boolean
+          description: Is the device water heater
+        hasBooster:
+          type: boolean
+          description: Does the device has booster
+    typesResponseData_deviceTypes_type_object:
+      type: object
+      properties:
+        name:
+          type: string
+          description: device name
+        shortName:
+          type: string
+          description: device short name
+      example: null
+  requestBodies:
+    createUserRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createUserRequestBody'
+      required: true
