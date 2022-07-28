@@ -44,37 +44,37 @@ class HVACUnit(Updatable):
         self._client = client
         self._client.register_for_updates(self)
 
-    def set_operation_status(self, status: str):
+    async def set_operation_status(self, status: str):
         """Set the operation status of the HVAC unit
 
         Args:
             status (str): String representation of the operation status
         """
-        self._client.set_operation_status(unit_id=self._id, status=status)
+        await self._client.set_operation_status(unit_id=self._id, status=status)
 
-    def set_opration_mode(self, mode: str):
+    async def set_opration_mode(self, mode: str):
         """Set the operation mode of the HVAC unit
 
         Args:
             mode (str): String representation of the operation mode
         """
-        self._client.set_operation_mode(unit_id=self._id, mode=mode)
+        await self._client.set_operation_mode(unit_id=self._id, mode=mode)
 
-    def set_swing_mode(self, mode: str):
+    async def set_swing_mode(self, mode: str):
         """Set the swing mode of the HVAC unit
 
         Args:
             mode (str): String representation of the swing mode
         """
-        self._client.set_swing_mode(unit_id=self._id, mode=mode)
+        await self._client.set_swing_mode(unit_id=self._id, mode=mode)
 
-    def set_temperature_set_point(self, setpoint: int):
+    async def set_temperature_set_point(self, setpoint: int):
         """Set the set point temperature of the HVAC unit
 
         Args:
             setpoint (int): The desired setpoint of the HVAC unit
         """
-        self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
+        await self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
 
     def notify(self, message: UnitUpdateMessage):
         self._update_unit(message)
