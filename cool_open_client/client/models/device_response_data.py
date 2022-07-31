@@ -32,7 +32,8 @@ class DeviceResponseData(object):
         'serial': 'str',
         'role': 'object',
         'site': 'str',
-        'units': 'list[str]'
+        'units': 'list[str]',
+        'is_connected': 'bool'
     }
 
     attribute_map = {
@@ -40,16 +41,18 @@ class DeviceResponseData(object):
         'serial': 'serial',
         'role': 'role',
         'site': 'site',
-        'units': 'units'
+        'units': 'units',
+        'is_connected': 'isConnected'
     }
 
-    def __init__(self, id=None, serial=None, role=None, site=None, units=None):  # noqa: E501
+    def __init__(self, id=None, serial=None, role=None, site=None, units=None, is_connected=None):  # noqa: E501
         """DeviceResponseData - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._serial = None
         self._role = None
         self._site = None
         self._units = None
+        self._is_connected = None
         self.discriminator = None
         if id is not None:
             self.id = id
@@ -61,6 +64,8 @@ class DeviceResponseData(object):
             self.site = site
         if units is not None:
             self.units = units
+        if is_connected is not None:
+            self.is_connected = is_connected
 
     @property
     def id(self):
@@ -176,6 +181,29 @@ class DeviceResponseData(object):
         """
 
         self._units = units
+
+    @property
+    def is_connected(self):
+        """Gets the is_connected of this DeviceResponseData.  # noqa: E501
+
+        defines whether device connected  # noqa: E501
+
+        :return: The is_connected of this DeviceResponseData.  # noqa: E501
+        :rtype: bool
+        """
+        return self._is_connected
+
+    @is_connected.setter
+    def is_connected(self, is_connected):
+        """Sets the is_connected of this DeviceResponseData.
+
+        defines whether device connected  # noqa: E501
+
+        :param is_connected: The is_connected of this DeviceResponseData.  # noqa: E501
+        :type: bool
+        """
+
+        self._is_connected = is_connected
 
     def to_dict(self):
         """Returns the model properties as a dict"""

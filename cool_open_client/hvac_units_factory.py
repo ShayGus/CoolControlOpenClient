@@ -1,12 +1,20 @@
 from typing import List
-
 from cool_open_client.cool_automation_client import CoolAutomationClient
+
 from cool_open_client.unit import HVACUnit
 
 
 class HVACUnitsFactory:
-    def __init__(self, token=None) -> None:
-        self._client = CoolAutomationClient(token=token)
+    @classmethod
+    async def create(cls, token: str = None):
+        if token is None:
+            raise ValueError("token is required")
+
+        client = await CoolAutomationClient.create(token)
+        return cls(client)
+
+    def __init__(self, client=None) -> None:
+        self._client = client
 
     async def generate_units_from_api(self) -> List[HVACUnit]:
         units = await self._client.get_controllable_units()

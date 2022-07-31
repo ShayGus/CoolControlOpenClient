@@ -1,12 +1,20 @@
-import asyncio
 from pprint import pprint
-from typing import Dict, Union
+from typing import Dict, Iterable, List, Union, cast
+
+import json
+from dataclasses import dataclass, field
 import marshmallow
 import marshmallow_dataclass
 import websocket
 import rel
-import json
-from dataclasses import dataclass, field
+from client.api.me_api import MeApi
+from client.models.user_response_data import UserResponseData
+
+
+from cool_open_client.client.api.devices_api import DevicesApi
+from cool_open_client.client.models.device_response_data import DeviceResponseData
+from cool_open_client.client.models.devices_response import DevicesResponse
+from cool_open_client.client.models.devices_response_data import DevicesResponseData
 
 from cool_open_client.client import UnitControlApi, UnitControlSwitchesBody
 from cool_open_client.client.api.services_api import ServicesApi
@@ -22,6 +30,7 @@ from cool_open_client.client.models.unit_control_swings_body import UnitControlS
 from cool_open_client.utils.dictionaries import DictTypes
 from cool_open_client.utils.singleton import Singleton
 from cool_open_client.utils.updatable import Updatable
+from cool_open_client.utils.dict_to_model import dict_to_model
 
 ###
 # {'data': {'ambientTemperature': 29,
@@ -67,25 +76,20 @@ class CoolAutomationClient(Singleton):
     UNAUTHORIZES_ERROR_CODE = 401
     SOCKET_URI = "wss://api.coolremote.net/api/v1/"
 
-    def __init__(
-        self,
-        token=None,
-        username=None,
-        password=None,
-    ):
-        if token is None and username is None and password is None:
-            raise ValueError("Toke or Username and Password must be provided")
-        self.token = token if not username else self.authenticate(username=username, password=password)
-        self._dictionaries: TypesResponseData = self.get_dictionary()
-        self.temperature_scale = DictTypes(self._dictionaries.temperature_scale)
-        self.operation_statuses = DictTypes(self._dictionaries.operation_statuses)
-        self.operation_modes = DictTypes(self._dictionaries.operation_modes)
-        self.fan_modes = DictTypes(self._dictionaries.fan_modes)
-        self.swing_modes = DictTypes(self._dictionaries.swing_modes)
-        # self.device_types = DictTypes(self._dictionaries.device_types)
-        # self.brands = DictTypes(self._dictionaries.hvac_brands)
-        self.socket = None
-        self._registered_units: Dict[str, Updatable] = {}
+    @classmethod
+    async def create(cls, token):
+        self = cls()
+        if token is None:
+            raise ValueError("Toke cannot be None")
+        self.token = token
+        dictionaries = await self.get_dictionary()
+        self._dictionaries: TypesResponseData = dictionaries
+        self.temperature_scale = DictTypes(dictionaries.temperature_scale)
+        self.operation_statuses = DictTypes(dictionaries.operation_statuses)
+        self.operation_modes = DictTypes(dictionaries.operation_modes)
+        self.fan_modes = DictTypes(dictionaries.fan_modes)
+        self.swing_modes = DictTypes(dictionaries.swing_modes)
+        return self
 
     @classmethod
     async def authenticate(cls, username: str, password: str) -> str:
@@ -100,6 +104,24 @@ class CoolAutomationClient(Singleton):
             if error.status == cls.UNAUTHORIZES_ERROR_CODE:
                 return "Unauthorized"
         return result.data.token
+
+    def __init__(self):
+        self.token = None
+        self._dictionaries: TypesResponseData = None
+        self.temperature_scale = None
+        self.operation_statuses = None
+        self.operation_modes = None
+        self.fan_modes = None
+        self.swing_modes = None
+        # self.device_types = DictTypes(self._dictionaries.device_types)
+        # self.brands = DictTypes(self._dictionaries.hvac_brands)
+        self.socket = None
+        self._registered_units: Dict[str, Updatable] = {}
+
+    async def get_me(self) -> UserResponseData:
+        api = MeApi()
+        response = await api.get_me(self.token)
+        return response.data
 
     async def get_dictionary(self) -> TypesResponseData:
         """
@@ -120,6 +142,17 @@ class CoolAutomationClient(Singleton):
         api = UnitsApi()
         units: UnitsResponse = await api.units_get(self.token)
         return units
+
+    async def get_devices(self) -> List[Union[DeviceResponseData, None]]:
+        api = DevicesApi()
+        devices: DevicesResponse = await api.devices_get(self.token)
+        data: DevicesResponseData = devices.data
+        devices = [
+            dict_to_model(DeviceResponseData, device)
+            for device in cast(Iterable[DeviceResponseData], data.values())
+            if device["isConnected"]
+        ]
+        return devices
 
     async def set_operation_status(self, unit_id: str, status: str):
         """

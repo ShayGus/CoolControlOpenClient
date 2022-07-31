@@ -8,6 +8,7 @@ Name | Type | Description | Notes
 **role** | **object** | caller permissions for this device | [optional] 
 **site** | **str** | parent site id | [optional] 
 **units** | **list[str]** | array of child unit IDs | [optional] 
+**is_connected** | **bool** | defines whether device connected | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
