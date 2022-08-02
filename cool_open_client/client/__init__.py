@@ -113,6 +113,7 @@ from cool_open_client.client.models.unit_control_swings_body import UnitControlS
 from cool_open_client.client.models.unit_control_switches_body import UnitControlSwitchesBody
 from cool_open_client.client.models.unit_response import UnitResponse
 from cool_open_client.client.models.unit_response_data import UnitResponseData
+from cool_open_client.client.models.unit_response_data_temperature_limits import UnitResponseDataTemperatureLimits
 from cool_open_client.client.models.units_response import UnitsResponse
 from cool_open_client.client.models.units_response_data import UnitsResponseData
 from cool_open_client.client.models.update_customer_request_body import UpdateCustomerRequestBody

@@ -1,4 +1,6 @@
+import functools
 from pprint import pprint
+from signal import raise_signal
 from typing import Dict, Iterable, List, Union, cast
 
 import json
@@ -7,8 +9,8 @@ import marshmallow
 import marshmallow_dataclass
 import websocket
 import rel
-from client.api.me_api import MeApi
-from client.models.user_response_data import UserResponseData
+from cool_open_client.client.api.me_api import MeApi
+from cool_open_client.client.models.user_response_data import UserResponseData
 
 
 from cool_open_client.client.api.devices_api import DevicesApi
@@ -68,6 +70,24 @@ class UnitUpdateMessage:
 UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
 
 
+def with_exception(function):
+    @functools.wraps(function)
+    async def wrapper(*args, **kwargs):
+        try:
+            return await function(*args, **kwargs)
+        except ApiException as exception:
+            body = json.loads(exception.body)
+            if (
+                exception.status == CoolAutomationClient.UNAUTHORIZES_ERROR_CODE
+                and body["message"] == "Token verification failed"
+            ):
+                raise InvalidTokenException() from exception
+            else:
+                raise exception
+
+    return wrapper
+
+
 class CoolAutomationClient(Singleton):
     """
     The coolautomation_client for CoolAutomationCloud service
@@ -120,9 +140,10 @@ class CoolAutomationClient(Singleton):
 
     async def get_me(self) -> UserResponseData:
         api = MeApi()
-        response = await api.get_me(self.token)
+        response = await api.me_get(self.token)
         return response.data
 
+    @with_exception
     async def get_dictionary(self) -> TypesResponseData:
         """
         Pulls dictionary from the API
@@ -134,6 +155,7 @@ class CoolAutomationClient(Singleton):
         response = await api.services_types_get(self.token)
         return response.data
 
+    @with_exception
     async def get_controllable_units(self) -> UnitsResponse:
         """
         Retrieves the controllable units from the web api
@@ -141,8 +163,10 @@ class CoolAutomationClient(Singleton):
         # pp = pprint.PrettyPrinter(indent=4).pprint
         api = UnitsApi()
         units: UnitsResponse = await api.units_get(self.token)
+
         return units
 
+    @with_exception
     async def get_devices(self) -> List[Union[DeviceResponseData, None]]:
         api = DevicesApi()
         devices: DevicesResponse = await api.devices_get(self.token)
@@ -154,6 +178,7 @@ class CoolAutomationClient(Singleton):
         ]
         return devices
 
+    @with_exception
     async def set_operation_status(self, unit_id: str, status: str):
         """
         Set the operation status of the device
@@ -166,14 +191,12 @@ class CoolAutomationClient(Singleton):
         status = self.operation_statuses.get_inverse(status)
         body = UnitControlSwitchesBody(status)
 
-        try:
-            # set unit operation status
-            api_response = await api_instance.units_unit_id_controls_switches_put(
-                x_access_token=self.token, body=body, unit_id=unit_id
-            )
-        except ApiException as api_exception:
-            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
+        # set unit operation status
+        api_response = await api_instance.units_unit_id_controls_switches_put(
+            x_access_token=self.token, body=body, unit_id=unit_id
+        )
 
+    @with_exception
     async def set_operation_mode(self, unit_id: str, mode: str):
         """
         Sets the operation mode of the HVAC unit
@@ -186,14 +209,11 @@ class CoolAutomationClient(Singleton):
         status = self.operation_modes.get_inverse(mode)
         body = UnitControlModesBody(status)
 
-        try:
-            # set unit operation status
-            api_response = await api_instance.units_unit_id_controls_modes_put(
-                x_access_token=self.token, body=body, unit_id=unit_id
-            )
-        except ApiException as api_exception:
-            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
+        api_response = await api_instance.units_unit_id_controls_modes_put(
+            x_access_token=self.token, body=body, unit_id=unit_id
+        )
 
+    @with_exception
     async def set_swing_mode(self, unit_id: str, mode: str):
         """Set the swing mode of the HVAC unit
 
@@ -205,14 +225,11 @@ class CoolAutomationClient(Singleton):
         mode = self.swing_modes.get_inverse(mode)
         body = UnitControlSwingsBody(mode)
 
-        try:
-            # set unit operation status
-            api_response = await api_instance.units_unit_id_controls_swings_put(
-                x_access_token=self.token, body=body, unit_id=unit_id
-            )
-        except ApiException as api_exception:
-            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
+        api_response = await api_instance.units_unit_id_controls_swings_put(
+            x_access_token=self.token, body=body, unit_id=unit_id
+        )
 
+    @with_exception
     async def set_temperature_set_point(self, unit_id: str, temp: int):
         """Set the desired setpoint on the HVAC unit
 
@@ -223,13 +240,9 @@ class CoolAutomationClient(Singleton):
         api_instance = UnitControlApi()
         body = UnitControlSetpointsBody(temp)
 
-        try:
-            # set unit operation status
-            api_response = await api_instance.units_unit_id_controls_setpoints_put(
-                x_access_token=self.token, body=body, unit_id=unit_id
-            )
-        except ApiException as api_exception:
-            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {api_exception}\n")
+        api_response = await api_instance.units_unit_id_controls_setpoints_put(
+            x_access_token=self.token, body=body, unit_id=unit_id
+        )
 
     def register_for_updates(self, unit: Updatable):
         """Register an HVAC unit to receive updates from service calls or WebSocket
@@ -299,6 +312,14 @@ class CoolAutomationClient(Singleton):
         message.operation_mode = self.operation_modes.get(message.operation_mode)
         message.operation_status = self.operation_statuses.get(message.operation_status)
         return message
+
+
+class UnauthorizedException(Exception):
+    pass
+
+
+class InvalidTokenException(Exception):
+    pass
 
 
 # async def t():

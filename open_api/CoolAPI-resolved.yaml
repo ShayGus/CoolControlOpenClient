@@ -3635,13 +3635,69 @@ components:
         name:
           type: string
           description: system name
-        role:
-          type: object
-          description: caller permissions for this unit
-          properties: {}
         device:
           type: string
           description: parent device id
+        isConnected:
+          type: boolean
+          description: Is unit connected
+        supportedOperationStatuses:
+          type: array
+          description: Supported operation statuses
+          items:
+            type: integer
+        supportedOperationModes:
+          type: array
+          description: Supported operation modes
+          items:
+            type: integer
+        supportedFanModes:
+          type: array
+          description: Supported fan modes
+          items:
+            type: integer
+        supportedSwingModes:
+          type: array
+          description: Supported swing modes
+          items:
+            type: integer
+        temperatureLimits:
+          type: object
+          properties:
+            "0": 
+              type: array
+              items:
+                type: integer
+            "1":
+              type: array
+              items:
+                type: integer
+            "2":
+              type: array
+              items:
+                type: integer
+        brand:
+          type: integer
+        activeSetpoint: 
+          type: integer
+        ambientTemperature: 
+          type: integer
+        activeOperationStatus: 
+          type: integer
+        activeOperationMode:
+          type: integer
+        activeFanMode: 
+          type: integer
+        activeSwingMode:
+          type: integer
+        filter:
+          type: boolean
+        enableCoolMode:
+          type: boolean
+        enableHeatMode:
+          type: boolean
+        enableAutoMode:
+          type: boolean
     usersResponse:
       type: object
       properties:

@@ -199,6 +199,7 @@ Class | Method | HTTP request | Description
  - [UnitControlSwitchesBody](docs/UnitControlSwitchesBody.md)
  - [UnitResponse](docs/UnitResponse.md)
  - [UnitResponseData](docs/UnitResponseData.md)
+ - [UnitResponseDataTemperatureLimits](docs/UnitResponseDataTemperatureLimits.md)
  - [UnitsResponse](docs/UnitsResponse.md)
  - [UnitsResponseData](docs/UnitsResponseData.md)
  - [UpdateCustomerRequestBody](docs/UpdateCustomerRequestBody.md)

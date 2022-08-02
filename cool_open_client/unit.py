@@ -86,6 +86,26 @@ class HVACUnit(Updatable):
         self._active_setpoint = message.setpoint
         self._active_swing_mode = message.swing
 
+    @property
+    def operation_mode(self):
+        return self._active_operation_mode
+
+    @property
+    def fan_mode(self):
+        return self._active_fan_mode
+
+    @property
+    def operation_status(self):
+        return self._active_operation_status
+
+    @property
+    def setpoint(self):
+        return self._active_setpoint
+
+    @property
+    def sing_mode(self):
+        return self._active_swing_mode
+
     def get_updatable_id(self):
         return self._id
 
