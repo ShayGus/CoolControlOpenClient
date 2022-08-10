@@ -23,6 +23,7 @@ Name | Type | Description | Notes
 **enable_cool_mode** | **bool** |  | [optional] 
 **enable_heat_mode** | **bool** |  | [optional] 
 **enable_auto_mode** | **bool** |  | [optional] 
+**is_half_c_degree_enabled** | **bool** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

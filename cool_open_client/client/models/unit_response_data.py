@@ -47,7 +47,8 @@ class UnitResponseData(object):
         'filter': 'bool',
         'enable_cool_mode': 'bool',
         'enable_heat_mode': 'bool',
-        'enable_auto_mode': 'bool'
+        'enable_auto_mode': 'bool',
+        'is_half_c_degree_enabled': 'bool'
     }
 
     attribute_map = {
@@ -70,10 +71,11 @@ class UnitResponseData(object):
         'filter': 'filter',
         'enable_cool_mode': 'enableCoolMode',
         'enable_heat_mode': 'enableHeatMode',
-        'enable_auto_mode': 'enableAutoMode'
+        'enable_auto_mode': 'enableAutoMode',
+        'is_half_c_degree_enabled': 'isHalfCDegreeEnabled'
     }
 
-    def __init__(self, id=None, name=None, device=None, is_connected=None, supported_operation_statuses=None, supported_operation_modes=None, supported_fan_modes=None, supported_swing_modes=None, temperature_limits=None, brand=None, active_setpoint=None, ambient_temperature=None, active_operation_status=None, active_operation_mode=None, active_fan_mode=None, active_swing_mode=None, filter=None, enable_cool_mode=None, enable_heat_mode=None, enable_auto_mode=None):  # noqa: E501
+    def __init__(self, id=None, name=None, device=None, is_connected=None, supported_operation_statuses=None, supported_operation_modes=None, supported_fan_modes=None, supported_swing_modes=None, temperature_limits=None, brand=None, active_setpoint=None, ambient_temperature=None, active_operation_status=None, active_operation_mode=None, active_fan_mode=None, active_swing_mode=None, filter=None, enable_cool_mode=None, enable_heat_mode=None, enable_auto_mode=None, is_half_c_degree_enabled=None):  # noqa: E501
         """UnitResponseData - a model defined in Swagger"""  # noqa: E501
         self._id = None
         self._name = None
@@ -95,6 +97,7 @@ class UnitResponseData(object):
         self._enable_cool_mode = None
         self._enable_heat_mode = None
         self._enable_auto_mode = None
+        self._is_half_c_degree_enabled = None
         self.discriminator = None
         if id is not None:
             self.id = id
@@ -136,6 +139,8 @@ class UnitResponseData(object):
             self.enable_heat_mode = enable_heat_mode
         if enable_auto_mode is not None:
             self.enable_auto_mode = enable_auto_mode
+        if is_half_c_degree_enabled is not None:
+            self.is_half_c_degree_enabled = is_half_c_degree_enabled
 
     @property
     def id(self):
@@ -572,6 +577,27 @@ class UnitResponseData(object):
         """
 
         self._enable_auto_mode = enable_auto_mode
+
+    @property
+    def is_half_c_degree_enabled(self):
+        """Gets the is_half_c_degree_enabled of this UnitResponseData.  # noqa: E501
+
+
+        :return: The is_half_c_degree_enabled of this UnitResponseData.  # noqa: E501
+        :rtype: bool
+        """
+        return self._is_half_c_degree_enabled
+
+    @is_half_c_degree_enabled.setter
+    def is_half_c_degree_enabled(self, is_half_c_degree_enabled):
+        """Sets the is_half_c_degree_enabled of this UnitResponseData.
+
+
+        :param is_half_c_degree_enabled: The is_half_c_degree_enabled of this UnitResponseData.  # noqa: E501
+        :type: bool
+        """
+
+        self._is_half_c_degree_enabled = is_half_c_degree_enabled
 
     def to_dict(self):
         """Returns the model properties as a dict"""

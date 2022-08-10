@@ -39,6 +39,7 @@ class HVACUnitsFactory:
                         self._client.operation_statuses.get(status) for status in unit["supportedOperationStatuses"]
                     ],
                     supported_swing_modes=[self._client.swing_modes.get(mode) for mode in unit["supportedSwingModes"]],
+                    is_half_degree=unit["isHalfCDegreeEnabled"],
                     client=self._client,
                 )
                 hvac_units.append(hvac_unit)

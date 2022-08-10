@@ -3698,6 +3698,8 @@ components:
           type: boolean
         enableAutoMode:
           type: boolean
+        isHalfCDegreeEnabled:
+          type: boolean
     usersResponse:
       type: object
       properties:

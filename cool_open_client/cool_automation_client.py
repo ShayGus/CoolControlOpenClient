@@ -9,6 +9,7 @@ import marshmallow
 import marshmallow_dataclass
 import websocket
 import rel
+from client.models.unit_control_fans_body import UnitControlFansBody
 from cool_open_client.client.api.me_api import MeApi
 from cool_open_client.client.models.user_response_data import UserResponseData
 
@@ -226,6 +227,22 @@ class CoolAutomationClient(Singleton):
         body = UnitControlSwingsBody(mode)
 
         api_response = await api_instance.units_unit_id_controls_swings_put(
+            x_access_token=self.token, body=body, unit_id=unit_id
+        )
+
+    @with_exception
+    async def set_fan_mode(self, unit_id: str, mode: str):
+        """Set the fan mode of the HVAC unit
+
+        Args:
+            unit_id (str): Unit ID
+            mode (str): The fan mode to set on the device
+        """
+        api_instance = UnitControlApi()
+        mode = self.fan_modes.get_inverse(mode)
+        body = UnitControlFansBody(mode)
+
+        api_response = await api_instance.units_unit_id_controls_fans_put(
             x_access_token=self.token, body=body, unit_id=unit_id
         )
 
