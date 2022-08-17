@@ -81,7 +81,7 @@ paths:
       summary: Websocket connection endpoint
       description: Websocket connection endpoint
       responses:
-        '200':
+        "200":
           description: OK
   /admins/customers:
     post:
@@ -98,24 +98,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/customerResponse'
-        '401':
+                $ref: "#/components/schemas/customerResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /customers:
     get:
       tags:
@@ -131,24 +131,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/customersResponse'
-        '401':
+                $ref: "#/components/schemas/customersResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /customers/{customerId}:
     get:
       tags:
@@ -170,37 +170,37 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/customerResponse'
-        '401':
+                $ref: "#/components/schemas/customerResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - customer
@@ -223,42 +223,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateCustomerRequestBody'
+              $ref: "#/components/schemas/updateCustomerRequestBody"
         description: properties to update
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - customer
@@ -279,37 +279,37 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - customer
@@ -332,42 +332,42 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createCustomerRequestBody'
+              $ref: "#/components/schemas/createCustomerRequestBody"
         description: properties to update
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /customers/{customerId}/sites:
     get:
       tags:
@@ -383,43 +383,43 @@ paths:
             type: string
         - name: customerId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sitesResponse'
-        '401':
+                $ref: "#/components/schemas/sitesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - customer sites
@@ -442,41 +442,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createSiteRequestBody'
+              $ref: "#/components/schemas/createSiteRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /customers/{customerId}/users:
     get:
       tags:
@@ -492,43 +492,43 @@ paths:
             type: string
         - name: customerId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/usersResponse'
-        '401':
+                $ref: "#/components/schemas/usersResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - customer users
@@ -543,45 +543,45 @@ paths:
             type: string
         - name: customerId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       requestBody:
-        $ref: '#/components/requestBodies/createUserRequestBody'
+        $ref: "#/components/requestBodies/createUserRequestBody"
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites:
     get:
       tags:
@@ -597,37 +597,37 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/sitesResponse'
-        '401':
+                $ref: "#/components/schemas/sitesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites/{siteId}:
     get:
       tags:
@@ -643,43 +643,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/siteResponse'
-        '401':
+                $ref: "#/components/schemas/siteResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - site
@@ -694,7 +694,7 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -702,41 +702,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateSiteRequestBody'
+              $ref: "#/components/schemas/updateSiteRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - site
@@ -751,43 +751,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites/{siteId}/devices:
     get:
       tags:
@@ -803,43 +803,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/devicesResponse'
-        '401':
+                $ref: "#/components/schemas/devicesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - site devices
@@ -854,7 +854,7 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -862,41 +862,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createDeviceRequestBody'
+              $ref: "#/components/schemas/createDeviceRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /devices:
     get:
       tags:
@@ -912,25 +912,25 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/devicesResponse'
-        '401':
+                $ref: "#/components/schemas/devicesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /devices/{deviceId}:
     get:
       tags:
@@ -946,43 +946,43 @@ paths:
             type: string
         - name: deviceId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/deviceResponse'
-        '401':
+                $ref: "#/components/schemas/deviceResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - device
@@ -997,7 +997,7 @@ paths:
             type: string
         - name: deviceId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -1005,41 +1005,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateDeviceRequestBody'
+              $ref: "#/components/schemas/updateDeviceRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - device
@@ -1054,43 +1054,43 @@ paths:
             type: string
         - name: deviceId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites/{siteId}/zones:
     get:
       tags:
@@ -1106,43 +1106,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/zonesResponse'
-        '401':
+                $ref: "#/components/schemas/zonesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - site zones
@@ -1157,7 +1157,7 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -1165,41 +1165,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createZoneRequestBody'
+              $ref: "#/components/schemas/createZoneRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones:
     get:
       tags:
@@ -1215,24 +1215,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/zonesResponse'
-        '401':
+                $ref: "#/components/schemas/zonesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}:
     get:
       tags:
@@ -1248,42 +1248,42 @@ paths:
             type: string
         - name: zoneId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/zoneResponse'
-        '401':
+                $ref: "#/components/schemas/zoneResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - zone
@@ -1306,41 +1306,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateZoneRequestBody'
+              $ref: "#/components/schemas/updateZoneRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - zone
@@ -1355,43 +1355,43 @@ paths:
             type: string
         - name: zoneId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/controls/setpoints:
     put:
       tags:
@@ -1415,41 +1415,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/zoneControlSetpointsBody'
+              $ref: "#/components/schemas/zoneControlSetpointsBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/controls/fans:
     put:
       tags:
@@ -1473,41 +1473,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/zoneControlFansBody'
+              $ref: "#/components/schemas/zoneControlFansBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/controls/switches:
     put:
       tags:
@@ -1531,41 +1531,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/zoneControlSwitchesBody'
+              $ref: "#/components/schemas/zoneControlSwitchesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/controls/modes:
     put:
       tags:
@@ -1589,41 +1589,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/zoneControlModesBody'
+              $ref: "#/components/schemas/zoneControlModesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites/{siteId}/systems:
     get:
       tags:
@@ -1639,43 +1639,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/systemsResponse'
-        '401':
+                $ref: "#/components/schemas/systemsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - site systems
@@ -1690,7 +1690,7 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -1698,41 +1698,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createSystemRequestBody'
+              $ref: "#/components/schemas/createSystemRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /sites/{siteId}/users:
     get:
       tags:
@@ -1748,43 +1748,43 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/usersResponse'
-        '401':
+                $ref: "#/components/schemas/usersResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     post:
       tags:
         - site users
@@ -1799,45 +1799,45 @@ paths:
             type: string
         - name: siteId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       requestBody:
-        $ref: '#/components/requestBodies/createUserRequestBody'
+        $ref: "#/components/requestBodies/createUserRequestBody"
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithId'
-        '401':
+                $ref: "#/components/schemas/okresponseWithId"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems:
     get:
       tags:
@@ -1853,25 +1853,25 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/systemsResponse'
-        '401':
+                $ref: "#/components/schemas/systemsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems/{systemId}:
     get:
       tags:
@@ -1887,43 +1887,43 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/systemResponse'
-        '401':
+                $ref: "#/components/schemas/systemResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - system
@@ -1938,7 +1938,7 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -1946,41 +1946,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateSystemRequestBody'
+              $ref: "#/components/schemas/updateSystemRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - system
@@ -1995,43 +1995,43 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems/{systemId}/controls/modes:
     put:
       tags:
@@ -2047,7 +2047,7 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2055,41 +2055,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/systemControlModesBody'
+              $ref: "#/components/schemas/systemControlModesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems/{systemId}/controls/switches:
     put:
       tags:
@@ -2105,7 +2105,7 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2113,41 +2113,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/systemControlSwitchesBody'
+              $ref: "#/components/schemas/systemControlSwitchesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/units:
     get:
       tags:
@@ -2163,43 +2163,43 @@ paths:
             type: string
         - name: zoneId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/unitsResponse'
-        '401':
+                $ref: "#/components/schemas/unitsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /zones/{zoneId}/units/{unitId}:
     post:
       tags:
@@ -2215,49 +2215,49 @@ paths:
             type: string
         - name: zoneId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - zone units
@@ -2272,49 +2272,49 @@ paths:
             type: string
         - name: zoneId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems/{systemId}/units:
     get:
       tags:
@@ -2330,43 +2330,43 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/unitsResponse'
-        '401':
+                $ref: "#/components/schemas/unitsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /systems/{systemId}/units/{unitId}:
     post:
       tags:
@@ -2382,49 +2382,49 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - system units
@@ -2439,49 +2439,49 @@ paths:
             type: string
         - name: systemId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /devices/{deviceId}/units:
     get:
       tags:
@@ -2497,43 +2497,43 @@ paths:
             type: string
         - name: deviceId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/unitsResponse'
-        '401':
+                $ref: "#/components/schemas/unitsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units:
     get:
       tags:
@@ -2549,37 +2549,37 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/unitsResponse'
-        '401':
+                $ref: "#/components/schemas/unitsResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}:
     get:
       tags:
@@ -2595,43 +2595,43 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/unitResponse'
-        '401':
+                $ref: "#/components/schemas/unitResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - unit
@@ -2646,7 +2646,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2654,41 +2654,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateUnitRequestBody'
+              $ref: "#/components/schemas/updateUnitRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}/controls/setpoints:
     put:
       tags:
@@ -2704,7 +2704,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2712,41 +2712,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unitControlSetpointsBody'
+              $ref: "#/components/schemas/unitControlSetpointsBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}/controls/modes:
     put:
       tags:
@@ -2762,7 +2762,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2770,41 +2770,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unitControlModesBody'
+              $ref: "#/components/schemas/unitControlModesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}/controls/fans:
     put:
       tags:
@@ -2820,7 +2820,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2828,41 +2828,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unitControlFansBody'
+              $ref: "#/components/schemas/unitControlFansBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}/controls/swings:
     put:
       tags:
@@ -2878,7 +2878,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2886,41 +2886,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unitControlSwingsBody'
+              $ref: "#/components/schemas/unitControlSwingsBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /units/{unitId}/controls/switches:
     put:
       tags:
@@ -2936,7 +2936,7 @@ paths:
             type: string
         - name: unitId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -2944,41 +2944,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/unitControlSwitchesBody'
+              $ref: "#/components/schemas/unitControlSwitchesBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /users:
     get:
       tags:
@@ -2994,31 +2994,31 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/usersResponse'
-        '401':
+                $ref: "#/components/schemas/usersResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '500':
+                $ref: "#/components/schemas/badResponse403"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /users/{userId}:
     get:
       tags:
@@ -3034,43 +3034,43 @@ paths:
             type: string
         - name: userId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userResponse'
-        '401':
+                $ref: "#/components/schemas/userResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     put:
       tags:
         - user
@@ -3085,7 +3085,7 @@ paths:
             type: string
         - name: userId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
@@ -3093,41 +3093,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateUserRequestBody'
+              $ref: "#/components/schemas/updateUserRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
     delete:
       tags:
         - user
@@ -3142,43 +3142,43 @@ paths:
             type: string
         - name: userId
           in: path
-          description: ''
+          description: ""
           required: true
           schema:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponse'
-        '401':
+                $ref: "#/components/schemas/okresponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '403':
+                $ref: "#/components/schemas/badResponse401"
+        "403":
           description: forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse403'
-        '404':
+                $ref: "#/components/schemas/badResponse403"
+        "404":
           description: not found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse404'
-        '500':
+                $ref: "#/components/schemas/badResponse404"
+        "500":
           description: server error
           headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /me:
     get:
       tags:
@@ -3194,24 +3194,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/userResponse'
-        '401':
+                $ref: "#/components/schemas/userResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /me/tree:
     get:
       tags:
@@ -3227,24 +3227,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/controlTreeResponse'
-        '401':
+                $ref: "#/components/schemas/controlTreeResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /services/types:
     get:
       tags:
@@ -3260,24 +3260,24 @@ paths:
             type: string
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/typesResponse'
-        '401':
+                $ref: "#/components/schemas/typesResponse"
+        "401":
           description: unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse401'
-        '500':
+                $ref: "#/components/schemas/badResponse401"
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
   /authenticate:
     post:
       tags:
@@ -3288,31 +3288,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/authenticateRequestBody'
+              $ref: "#/components/schemas/authenticateRequestBody"
         required: true
       deprecated: false
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/okresponseWithToken'
-        '400':
+                $ref: "#/components/schemas/okresponseWithToken"
+        "400":
           description: parameter error
-        '500':
+        "500":
           description: server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/badResponse500'
+                $ref: "#/components/schemas/badResponse500"
 components:
   requestBodies:
     createUserRequestBody:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/createUserRequestBody'
+            $ref: "#/components/schemas/createUserRequestBody"
       required: true
   schemas:
     okresponse:
@@ -3331,7 +3331,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/okresponseWithId_data'
+          $ref: "#/components/schemas/okresponseWithId_data"
       title: OK response with id
     okresponseWithToken:
       type: object
@@ -3340,7 +3340,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/okresponseWithToken_data'
+          $ref: "#/components/schemas/okresponseWithToken_data"
       title: OK response with token
     badResponse401:
       type: object
@@ -3401,7 +3401,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/customersResponse_data'
+          $ref: "#/components/schemas/customersResponse_data"
     customerResponse:
       type: object
       properties:
@@ -3409,7 +3409,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/customerResponseData'
+          $ref: "#/components/schemas/customerResponseData"
     customerResponseData:
       type: object
       properties:
@@ -3438,7 +3438,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/sitesResponse_data'
+          $ref: "#/components/schemas/sitesResponse_data"
     siteResponse:
       type: object
       properties:
@@ -3446,7 +3446,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/siteResponseData'
+          $ref: "#/components/schemas/siteResponseData"
     siteResponseData:
       type: object
       properties:
@@ -3503,7 +3503,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/devicesResponse_data'
+          $ref: "#/components/schemas/devicesResponse_data"
     deviceResponse:
       type: object
       properties:
@@ -3511,7 +3511,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/deviceResponseData'
+          $ref: "#/components/schemas/deviceResponseData"
     deviceResponseData:
       type: object
       properties:
@@ -3543,7 +3543,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/zonesResponse_data'
+          $ref: "#/components/schemas/zonesResponse_data"
     zoneResponse:
       type: object
       properties:
@@ -3551,7 +3551,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/zoneResponseData'
+          $ref: "#/components/schemas/zoneResponseData"
     zoneResponseData:
       type: object
       properties:
@@ -3580,7 +3580,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/systemsResponse_data'
+          $ref: "#/components/schemas/systemsResponse_data"
     systemResponse:
       type: object
       properties:
@@ -3588,7 +3588,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/systemResponseData'
+          $ref: "#/components/schemas/systemResponseData"
     systemResponseData:
       type: object
       properties:
@@ -3617,7 +3617,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/unitsResponse_data'
+          $ref: "#/components/schemas/unitsResponse_data"
     unitResponse:
       type: object
       properties:
@@ -3625,7 +3625,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/unitResponseData'
+          $ref: "#/components/schemas/unitResponseData"
     unitResponseData:
       type: object
       properties:
@@ -3664,7 +3664,7 @@ components:
         temperatureLimits:
           type: object
           properties:
-            "0": 
+            "0":
               type: array
               items:
                 type: integer
@@ -3678,15 +3678,15 @@ components:
                 type: integer
         brand:
           type: integer
-        activeSetpoint: 
+        activeSetpoint:
           type: integer
-        ambientTemperature: 
+        ambientTemperature:
           type: integer
-        activeOperationStatus: 
+        activeOperationStatus:
           type: integer
         activeOperationMode:
           type: integer
-        activeFanMode: 
+        activeFanMode:
           type: integer
         activeSwingMode:
           type: integer
@@ -3707,7 +3707,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/usersResponse_data'
+          $ref: "#/components/schemas/usersResponse_data"
     userResponse:
       type: object
       properties:
@@ -3715,7 +3715,7 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/userResponseData'
+          $ref: "#/components/schemas/userResponseData"
     userResponseData:
       type: object
       properties:
@@ -3746,34 +3746,34 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/typesResponseData'
+          $ref: "#/components/schemas/typesResponseData"
     typesResponseData:
       type: object
       properties:
         temperatureScale:
-          $ref: '#/components/schemas/typesResponseData_temperatureScale'
+          $ref: "#/components/schemas/typesResponseData_temperatureScale"
         operationStatuses:
-          $ref: '#/components/schemas/typesResponseData_operationStatuses'
+          $ref: "#/components/schemas/typesResponseData_operationStatuses"
         operationModes:
-          $ref: '#/components/schemas/typesResponseData_operationModes'
+          $ref: "#/components/schemas/typesResponseData_operationModes"
         fanModes:
-          $ref: '#/components/schemas/typesResponseData_fanModes'
+          $ref: "#/components/schemas/typesResponseData_fanModes"
         swingModes:
-          $ref: '#/components/schemas/typesResponseData_swingModes'
+          $ref: "#/components/schemas/typesResponseData_swingModes"
         weekDays:
-          $ref: '#/components/schemas/typesResponseData_weekDays'
+          $ref: "#/components/schemas/typesResponseData_weekDays"
         permissions:
-          $ref: '#/components/schemas/typesResponseData_permissions'
+          $ref: "#/components/schemas/typesResponseData_permissions"
         resources:
-          $ref: '#/components/schemas/typesResponseData_resources'
+          $ref: "#/components/schemas/typesResponseData_resources"
         roles:
-          $ref: '#/components/schemas/typesResponseData_roles'
+          $ref: "#/components/schemas/typesResponseData_roles"
         unitTypes:
-          $ref:  '#/components/schemas/typesResponseData_unitTypes'
+          $ref: "#/components/schemas/typesResponseData_unitTypes"
         hvacBrands:
-          $ref:  '#/components/schemas/typesResponseData_hvacBrands'
+          $ref: "#/components/schemas/typesResponseData_hvacBrands"
         deviceTypes:
-          $ref:  '#/components/schemas/typesResponseData_deviceTypes'
+          $ref: "#/components/schemas/typesResponseData_deviceTypes"
     controlTreeResponse:
       type: object
       properties:
@@ -3781,12 +3781,12 @@ components:
           type: boolean
           description: success status
         data:
-          $ref: '#/components/schemas/controlTreeResponseData'
+          $ref: "#/components/schemas/controlTreeResponseData"
     controlTreeResponseData:
       type: object
       properties:
         customers:
-          $ref: '#/components/schemas/controlTreeResponseData_customers'
+          $ref: "#/components/schemas/controlTreeResponseData_customers"
     createCustomerRequestBody:
       type: object
       required:
@@ -4065,7 +4065,7 @@ components:
     unitControlFansBody:
       type: object
       required:
-        - mode
+        - fanMode
       properties:
         mode:
           type: integer
@@ -4074,9 +4074,9 @@ components:
     unitControlModesBody:
       type: object
       required:
-        - mode
+        - operationMode
       properties:
-        mode:
+        operationMode:
           type: integer
           description: requested operation mode from the operation modes enumeration
       title: set unit operation mode
@@ -4087,12 +4087,15 @@ components:
       properties:
         operationStatus:
           type: integer
+          enum:
+            - 1
+            - 2
           description: requested operation status from the operation status enumeration
       title: set unit switch mode (operation status)
     unitControlSwingsBody:
       type: object
       required:
-        - mode
+        - swingMode
       properties:
         mode:
           type: integer
@@ -4167,45 +4170,45 @@ components:
       type: object
       properties:
         <customerId>:
-          $ref: '#/components/schemas/customerResponseData'
+          $ref: "#/components/schemas/customerResponseData"
       description: map of customers
     sitesResponse_data:
       type: object
       properties:
         <siteId>:
-          $ref: '#/components/schemas/siteResponseData'
+          $ref: "#/components/schemas/siteResponseData"
       description: map of sites
     devicesResponse_data:
       type: object
       additionalProperties: true
       properties:
         <deviceId>:
-          $ref: '#/components/schemas/deviceResponseData'
+          $ref: "#/components/schemas/deviceResponseData"
       description: dictionary of devices
     zonesResponse_data:
       type: object
       properties:
         <zoneId>:
-          $ref: '#/components/schemas/zoneResponseData'
+          $ref: "#/components/schemas/zoneResponseData"
       description: dictionary of zones
     systemsResponse_data:
       type: object
       properties:
         <systemId>:
-          $ref: '#/components/schemas/systemResponseData'
+          $ref: "#/components/schemas/systemResponseData"
       description: dictionary of systems
     unitsResponse_data:
       type: object
       additionalProperties: true
       properties:
         <unitId>:
-          $ref: '#/components/schemas/unitResponseData'
+          $ref: "#/components/schemas/unitResponseData"
       description: dictionary of units
     usersResponse_data:
       type: object
       properties:
         <userId>:
-          $ref: '#/components/schemas/userResponseData'
+          $ref: "#/components/schemas/userResponseData"
       description: dictionary of units
     typesResponseData_temperatureScale:
       type: object
@@ -4298,7 +4301,7 @@ components:
           value:
             type: integer
             description: hvac type id
-          'type':
+          "type":
             type: string
             description: Brand type
           name:
@@ -4326,7 +4329,7 @@ components:
             shortName:
               type: string
               description: device short name
-      description: map of type names used in device types    
+      description: map of type names used in device types
     controlTreeResponseData_customers_customer_id_sites_site_id:
       type: object
       properties:
@@ -4382,5 +4385,5 @@ components:
       type: object
       properties:
         customer id:
-          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id'
+          $ref: "#/components/schemas/controlTreeResponseData_customers_customer_id"
       description: dictionary of accessible customers

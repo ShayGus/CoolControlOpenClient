@@ -1,15 +1,20 @@
 import functools
-from pprint import pprint
-from signal import raise_signal
+import logging
+import threading
+from time import sleep
+import websocket
 from typing import Dict, Iterable, List, Union, cast
 
 import json
 from dataclasses import dataclass, field
 import marshmallow
 import marshmallow_dataclass
-import websocket
-import rel
-from client.models.unit_control_fans_body import UnitControlFansBody
+
+# import websockets
+from websocket import WebSocketConnectionClosedException
+from .client.api_client import ApiClient
+
+from cool_open_client.client.models.unit_control_fans_body import UnitControlFansBody
 from cool_open_client.client.api.me_api import MeApi
 from cool_open_client.client.models.user_response_data import UserResponseData
 
@@ -22,8 +27,11 @@ from cool_open_client.client.models.devices_response_data import DevicesResponse
 from cool_open_client.client import UnitControlApi, UnitControlSwitchesBody
 from cool_open_client.client.api.services_api import ServicesApi
 from cool_open_client.client.api.units_api import UnitsApi
+from cool_open_client.client.api.unit_api import UnitApi
 from cool_open_client.client.models.types_response_data import TypesResponseData
 from cool_open_client.client.models.units_response import UnitsResponse
+from cool_open_client.client.models.unit_response import UnitResponse
+from cool_open_client.client.models.unit_response_data import UnitResponseData
 from cool_open_client.client.rest import ApiException
 from cool_open_client.client.api.authentication_api import AuthenticationApi
 from cool_open_client.client.models.unit_control_modes_body import UnitControlModesBody
@@ -34,6 +42,12 @@ from cool_open_client.utils.dictionaries import DictTypes
 from cool_open_client.utils.singleton import Singleton
 from cool_open_client.utils.updatable import Updatable
 from cool_open_client.utils.dict_to_model import dict_to_model
+
+import sys
+
+_LOGGER = logging.getLogger(__package__)
+_LOGGER.addHandler(logging.StreamHandler(sys.stdout))
+_LOGGER.setLevel(logging.DEBUG)
 
 ###
 # {'data': {'ambientTemperature': 29,
@@ -65,7 +79,7 @@ class UnitUpdateMessage:
     operation_status: Union[str, int] = field(metadata={"required": True, "data_key": "operationStatus"})
     setpoint: int = field(metadata={"required": True, "data_key": "setpoint"})
     swing: Union[str, int] = field(metadata={"required": True, "data_key": "swing"})
-    temperature_scale: int = field(metadata={"required": True, "data_key": "temperatureScale"})
+    temperature_scale: int = field(metadata={"required": False, "data_key": "temperatureScale"}, default = 1)
 
 
 UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
@@ -98,8 +112,8 @@ class CoolAutomationClient(Singleton):
     SOCKET_URI = "wss://api.coolremote.net/api/v1/"
 
     @classmethod
-    async def create(cls, token):
-        self = cls()
+    async def create(cls, token, logger=None):
+        self = cls(logger=logger)
         if token is None:
             raise ValueError("Toke cannot be None")
         self.token = token
@@ -126,7 +140,7 @@ class CoolAutomationClient(Singleton):
                 return "Unauthorized"
         return result.data.token
 
-    def __init__(self):
+    def __init__(self, logger: logging.Logger = None) -> None:
         self.token = None
         self._dictionaries: TypesResponseData = None
         self.temperature_scale = None
@@ -138,9 +152,12 @@ class CoolAutomationClient(Singleton):
         # self.brands = DictTypes(self._dictionaries.hvac_brands)
         self.socket = None
         self._registered_units: Dict[str, Updatable] = {}
+        self.api_client = ApiClient()
+        self.logger = logger if logger is not None else _LOGGER
 
+    @with_exception
     async def get_me(self) -> UserResponseData:
-        api = MeApi()
+        api = MeApi(api_client=self.api_client)
         response = await api.me_get(self.token)
         return response.data
 
@@ -152,7 +169,7 @@ class CoolAutomationClient(Singleton):
         Returns:
             TypesResponseData: Dictionary from api service
         """
-        api = ServicesApi()
+        api = ServicesApi(self.api_client)
         response = await api.services_types_get(self.token)
         return response.data
 
@@ -162,14 +179,34 @@ class CoolAutomationClient(Singleton):
         Retrieves the controllable units from the web api
         """
         # pp = pprint.PrettyPrinter(indent=4).pprint
-        api = UnitsApi()
+        api = UnitsApi(api_client=self.api_client)
         units: UnitsResponse = await api.units_get(self.token)
 
         return units
 
     @with_exception
+    async def get_updated_controllable_unit(self, unit_id: str) -> UnitUpdateMessage:
+        """
+        Retrieves the controllable units from the web api
+        """
+        api = UnitApi(api_client=self.api_client)
+        unit: UnitResponseData = (await api.units_unit_id_get(self.token, unit_id)).data
+
+        message = UnitUpdateMessage(
+            ambient_temperature=unit.ambient_temperature,
+            fan_mode=unit.active_fan_mode,
+            operation_mode=unit.active_operation_mode,
+            setpoint=unit.active_setpoint,
+            swing=unit.active_swing_mode,
+            operation_status=unit.active_operation_status,
+            filter=unit.filter,
+            unit_id=unit.id,
+        )
+        return self._transform_message(message)
+
+    @with_exception
     async def get_devices(self) -> List[Union[DeviceResponseData, None]]:
-        api = DevicesApi()
+        api = DevicesApi(api_client=self.api_client)
         devices: DevicesResponse = await api.devices_get(self.token)
         data: DevicesResponseData = devices.data
         devices = [
@@ -188,7 +225,7 @@ class CoolAutomationClient(Singleton):
             unit_id (str): Unit ID
             status (str): Status
         """
-        api_instance = UnitControlApi()
+        api_instance = UnitControlApi(api_client=self.api_client)
         status = self.operation_statuses.get_inverse(status)
         body = UnitControlSwitchesBody(status)
 
@@ -206,7 +243,7 @@ class CoolAutomationClient(Singleton):
             unit_id (str): The ID of the unit
             mode (str): The mode to set the unit to
         """
-        api_instance = UnitControlApi()
+        api_instance = UnitControlApi(api_client=self.api_client)
         status = self.operation_modes.get_inverse(mode)
         body = UnitControlModesBody(status)
 
@@ -222,7 +259,7 @@ class CoolAutomationClient(Singleton):
             unit_id (str): Unit ID
             mode (str): The swing mode to set on the device
         """
-        api_instance = UnitControlApi()
+        api_instance = UnitControlApi(api_client=self.api_client)
         mode = self.swing_modes.get_inverse(mode)
         body = UnitControlSwingsBody(mode)
 
@@ -238,7 +275,7 @@ class CoolAutomationClient(Singleton):
             unit_id (str): Unit ID
             mode (str): The fan mode to set on the device
         """
-        api_instance = UnitControlApi()
+        api_instance = UnitControlApi(api_client=self.api_client)
         mode = self.fan_modes.get_inverse(mode)
         body = UnitControlFansBody(mode)
 
@@ -254,7 +291,7 @@ class CoolAutomationClient(Singleton):
             unit_id (str): The identifier of the unit
             temp (int): The desired setpoint temperature
         """
-        api_instance = UnitControlApi()
+        api_instance = UnitControlApi(self.api_client)
         body = UnitControlSetpointsBody(temp)
 
         api_response = await api_instance.units_unit_id_controls_setpoints_put(
@@ -270,10 +307,10 @@ class CoolAutomationClient(Singleton):
         self._registered_units[unit.get_updatable_id()] = unit
 
     def on_open_socket(self, ws):
-        pass
+        ws.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
 
-    def on_close_socket(self, ws, message):
-        pass
+    def on_close_socket(self, ws, message: str):
+        raise WebSocketConnectionClosedException()
 
     def on_message_socket(self, ws, message):
         """Handle message received from socket
@@ -282,33 +319,55 @@ class CoolAutomationClient(Singleton):
             ws (_type_): WebSocket instance
             message (_type_): Received message
         """
-        loaded_json = json.loads(message)
-        pprint(loaded_json)
-        self._handle_ping_pong(ws, loaded_json)
-        self._handle_ws_message(loaded_json)
+        try:
+            loaded_json = json.loads(message)
+            _LOGGER.debug(f"Message from socket: {message}")
+            self._handle_ping_pong(ws, loaded_json)
+            self._handle_ws_message(loaded_json)
+        except Exception as error:
+            self.logger.error(error)
+            raise error
 
     def _handle_ping_pong(self, ws, loaded_json):
+        self.logger.debug(f"Entered Ping Pong Handler %s" % loaded_json.get("type", "Not Ping Pong"))
         if loaded_json.get("type", None) == "ping":
+            self.logger.debug("...Ping Pong...")
             ws.send('{"type":"pong"}')
+        self.logger.debug("Exiting Ping Pong Handler")
 
     def _handle_ws_message(self, loaded_json):
+        self.logger.debug("Entered Message Handler")
         data = loaded_json.get("data", None)
         if data is not None:
-            pprint(data)
+            self.logger.debug(f"Received data from websocket: %s" % str(data))
             update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(data, unknown=marshmallow.EXCLUDE)
             if update_message is not None:
                 unit = self._registered_units.get(update_message.unit_id)
                 update_message = self._transform_message(update_message)
-                unit.notify(update_message)
+                if unit is not None:
+                    unit.notify(update_message)
+        self.logger.debug("Exiting Message Handler")
 
-    def on_error_socket(self, ws, message):
-        print(message)
+    def on_error_socket(self, ws: websocket.WebSocketApp, message: str):
+        self.logger.error(message)
+        raise WebSocketConnectionClosedException()
 
     def open_socket(self):
         """
         Open a websocket to the CoolAutomationsServer
         """
+        self.logger.debug("Entered open socket")
         try:
+            # async with websockets.connect(self.SOCKET_URI) as websocket:
+            #     self.logger.debug("Sent connection request to server")
+            #     await websocket.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
+            #     response = await websocket.recv()
+            #     loaded_json = json.loads(response)
+            #     await self._handle_ping_pong(websocket, loaded_json)
+            #     # self.logger.debug(f"Received auth auth done: {response}")
+            #     await self._ws_handler(websocket)
+            #     # await asyncio.sleep(0)
+
             # websocket.enableTrace(True)
             self.socket = websocket.WebSocketApp(
                 self.SOCKET_URI,
@@ -317,11 +376,31 @@ class CoolAutomationClient(Singleton):
                 on_error=self.on_error_socket,
                 on_close=self.on_close_socket,
             )
+            ws_thread = threading.Thread(target=self.socket.run_forever)
+            ws_thread.name = "CoolAutomationClientWebsocketClient"
+            ws_thread.daemon = True
+            ws_thread.start()
 
-            self.socket.run_forever(dispatcher=rel)  # Set dispatcher to automatic reconnection
-            self.socket.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
+            # self.socket.run_forever(dispatcher=rel)  # Set dispatcher to automatic reconnection
+            # task = ws.init(self.SOCKET_URI, self.on_message_socket)
+            return ws_thread
         except Exception as socket_exception:
-            print(f"Exception when calling UnitControlApi->units_unit_id_controls_switches_put: {socket_exception}\n")
+            self.logger.error(f"Exception when calling open socket: {socket_exception}\n")
+
+    async def _ws_handler(self, websocket):
+        self.logger.debug("Entered websocket handler")
+        async for message in websocket:
+            try:
+                self.logger.debug(f"Data received from socket: %s" % message)
+                loaded_json = json.loads(message)
+                await self._handle_ping_pong(websocket, loaded_json)
+                await self._handle_ws_message(loaded_json)
+            except websockets.ConnectionClosedOK:
+                self.logger.debug("Connection closed")
+                break
+            except Exception as error:
+                self.logger.error("Unhandled error occured in _ws_handler method: %s", error)
+                break
 
     def _transform_message(self, message: UnitUpdateMessage) -> UnitUpdateMessage:
         message.fan_mode = self.fan_modes.get(message.fan_mode)

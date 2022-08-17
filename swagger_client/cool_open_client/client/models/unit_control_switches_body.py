@@ -63,6 +63,12 @@ class UnitControlSwitchesBody(object):
         """
         if operation_status is None:
             raise ValueError("Invalid value for `operation_status`, must not be `None`")  # noqa: E501
+        allowed_values = [1, 2]  # noqa: E501
+        if operation_status not in allowed_values:
+            raise ValueError(
+                "Invalid value for `operation_status` ({0}), must be one of {1}"  # noqa: E501
+                .format(operation_status, allowed_values)
+            )
 
         self._operation_status = operation_status
 

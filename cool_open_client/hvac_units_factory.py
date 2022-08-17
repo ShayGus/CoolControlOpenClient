@@ -1,3 +1,4 @@
+from http import client
 from typing import List
 from cool_open_client.cool_automation_client import CoolAutomationClient
 
@@ -13,8 +14,9 @@ class HVACUnitsFactory:
         client = await CoolAutomationClient.create(token)
         return cls(client)
 
-    def __init__(self, client=None) -> None:
+    def __init__(self, client=None, event_loop=None) -> None:
         self._client = client
+        self._event_loop = event_loop
 
     async def generate_units_from_api(self) -> List[HVACUnit]:
         units = await self._client.get_controllable_units()
@@ -41,6 +43,7 @@ class HVACUnitsFactory:
                     supported_swing_modes=[self._client.swing_modes.get(mode) for mode in unit["supportedSwingModes"]],
                     is_half_degree=unit["isHalfCDegreeEnabled"],
                     client=self._client,
+                    event_loop=self._event_loop,
                 )
                 hvac_units.append(hvac_unit)
         return hvac_units

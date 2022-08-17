@@ -27,6 +27,11 @@ class CoolAutomationClientTest(unittest.TestCase):
         response = self.loop.run_until_complete(self.client.get_me())
         print(response)
 
+    def test_set_hvac_mode(self):
+        mode = "COOL"
+        unit_id = "61f8e55b60bf483d1e5aeef6"
+        response = self.loop.run_until_complete(self.client.set_operation_mode(mode= mode, unit_id=unit_id))
+        print(response)
 
 if __name__ == "__main__":
     unittest.main()

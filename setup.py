@@ -39,5 +39,6 @@ setup(
         "marshmallow-dataclass >= 8.5.8",
         "typeguard >= 2.13.3",
         "aiohttp >= 3.8.1",
+        "websockets >= 10.3",
     ],
 )

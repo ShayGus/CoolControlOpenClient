@@ -1,9 +1,22 @@
+from abc import ABC, abstractmethod
 import asyncio
+from asyncio.log import logger
+from datetime import datetime
 from functools import cached_property
-from typing import Callable, List
+from logging import Logger
+import logging
+from typing import Callable, Coroutine, List, Union
 
 from cool_open_client.utils.updatable import Updatable
 from cool_open_client.cool_automation_client import CoolAutomationClient, UnitUpdateMessage
+
+LOGGER = logging.getLogger(__package__)
+
+
+class UnitCallback(ABC):
+    @abstractmethod
+    def unit_update_callback(self):
+        pass
 
 
 class HVACUnit(Updatable):
@@ -26,7 +39,8 @@ class HVACUnit(Updatable):
         supported_swing_modes: List[str],
         is_half_degree: bool,
         client: CoolAutomationClient,
-        callbacks: Callable = None
+        callbacks: List[UnitCallback] = None,
+        event_loop: asyncio.AbstractEventLoop = None,
     ) -> None:
         self._id = id
         self._change_filter_status: bool = False
@@ -45,10 +59,13 @@ class HVACUnit(Updatable):
         self._is_half_degree: bool = is_half_degree
         self._client = client
         self._client.register_for_updates(self)
-        self._callbacks = callbacks if callbacks is not None else []
+        self._callbacks: List[UnitCallback] = callbacks if callbacks is not None else []
+        self.logger = client.logger
+        self.event_loop = event_loop
+        self._update_pending: bool = True
 
-    def regiter_callback(self, callback: Callable):
-        self._callbacks.append(callback)
+    def regiter_callback(self, unit_callback: UnitCallback) -> None:
+        self._callbacks.append(unit_callback)
 
     async def set_operation_status(self, status: str):
         """Set the operation status of the HVAC unit
@@ -93,18 +110,36 @@ class HVACUnit(Updatable):
     def notify(self, message: UnitUpdateMessage):
         self._update_unit(message)
 
-    def _update_unit(self, message: UnitUpdateMessage):
+    def _update_unit(self, message: UnitUpdateMessage, with_callback: bool = True):
         self._active_operation_mode = message.operation_mode
         self._active_fan_mode = message.fan_mode
         self._active_operation_status = message.operation_status
         self._active_setpoint = message.setpoint
         self._active_swing_mode = message.swing
-        for callback in self._callbacks:
-            if not asyncio.iscoroutinefunction(callback):
-                callback()
-            else:
-                asyncio.get_event_loop().run_until_complete(callback)
+        self.logger.debug(f"Unit updated %s" % self.name)
+        self._update_pending = True
+        if with_callback:
+            for callback in self._callbacks:
+                if not asyncio.iscoroutinefunction(callback.unit_update_callback):
+                    callback.unit_update_callback()
+                else:
+                    self.event_loop.run_until_complete(callback.unit_update_callback())
 
+    async def refresh(self) -> None:
+        if not self._update_pending:
+            units = await self._client.get_updated_controllable_unit(self._id)
+            self._update_unit(units, with_callback=False)
+
+    def reset_update(self) -> None:
+        self._update_pending = False
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def id(self) -> str:
+        return self._id
 
     @property
     def is_half_degree(self) -> bool:

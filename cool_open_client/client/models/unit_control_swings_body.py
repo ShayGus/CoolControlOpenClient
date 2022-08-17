@@ -39,7 +39,8 @@ class UnitControlSwingsBody(object):
         """UnitControlSwingsBody - a model defined in Swagger"""  # noqa: E501
         self._mode = None
         self.discriminator = None
-        self.mode = mode
+        if mode is not None:
+            self.mode = mode
 
     @property
     def mode(self):
@@ -61,8 +62,6 @@ class UnitControlSwingsBody(object):
         :param mode: The mode of this UnitControlSwingsBody.  # noqa: E501
         :type: int
         """
-        if mode is None:
-            raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
 
         self._mode = mode
 

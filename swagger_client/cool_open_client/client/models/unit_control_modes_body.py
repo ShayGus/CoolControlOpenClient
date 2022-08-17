@@ -28,43 +28,43 @@ class UnitControlModesBody(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'mode': 'int'
+        'operation_mode': 'int'
     }
 
     attribute_map = {
-        'mode': 'mode'
+        'operation_mode': 'operationMode'
     }
 
-    def __init__(self, mode=None):  # noqa: E501
+    def __init__(self, operation_mode=None):  # noqa: E501
         """UnitControlModesBody - a model defined in Swagger"""  # noqa: E501
-        self._mode = None
+        self._operation_mode = None
         self.discriminator = None
-        self.mode = mode
+        self.operation_mode = operation_mode
 
     @property
-    def mode(self):
-        """Gets the mode of this UnitControlModesBody.  # noqa: E501
+    def operation_mode(self):
+        """Gets the operation_mode of this UnitControlModesBody.  # noqa: E501
 
         requested operation mode from the operation modes enumeration  # noqa: E501
 
-        :return: The mode of this UnitControlModesBody.  # noqa: E501
+        :return: The operation_mode of this UnitControlModesBody.  # noqa: E501
         :rtype: int
         """
-        return self._mode
+        return self._operation_mode
 
-    @mode.setter
-    def mode(self, mode):
-        """Sets the mode of this UnitControlModesBody.
+    @operation_mode.setter
+    def operation_mode(self, operation_mode):
+        """Sets the operation_mode of this UnitControlModesBody.
 
         requested operation mode from the operation modes enumeration  # noqa: E501
 
-        :param mode: The mode of this UnitControlModesBody.  # noqa: E501
+        :param operation_mode: The operation_mode of this UnitControlModesBody.  # noqa: E501
         :type: int
         """
-        if mode is None:
-            raise ValueError("Invalid value for `mode`, must not be `None`")  # noqa: E501
+        if operation_mode is None:
+            raise ValueError("Invalid value for `operation_mode`, must not be `None`")  # noqa: E501
 
-        self._mode = mode
+        self._operation_mode = operation_mode
 
     def to_dict(self):
         """Returns the model properties as a dict"""
