@@ -1,14 +1,10 @@
 from abc import ABC, abstractmethod
 import asyncio
-from asyncio.log import logger
-from datetime import datetime
 from functools import cached_property
-from logging import Logger
 import logging
-from typing import Callable, Coroutine, List, Union
 
-from cool_open_client.utils.updatable import Updatable
-from cool_open_client.cool_automation_client import CoolAutomationClient, UnitUpdateMessage
+from .utils.updatable import Updatable
+from .cool_automation_client import CoolAutomationClient, UnitUpdateMessage
 
 LOGGER = logging.getLogger(__package__)
 
@@ -32,14 +28,14 @@ class HVACUnit(Updatable):
         ambient_temperature: float,
         active_fan_mode: int,
         active_swing_mode: int,
-        temerature_range: List[int],
-        supported_operation_statuses: List[str],
-        supported_operation_modes: List[str],
-        supported_fan_modes: List[str],
-        supported_swing_modes: List[str],
+        temerature_range: list[int],
+        supported_operation_statuses: list[str],
+        supported_operation_modes: list[str],
+        supported_fan_modes: list[str],
+        supported_swing_modes: list[str],
         is_half_degree: bool,
         client: CoolAutomationClient,
-        callbacks: List[UnitCallback] = None,
+        callbacks: list[UnitCallback] = None,
         event_loop: asyncio.AbstractEventLoop = None,
     ) -> None:
         self._id = id
@@ -52,14 +48,14 @@ class HVACUnit(Updatable):
         self._active_swing_mode: int = active_swing_mode
         self._name: str = name
         self._temperature_range = temerature_range
-        self._supported_operation_statuses: List[str] = supported_operation_statuses
-        self._supported_operation_modes: List[str] = supported_operation_modes
-        self._supported_fan_modes: List[str] = supported_fan_modes
-        self._supported_swing_modes: List[str] = supported_swing_modes
+        self._supported_operation_statuses: list[str] = supported_operation_statuses
+        self._supported_operation_modes: list[str] = supported_operation_modes
+        self._supported_fan_modes: list[str] = supported_fan_modes
+        self._supported_swing_modes: list[str] = supported_swing_modes
         self._is_half_degree: bool = is_half_degree
         self._client = client
         self._client.register_for_updates(self)
-        self._callbacks: List[UnitCallback] = callbacks if callbacks is not None else []
+        self._callbacks: list[UnitCallback] = callbacks if callbacks is not None else []
         self.logger = client.logger
         self.event_loop = event_loop
         self._update_pending: bool = True
@@ -116,7 +112,7 @@ class HVACUnit(Updatable):
         self._active_operation_status = message.operation_status
         self._active_setpoint = message.setpoint
         self._active_swing_mode = message.swing
-        self.logger.debug(f"Unit updated %s" % self.name)
+        self.logger.debug("Unit updated %s", self.name)
         self._update_pending = True
         if with_callback:
             for callback in self._callbacks:
@@ -162,7 +158,7 @@ class HVACUnit(Updatable):
         return self._active_setpoint
 
     @property
-    def sing_mode(self):
+    def swing_mode(self):
         return self._active_swing_mode
 
     def get_updatable_id(self):
@@ -181,16 +177,19 @@ class HVACUnit(Updatable):
         return bool(self._supported_swing_modes)
 
     @cached_property
-    def operation_modes(self) -> List[str]:
+    def operation_modes(self) -> list[str]:
         return self._supported_operation_modes.copy()
 
     @cached_property
-    def fan_modes(self) -> List[str]:
+    def fan_modes(self) -> list[str]:
         return self._supported_fan_modes.copy()
 
-    @cached_property
-    def swing_modes(self) -> List[str]:
-        return self._supported_swing_modes.copy()
+    @property
+    def swing_modes(self) -> list[str]:
+        if self.is_on:
+            return self._supported_swing_modes.copy()
+        else:
+            return ["off"]
 
     @property
     def ambient_temperature(self) -> float:

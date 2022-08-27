@@ -1,8 +1,7 @@
 from http import client
 from typing import List
-from cool_open_client.cool_automation_client import CoolAutomationClient
-
-from cool_open_client.unit import HVACUnit
+from .cool_automation_client import CoolAutomationClient
+from .unit import HVACUnit
 
 
 class HVACUnitsFactory:
@@ -47,11 +46,3 @@ class HVACUnitsFactory:
                 )
                 hvac_units.append(hvac_unit)
         return hvac_units
-
-
-# factory = HVACUnitsFactory()
-# units = factory.generate_units_from_api()
-# factory._client.open_socket()
-# rel.signal(2, rel.abort)  # Keyboard Interrupt
-# rel.dispatch()
-# units[0].set_operation_status('off')

@@ -28,42 +28,43 @@ class UnitControlFansBody(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'mode': 'int'
+        'fan_mode': 'int'
     }
 
     attribute_map = {
-        'mode': 'mode'
+        'fan_mode': 'fanMode'
     }
 
-    def __init__(self, mode=None):  # noqa: E501
+    def __init__(self, fan_mode=None):  # noqa: E501
         """UnitControlFansBody - a model defined in Swagger"""  # noqa: E501
-        self._mode = None
+        self._fan_mode = None
         self.discriminator = None
-        if mode is not None:
-            self.mode = mode
+        self.fan_mode = fan_mode
 
     @property
-    def mode(self):
-        """Gets the mode of this UnitControlFansBody.  # noqa: E501
+    def fan_mode(self):
+        """Gets the fan_mode of this UnitControlFansBody.  # noqa: E501
 
         requested fan mode from the fan modes enumeration  # noqa: E501
 
-        :return: The mode of this UnitControlFansBody.  # noqa: E501
+        :return: The fan_mode of this UnitControlFansBody.  # noqa: E501
         :rtype: int
         """
-        return self._mode
+        return self._fan_mode
 
-    @mode.setter
-    def mode(self, mode):
-        """Sets the mode of this UnitControlFansBody.
+    @fan_mode.setter
+    def fan_mode(self, fan_mode):
+        """Sets the fan_mode of this UnitControlFansBody.
 
         requested fan mode from the fan modes enumeration  # noqa: E501
 
-        :param mode: The mode of this UnitControlFansBody.  # noqa: E501
+        :param fan_mode: The fan_mode of this UnitControlFansBody.  # noqa: E501
         :type: int
         """
+        if fan_mode is None:
+            raise ValueError("Invalid value for `fan_mode`, must not be `None`")  # noqa: E501
 
-        self._mode = mode
+        self._fan_mode = fan_mode
 
     def to_dict(self):
         """Returns the model properties as a dict"""

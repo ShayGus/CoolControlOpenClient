@@ -4067,7 +4067,7 @@ components:
       required:
         - fanMode
       properties:
-        mode:
+        fanMode:
           type: integer
           description: requested fan mode from the fan modes enumeration
       title: set unit fan mode
@@ -4097,7 +4097,7 @@ components:
       required:
         - swingMode
       properties:
-        mode:
+        swingMode:
           type: integer
           description: requested operation status from the swing mode enumeration
       title: set unit swing mode (louver)

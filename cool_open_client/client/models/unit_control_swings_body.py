@@ -28,42 +28,43 @@ class UnitControlSwingsBody(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'mode': 'int'
+        'swing_mode': 'int'
     }
 
     attribute_map = {
-        'mode': 'mode'
+        'swing_mode': 'swingMode'
     }
 
-    def __init__(self, mode=None):  # noqa: E501
+    def __init__(self, swing_mode=None):  # noqa: E501
         """UnitControlSwingsBody - a model defined in Swagger"""  # noqa: E501
-        self._mode = None
+        self._swing_mode = None
         self.discriminator = None
-        if mode is not None:
-            self.mode = mode
+        self.swing_mode = swing_mode
 
     @property
-    def mode(self):
-        """Gets the mode of this UnitControlSwingsBody.  # noqa: E501
+    def swing_mode(self):
+        """Gets the swing_mode of this UnitControlSwingsBody.  # noqa: E501
 
         requested operation status from the swing mode enumeration  # noqa: E501
 
-        :return: The mode of this UnitControlSwingsBody.  # noqa: E501
+        :return: The swing_mode of this UnitControlSwingsBody.  # noqa: E501
         :rtype: int
         """
-        return self._mode
+        return self._swing_mode
 
-    @mode.setter
-    def mode(self, mode):
-        """Sets the mode of this UnitControlSwingsBody.
+    @swing_mode.setter
+    def swing_mode(self, swing_mode):
+        """Sets the swing_mode of this UnitControlSwingsBody.
 
         requested operation status from the swing mode enumeration  # noqa: E501
 
-        :param mode: The mode of this UnitControlSwingsBody.  # noqa: E501
+        :param swing_mode: The swing_mode of this UnitControlSwingsBody.  # noqa: E501
         :type: int
         """
+        if swing_mode is None:
+            raise ValueError("Invalid value for `swing_mode`, must not be `None`")  # noqa: E501
 
-        self._mode = mode
+        self._swing_mode = swing_mode
 
     def to_dict(self):
         """Returns the model properties as a dict"""
