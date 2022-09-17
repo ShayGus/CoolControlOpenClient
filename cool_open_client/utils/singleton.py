@@ -17,11 +17,6 @@ class SingletonMeta(type):
             cls._instances[cls] = instance
         return cls._instances[cls]
 
+
 class Singleton(metaclass=SingletonMeta):
     pass
-    # def __new__(cls, *args, **kwargs):
-    #     """creates a singleton object, if it is not created,
-    #     or else returns the previous singleton object"""
-    #     if not hasattr(cls, "instance"):
-    #         cls.instance = super(Singleton, cls).__new__(cls, *args, **kwargs)
-    #     return cls.instance

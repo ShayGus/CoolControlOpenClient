@@ -1,4 +1,5 @@
 import functools
+import gc
 import logging
 import threading
 import time
@@ -9,14 +10,11 @@ import marshmallow_dataclass
 import sys
 
 from typing import Iterable, Union, cast
+from threading import Thread
 
 from dataclasses import dataclass, field
 
-from websocket import (
-    WebSocketConnectionClosedException,
-    WebSocketException,
-    WebSocketConnectionClosedException
-)
+from websocket import WebSocketConnectionClosedException, WebSocketException, WebSocketConnectionClosedException
 from .client.api_client import ApiClient
 
 from .client.models.unit_control_fans_body import UnitControlFansBody
@@ -48,12 +46,12 @@ from .utils.updatable import Updatable
 from .utils.dict_to_model import dict_to_model
 
 
-
 _LOGGER = logging.getLogger(__package__)
 _LOGGER.addHandler(logging.StreamHandler(sys.stdout))
 _LOGGER.setLevel(logging.DEBUG)
 
 ###
+# Data Sample
 # {'data': {'ambientTemperature': 29,
 #           'deviceId': '61bb087a212f1c7c42b9e76a',
 #           'fan': 3,
@@ -107,6 +105,31 @@ def with_exception(function):
     return wrapper
 
 
+class WebSocketThread(Thread):
+    def __init__(self, websocket: websocket.WebSocketApp):
+        threading.Thread.__init__(self)
+        self.name = "CoolAutomationClientWebsocketClient"
+        self.setDaemon(True)
+        self.websocket = websocket
+        self.close_flag = False
+
+    def run(self):
+        self.close_flag = False
+        while self.close:
+            try:
+                self.websocket.run_forever()
+
+            except WebSocketException as socket_exception:
+                gc.collect()
+                self.logger.error("Exception when calling open socket: %s", socket_exception)
+
+            time.sleep(10)
+
+    def close(self):
+        self.close_flag = True
+        self.websocket.close()
+
+
 class CoolAutomationClient(Singleton):
     """
     The coolautomation_client for CoolAutomationCloud service
@@ -152,12 +175,11 @@ class CoolAutomationClient(Singleton):
         self.operation_modes = None
         self.fan_modes = None
         self.swing_modes = None
-        # self.device_types = DictTypes(self._dictionaries.device_types)
-        # self.brands = DictTypes(self._dictionaries.hvac_brands)
         self.socket = None
         self._registered_units: dict[str, Updatable] = {}
         self.api_client = ApiClient()
         self.logger = logger if logger is not None else _LOGGER
+        self.ws_thread: Thread = None
 
     @with_exception
     async def get_me(self) -> UserResponseData:
@@ -214,7 +236,7 @@ class CoolAutomationClient(Singleton):
 
         Returns:
             list[Union[DeviceResponseData, None]]: _description_
-        """        
+        """
         api = DevicesApi(api_client=self.api_client)
         devices: DevicesResponse = await api.devices_get(self.token)
         data: DevicesResponseData = devices.data
@@ -326,9 +348,7 @@ class CoolAutomationClient(Singleton):
             ws (websocket.WebSocketApp): active websocket
             message (str): message received from socket
         """
-        self.logger.warning("Socket closed, retrying.....")
-        time.sleep(10)
-        self.open_socket()
+        self.logger.warning("Cool open client socket closed...")
 
     def on_message_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
         """Callback to handle message received from socket
@@ -357,7 +377,7 @@ class CoolAutomationClient(Singleton):
         Args:
             ws (websocket.WebSocketApp): active websocket
             loaded_json (dict): dictionary with data loaded from the websocket message
-        """    
+        """
         self.logger.debug("Entered Ping Pong Handler %s", loaded_json.get("type", "Not Ping Pong"))
         if loaded_json.get("type", None) == "ping":
             self.logger.debug("...Ping Pong...")
@@ -370,7 +390,7 @@ class CoolAutomationClient(Singleton):
 
         Args:
             loaded_json (dict): dict baring data loaded from message json
-        """        
+        """
         self.logger.debug("Entered Message Handler")
         data = loaded_json.get("data", None)
         if data is not None:
@@ -383,7 +403,7 @@ class CoolAutomationClient(Singleton):
                     unit.notify(update_message)
         self.logger.debug("Exiting Message Handler")
 
-    def on_error_socket(self, ws: websocket.WebSocketApp, message: str):
+    def on_error_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
         """Handle error from the websocket
 
         Args:
@@ -392,15 +412,19 @@ class CoolAutomationClient(Singleton):
 
         Raises:
             WebSocketConnectionClosedException: Propagates received error
-        """        
+        """
         self.logger.error(message)
         raise WebSocketConnectionClosedException()
 
-    def open_socket(self):
+    def open_socket(self) -> None:
         """
         Open a websocket to the CoolAutomationsServer
         """
         self.logger.debug("Entered open socket")
+
+        if self.socket is not None and self.socket.sock.connected:
+            self.socket.close()
+
         try:
             self.socket = websocket.WebSocketApp(
                 self.SOCKET_URI,
@@ -409,11 +433,8 @@ class CoolAutomationClient(Singleton):
                 on_error=self.on_error_socket,
                 on_close=self.on_close_socket,
             )
-            ws_thread = threading.Thread(target=self.socket.run_forever)
-            ws_thread.name = "CoolAutomationClientWebsocketClient"
-            ws_thread.daemon = True
-            ws_thread.start()
-            return ws_thread
+            self.ws_thread = WebSocketThread(self.socket)
+            self.ws_thread.start()
 
         except WebSocketException as socket_exception:
             self.logger.error("Exception when calling open socket: %s", socket_exception)
@@ -426,7 +447,7 @@ class CoolAutomationClient(Singleton):
 
         Returns:
             UnitUpdateMessage: update message object with string type values
-        """        
+        """
         message.fan_mode = self.fan_modes.get(message.fan_mode)
         message.swing = self.swing_modes.get(message.swing)
         message.operation_mode = self.operation_modes.get(message.operation_mode)
