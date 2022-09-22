@@ -3,13 +3,9 @@ from setuptools import setup, find_packages
 
 path_to_client = str(pathlib.Path(__file__).parent.absolute())
 
-# packages = find_packages()
-# packages.extend(find_packages("cool_open_client/client"))
-# print(packages)
-
 setup(
     name="cool-open-client",
-    version="0.0.4",
+    version="0.0.6",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",
