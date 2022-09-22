@@ -14,7 +14,11 @@ from threading import Thread
 
 from dataclasses import dataclass, field
 
-from websocket import WebSocketConnectionClosedException, WebSocketException, WebSocketConnectionClosedException
+from websocket import (
+    WebSocketConnectionClosedException,
+    WebSocketException,
+    WebSocketConnectionClosedException,
+)
 from .client.api_client import ApiClient
 
 from .client.models.unit_control_fans_body import UnitControlFansBody
@@ -73,15 +77,23 @@ _LOGGER.setLevel(logging.DEBUG)
 class UnitUpdateMessage:
     """Data class representing the update message received from the server"""
 
-    ambient_temperature: int = field(metadata={"required": False, "data_key": "ambientTemperature"})
+    ambient_temperature: int = field(
+        metadata={"required": False, "data_key": "ambientTemperature"}
+    )
     unit_id: str = field(metadata={"required": True, "data_key": "unitId"})
     fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
     filter: bool = field(metadata={"required": False, "data_key": "filter"})
-    operation_mode: Union[str, int] = field(metadata={"required": True, "data_key": "operationMode"})
-    operation_status: Union[str, int] = field(metadata={"required": True, "data_key": "operationStatus"})
+    operation_mode: Union[str, int] = field(
+        metadata={"required": True, "data_key": "operationMode"}
+    )
+    operation_status: Union[str, int] = field(
+        metadata={"required": True, "data_key": "operationStatus"}
+    )
     setpoint: int = field(metadata={"required": True, "data_key": "setpoint"})
     swing: Union[str, int] = field(metadata={"required": True, "data_key": "swing"})
-    temperature_scale: int = field(metadata={"required": False, "data_key": "temperatureScale"}, default=1)
+    temperature_scale: int = field(
+        metadata={"required": False, "data_key": "temperatureScale"}, default=1
+    )
 
 
 UnitUpdateMessageSchema = marshmallow_dataclass.class_schema(UnitUpdateMessage)
@@ -106,6 +118,8 @@ def with_exception(function):
 
 
 class WebSocketThread(Thread):
+    """Extension of Thread class to handle the websocket connection"""
+
     def __init__(self, websocket: websocket.WebSocketApp):
         threading.Thread.__init__(self)
         self.name = "CoolAutomationClientWebsocketClient"
@@ -121,7 +135,9 @@ class WebSocketThread(Thread):
 
             except WebSocketException as socket_exception:
                 gc.collect()
-                self.logger.error("Exception when calling open socket: %s", socket_exception)
+                self.logger.error(
+                    "Exception when calling open socket: %s", socket_exception
+                )
 
             time.sleep(10)
 
@@ -232,10 +248,10 @@ class CoolAutomationClient(Singleton):
 
     @with_exception
     async def get_devices(self) -> list[Union[DeviceResponseData, None]]:
-        """_summary_
+        """Returns a list of connected devices
 
         Returns:
-            list[Union[DeviceResponseData, None]]: _description_
+            list[Union[DeviceResponseData, None]]: List of devices
         """
         api = DevicesApi(api_client=self.api_client)
         devices: DevicesResponse = await api.devices_get(self.token)
@@ -378,7 +394,9 @@ class CoolAutomationClient(Singleton):
             ws (websocket.WebSocketApp): active websocket
             loaded_json (dict): dictionary with data loaded from the websocket message
         """
-        self.logger.debug("Entered Ping Pong Handler %s", loaded_json.get("type", "Not Ping Pong"))
+        self.logger.debug(
+            "Entered Ping Pong Handler %s", loaded_json.get("type", "Not Ping Pong")
+        )
         if loaded_json.get("type", None) == "ping":
             self.logger.debug("...Ping Pong...")
             ws.send('{"type":"pong"}')
@@ -395,7 +413,10 @@ class CoolAutomationClient(Singleton):
         data = loaded_json.get("data", None)
         if data is not None:
             self.logger.debug("Received data from websocket: %s", str(data))
-            update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(data, unknown=marshmallow.EXCLUDE)
+            update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(
+                data, unknown=marshmallow.EXCLUDE
+            )
+            self.logger.debug("Update message: %s", update_message)
             if update_message is not None:
                 unit = self._registered_units.get(update_message.unit_id)
                 update_message = self._transform_message(update_message)
@@ -437,7 +458,9 @@ class CoolAutomationClient(Singleton):
             self.ws_thread.start()
 
         except WebSocketException as socket_exception:
-            self.logger.error("Exception when calling open socket: %s", socket_exception)
+            self.logger.error(
+                "Exception when calling open socket: %s", socket_exception
+            )
 
     def _transform_message(self, message: UnitUpdateMessage) -> UnitUpdateMessage:
         """Transform message from numeric type ids to string values
