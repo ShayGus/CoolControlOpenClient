@@ -112,6 +112,7 @@ class HVACUnit(Updatable):
         self._active_operation_status = message.operation_status
         self._active_setpoint = message.setpoint
         self._active_swing_mode = message.swing
+        self._ambient_temperature = message.ambient_temperature
         self.logger.debug("Unit updated %s", self.name)
         self._update_pending = True
         if with_callback:
@@ -210,4 +211,7 @@ class HVACUnit(Updatable):
         await self.set_operation_status("off")
 
     def __str__(self):
-        return "%s(%s)" % (type(self).__name__, ", ".join("%s=%s" % item for item in vars(self).items()))
+        return "%s(%s)" % (
+            type(self).__name__,
+            ", ".join("%s=%s" % item for item in vars(self).items()),
+        )

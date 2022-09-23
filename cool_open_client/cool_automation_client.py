@@ -9,7 +9,7 @@ import marshmallow
 import marshmallow_dataclass
 import sys
 
-from typing import Iterable, Union, cast
+from typing import Callable, Iterable, Union, cast
 from threading import Thread
 
 from dataclasses import dataclass, field
@@ -120,17 +120,27 @@ def with_exception(function):
 class WebSocketThread(Thread):
     """Extension of Thread class to handle the websocket connection"""
 
-    def __init__(self, websocket: websocket.WebSocketApp):
+    def __init__(self, socket_params: dict[str, Callable]):
         threading.Thread.__init__(self)
         self.name = "CoolAutomationClientWebsocketClient"
         self.setDaemon(True)
-        self.websocket = websocket
+        self.websocket = None
         self.close_flag = False
+        self.logger = _LOGGER
+        self.socket_params = socket_params
 
     def run(self):
         self.close_flag = False
-        while self.close:
+        while not self.close_flag:
             try:
+                if self.websocket is not None:
+                    try:
+                        self.websocket.keep_running = False
+                        self.websocket.close()
+                        gc.collect()
+                    except:
+                        pass
+                self.websocket = websocket.WebSocketApp(**self.socket_params)
                 self.websocket.run_forever()
 
             except WebSocketException as socket_exception:
@@ -138,6 +148,9 @@ class WebSocketThread(Thread):
                 self.logger.error(
                     "Exception when calling open socket: %s", socket_exception
                 )
+            except Exception as exception:
+                gc.collect()
+                self.logger.error("Exception when calling open socket: %s", exception)
 
             time.sleep(10)
 
@@ -380,10 +393,10 @@ class CoolAutomationClient(Singleton):
             self._handle_ping_pong(ws, loaded_json)
             self._handle_ws_message(loaded_json)
         except WebSocketException as error:
-            self.logger.error(error)
+            self.logger.error("Error handling message from socket: %s", error)
             raise error
         except Exception as error:
-            self.logger.error(error)
+            self.logger.error("Error handling message from socket: %s", error)
             raise error
 
     def _handle_ping_pong(self, ws: websocket.WebSocketApp, loaded_json: dict) -> None:
@@ -409,7 +422,8 @@ class CoolAutomationClient(Singleton):
         Args:
             loaded_json (dict): dict baring data loaded from message json
         """
-        self.logger.debug("Entered Message Handler")
+        self.logger.debug("Entered Message Handler %s", str(loaded_json))
+
         data = loaded_json.get("data", None)
         if data is not None:
             self.logger.debug("Received data from websocket: %s", str(data))
@@ -434,7 +448,7 @@ class CoolAutomationClient(Singleton):
         Raises:
             WebSocketConnectionClosedException: Propagates received error
         """
-        self.logger.error(message)
+        self.logger.error("Error from socket: %s", message)
         raise WebSocketConnectionClosedException()
 
     def open_socket(self) -> None:
@@ -447,14 +461,14 @@ class CoolAutomationClient(Singleton):
             self.socket.close()
 
         try:
-            self.socket = websocket.WebSocketApp(
-                self.SOCKET_URI,
-                on_open=self.on_open_socket,
-                on_message=self.on_message_socket,
-                on_error=self.on_error_socket,
-                on_close=self.on_close_socket,
-            )
-            self.ws_thread = WebSocketThread(self.socket)
+            socket_params = {
+                "url": self.SOCKET_URI,
+                "on_open": self.on_open_socket,
+                "on_message": self.on_message_socket,
+                "on_error": self.on_error_socket,
+                "on_close": self.on_close_socket,
+            }
+            self.ws_thread = WebSocketThread(socket_params)
             self.ws_thread.start()
 
         except WebSocketException as socket_exception:
