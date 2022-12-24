@@ -5,7 +5,7 @@ path_to_client = str(pathlib.Path(__file__).parent.absolute())
 
 setup(
     name="cool-open-client",
-    version="0.0.7",
+    version="0.0.9",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",

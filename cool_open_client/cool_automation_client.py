@@ -52,7 +52,7 @@ from .utils.dict_to_model import dict_to_model
 
 _LOGGER = logging.getLogger(__package__)
 _LOGGER.addHandler(logging.StreamHandler(sys.stdout))
-_LOGGER.setLevel(logging.DEBUG)
+_LOGGER.setLevel(logging.WARNING)
 
 ###
 # Data Sample
@@ -120,13 +120,15 @@ def with_exception(function):
 class WebSocketThread(Thread):
     """Extension of Thread class to handle the websocket connection"""
 
-    def __init__(self, socket_params: dict[str, Callable]):
+    def __init__(
+        self, socket_params: dict[str, Callable], logger: logging.Logger = None
+    ):
         threading.Thread.__init__(self)
         self.name = "CoolAutomationClientWebsocketClient"
         self.setDaemon(True)
         self.websocket = None
         self.close_flag = False
-        self.logger = _LOGGER
+        self.logger = _LOGGER if logger is None else logger
         self.socket_params = socket_params
 
     def run(self):
@@ -165,7 +167,7 @@ class CoolAutomationClient(Singleton):
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
-    SOCKET_URI = "wss://api.coolremote.net/api/v1/"
+    SOCKET_URI = "wss://api.coolremote.net:443/ws/v1"
 
     @classmethod
     async def create(cls, token, logger=None):
@@ -389,7 +391,7 @@ class CoolAutomationClient(Singleton):
 
         try:
             loaded_json = json.loads(message)
-            _LOGGER.debug("Message from socket: %s", message)
+            self.logger.debug("Message from socket: %s", message)
             self._handle_ping_pong(ws, loaded_json)
             self._handle_ws_message(loaded_json)
         except WebSocketException as error:
@@ -468,7 +470,7 @@ class CoolAutomationClient(Singleton):
                 "on_error": self.on_error_socket,
                 "on_close": self.on_close_socket,
             }
-            self.ws_thread = WebSocketThread(socket_params)
+            self.ws_thread = WebSocketThread(socket_params, logger=self.logger)
             self.ws_thread.start()
 
         except WebSocketException as socket_exception:
