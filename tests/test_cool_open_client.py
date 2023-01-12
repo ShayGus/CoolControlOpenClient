@@ -5,7 +5,8 @@ from cool_open_client.cool_automation_client import CoolAutomationClient
 
 class CoolAutomationClientTest(unittest.TestCase):
     def setUp(self):
-        self.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjhkYmFlYThhMzFjMTk2NmIxZWNlYyIsImlhdCI6MTY0OTc2MDQxNiwiZXhwIjoxNjgxMzE4MDE2fQ.RLwz3qiZgLBRwHYpPQGrYtPC3t34axQBh2C7pP_wdVU"
+        with open("token.txt", "r", encoding='utf-8') as token_file:
+            self.token = token_file.read()
         self.loop = asyncio.get_event_loop()
         self.client = self.loop.run_until_complete(CoolAutomationClient.create(token=self.token))
 

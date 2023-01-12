@@ -1,13 +1,13 @@
 # cool_open_client.client.WebsocketApi
 
-All URIs are relative to *https://api.coolremote.net/api/v1*
+All URIs are relative to *https://api.coolremote.net/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**root_get**](WebsocketApi.md#root_get) | **GET** / | Websocket connection endpoint
+[**ws_v2_get**](WebsocketApi.md#ws_v2_get) | **GET** /ws/v2 | Websocket connection endpoint
 
-# **root_get**
-> root_get()
+# **ws_v2_get**
+> ws_v2_get()
 
 Websocket connection endpoint
 
@@ -26,9 +26,9 @@ api_instance = cool_open_client.client.WebsocketApi()
 
 try:
     # Websocket connection endpoint
-    api_instance.root_get()
+    api_instance.ws_v2_get()
 except ApiException as e:
-    print("Exception when calling WebsocketApi->root_get: %s\n" % e)
+    print("Exception when calling WebsocketApi->ws_v2_get: %s\n" % e)
 ```
 
 ### Parameters

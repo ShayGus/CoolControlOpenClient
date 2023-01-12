@@ -167,7 +167,7 @@ class CoolAutomationClient(Singleton):
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
-    SOCKET_URI = "wss://api.coolremote.net:443/ws/v1"
+    SOCKET_URI = "wss://api.coolremote.net:443/ws/v2"
 
     @classmethod
     async def create(cls, token, logger=None):
@@ -189,10 +189,10 @@ class CoolAutomationClient(Singleton):
         """
         Perform Authentication
         """
-        body = {"username": username, "password": password}
+        body = {"username": username, "password": password, "appId": "coolAutomationControl"}
         api = AuthenticationApi()
         try:
-            result = await api.authenticate_post(body)
+            result = await api.users_authenticate_post(body)
         except ApiException as error:
             if error.status == cls.UNAUTHORIZES_ERROR_CODE:
                 return "Unauthorized"
@@ -215,7 +215,7 @@ class CoolAutomationClient(Singleton):
     @with_exception
     async def get_me(self) -> UserResponseData:
         api = MeApi(api_client=self.api_client)
-        response = await api.me_get(self.token)
+        response = await api.users_me_get(self.token)
         return response.data
 
     @with_exception
@@ -292,7 +292,7 @@ class CoolAutomationClient(Singleton):
         body = UnitControlSwitchesBody(status)
 
         # set unit operation status
-        api_response = await api_instance.units_unit_id_controls_switches_put(
+        api_response = await api_instance.units_unit_id_controls_operation_statuses_put(
             x_access_token=self.token, body=body, unit_id=unit_id
         )
 
@@ -309,7 +309,7 @@ class CoolAutomationClient(Singleton):
         status = self.operation_modes.get_inverse(mode)
         body = UnitControlModesBody(status)
 
-        api_response = await api_instance.units_unit_id_controls_modes_put(
+        api_response = await api_instance.units_unit_id_controls_operation_modes_put(
             x_access_token=self.token, body=body, unit_id=unit_id
         )
 
@@ -325,7 +325,7 @@ class CoolAutomationClient(Singleton):
         mode = self.swing_modes.get_inverse(mode)
         body = UnitControlSwingsBody(mode)
 
-        api_response = await api_instance.units_unit_id_controls_swings_put(
+        api_response = await api_instance.units_unit_id_controls_swing_modes_put(
             x_access_token=self.token, body=body, unit_id=unit_id
         )
 
@@ -341,7 +341,7 @@ class CoolAutomationClient(Singleton):
         mode = self.fan_modes.get_inverse(mode)
         body = UnitControlFansBody(mode)
 
-        api_response = await api_instance.units_unit_id_controls_fans_put(
+        api_response = await api_instance.units_unit_id_controls_fan_modes_put(
             x_access_token=self.token, body=body, unit_id=unit_id
         )
 

@@ -3,7 +3,6 @@ from __future__ import absolute_import
 # flake8: noqa
 
 # import apis into api package
-from cool_open_client.client.api.admins_api import AdminsApi
 from cool_open_client.client.api.authentication_api import AuthenticationApi
 from cool_open_client.client.api.customer_api import CustomerApi
 from cool_open_client.client.api.customer_sites_api import CustomerSitesApi
@@ -15,10 +14,8 @@ from cool_open_client.client.api.devices_api import DevicesApi
 from cool_open_client.client.api.me_api import MeApi
 from cool_open_client.client.api.services_api import ServicesApi
 from cool_open_client.client.api.site_api import SiteApi
-from cool_open_client.client.api.site_devices_api import SiteDevicesApi
 from cool_open_client.client.api.site_systems_api import SiteSystemsApi
 from cool_open_client.client.api.site_users_api import SiteUsersApi
-from cool_open_client.client.api.site_zones_api import SiteZonesApi
 from cool_open_client.client.api.sites_api import SitesApi
 from cool_open_client.client.api.system_api import SystemApi
 from cool_open_client.client.api.system_control_api import SystemControlApi
@@ -30,7 +27,3 @@ from cool_open_client.client.api.units_api import UnitsApi
 from cool_open_client.client.api.user_api import UserApi
 from cool_open_client.client.api.users_api import UsersApi
 from cool_open_client.client.api.websocket_api import WebsocketApi
-from cool_open_client.client.api.zone_api import ZoneApi
-from cool_open_client.client.api.zone_control_api import ZoneControlApi
-from cool_open_client.client.api.zone_units_api import ZoneUnitsApi
-from cool_open_client.client.api.zones_api import ZonesApi

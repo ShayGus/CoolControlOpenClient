@@ -1,6 +1,6 @@
 # cool_open_client.client.SiteSystemsApi
 
-All URIs are relative to *https://api.coolremote.net/api/v1*
+All URIs are relative to *https://api.coolremote.net/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

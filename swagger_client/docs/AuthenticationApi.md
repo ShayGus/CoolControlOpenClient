@@ -1,13 +1,13 @@
 # cool_open_client.client.AuthenticationApi
 
-All URIs are relative to *https://api.coolremote.net/api/v1*
+All URIs are relative to *https://api.coolremote.net/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**authenticate_post**](AuthenticationApi.md#authenticate_post) | **POST** /authenticate | authenticate
+[**users_authenticate_post**](AuthenticationApi.md#users_authenticate_post) | **POST** /users/authenticate | authenticate
 
-# **authenticate_post**
-> OkresponseWithToken authenticate_post(body)
+# **users_authenticate_post**
+> OkresponseWithToken users_authenticate_post(body)
 
 authenticate
 
@@ -27,10 +27,10 @@ body = cool_open_client.client.AuthenticateRequestBody() # AuthenticateRequestBo
 
 try:
     # authenticate
-    api_response = api_instance.authenticate_post(body)
+    api_response = api_instance.users_authenticate_post(body)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling AuthenticationApi->authenticate_post: %s\n" % e)
+    print("Exception when calling AuthenticationApi->users_authenticate_post: %s\n" % e)
 ```
 
 ### Parameters

@@ -1,14 +1,14 @@
 # cool_open_client.client.MeApi
 
-All URIs are relative to *https://api.coolremote.net/api/v1*
+All URIs are relative to *https://api.coolremote.net/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**me_get**](MeApi.md#me_get) | **GET** /me | get me
-[**me_tree_get**](MeApi.md#me_tree_get) | **GET** /me/tree | get my control tree
+[**users_me_get**](MeApi.md#users_me_get) | **GET** /users/me | get me
+[**users_me_tree_get**](MeApi.md#users_me_tree_get) | **GET** /users/me/tree | get my control tree
 
-# **me_get**
-> UserResponse me_get(x_access_token)
+# **users_me_get**
+> UserResponse users_me_get(x_access_token)
 
 get me
 
@@ -28,10 +28,10 @@ x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get me
-    api_response = api_instance.me_get(x_access_token)
+    api_response = api_instance.users_me_get(x_access_token)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling MeApi->me_get: %s\n" % e)
+    print("Exception when calling MeApi->users_me_get: %s\n" % e)
 ```
 
 ### Parameters
@@ -55,8 +55,8 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **me_tree_get**
-> ControlTreeResponse me_tree_get(x_access_token)
+# **users_me_tree_get**
+> ControlTreeResponse users_me_tree_get(x_access_token)
 
 get my control tree
 
@@ -76,10 +76,10 @@ x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get my control tree
-    api_response = api_instance.me_tree_get(x_access_token)
+    api_response = api_instance.users_me_tree_get(x_access_token)
     pprint(api_response)
 except ApiException as e:
-    print("Exception when calling MeApi->me_tree_get: %s\n" % e)
+    print("Exception when calling MeApi->users_me_tree_get: %s\n" % e)
 ```
 
 ### Parameters
