@@ -106,10 +106,7 @@ def with_exception(function):
             return await function(*args, **kwargs)
         except ApiException as exception:
             body = json.loads(exception.body)
-            if (
-                exception.status == CoolAutomationClient.UNAUTHORIZES_ERROR_CODE
-                and body["message"] == "Token verification failed"
-            ):
+            if exception.status == CoolAutomationClient.UNAUTHORIZES_ERROR_CODE:
                 raise InvalidTokenException() from exception
             else:
                 raise exception

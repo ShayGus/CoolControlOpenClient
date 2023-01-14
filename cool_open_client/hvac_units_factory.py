@@ -31,7 +31,7 @@ class HVACUnitsFactory:
                     active_setpoint=unit["activeSetpoint"],
                     active_swing_mode=self._client.swing_modes.get(unit["activeSwingMode"]),
                     ambient_temperature=unit["ambientTemperature"],
-                    temerature_range=unit["temperatureLimits"]["0"],
+                    temerature_range=unit["temperatureLimits"],
                     supported_fan_modes=[self._client.fan_modes.get(mode) for mode in unit["supportedFanModes"]],
                     supported_operation_modes=[
                         self._client.operation_modes.get(mode) for mode in unit["supportedOperationModes"]

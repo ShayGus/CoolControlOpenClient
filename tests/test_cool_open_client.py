@@ -1,6 +1,6 @@
 import asyncio
 import unittest
-from cool_open_client.cool_automation_client import CoolAutomationClient
+from cool_open_client.cool_automation_client import CoolAutomationClient, InvalidTokenException
 
 
 class CoolAutomationClientTest(unittest.TestCase):
@@ -27,6 +27,20 @@ class CoolAutomationClientTest(unittest.TestCase):
     def test_get_me(self):
         response = self.loop.run_until_complete(self.client.get_me())
         print(response)
+
+    def test_get_dictionary(self):
+        response = self.loop.run_until_complete(self.client.get_dictionary())
+        print(response)
+
+    def test_get_dictionary_bad_token(self):
+        with open("bad_token.txt", "r", encoding='utf-8') as token_file:
+            token = token_file.read()
+        try:
+            client = self.loop.run_until_complete(CoolAutomationClient.create(token=token))
+        except InvalidTokenException as e:
+            print("Invalid Token Exception")
+        except Exception as e:
+            raise e
 
     def test_set_hvac_mode(self):
         mode = "COOL"

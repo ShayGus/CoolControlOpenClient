@@ -198,11 +198,15 @@ class HVACUnit(Updatable):
 
     @property
     def min_temp(self) -> float:
-        return self._temperature_range[0]
+        if self._active_operation_mode == "HEAT":
+            return self._temperature_range['1'][0]
+        return self._temperature_range['0'][0]
 
     @property
     def max_temp(self) -> float:
-        return self._temperature_range[1]
+        if self._active_operation_mode == "HEAT":
+            return self._temperature_range['1'][1]
+        return self._temperature_range['0'][1]
 
     async def turn_on(self):
         await self.set_operation_status("on")
