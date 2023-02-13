@@ -5,7 +5,7 @@ path_to_client = str(pathlib.Path(__file__).parent.absolute())
 
 setup(
     name="cool-open-client",
-    version="0.0.10",
+    version="0.0.11",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",
@@ -28,7 +28,7 @@ setup(
         "six >= 1.10",
         "python_dateutil >= 2.5.3",
         "urllib3 >= 1.15.1",
-        "bidict >= 0.22.0",
+        "bidict >= 0.22.1",
         "rel >= 0.4.7",
         "websocket-client >= 1.3.3",
         "marshmallow >= 3.17.0",
