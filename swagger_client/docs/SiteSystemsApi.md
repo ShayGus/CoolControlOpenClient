@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**sites_site_id_systems_post**](SiteSystemsApi.md#sites_site_id_systems_post) | **POST** /sites/{siteId}/systems | create site system
 
 # **sites_site_id_systems_get**
-> SystemsResponse sites_site_id_systems_get(x_access_token, site_id)
+> SystemsResponse sites_site_id_systems_get(origin, referer, x_access_token, site_id)
 
 get site systems
 
@@ -24,12 +24,14 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.SiteSystemsApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 site_id = 'site_id_example' # str | 
 
 try:
     # get site systems
-    api_response = api_instance.sites_site_id_systems_get(x_access_token, site_id)
+    api_response = api_instance.sites_site_id_systems_get(origin, referer, x_access_token, site_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SiteSystemsApi->sites_site_id_systems_get: %s\n" % e)
@@ -39,6 +41,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
  **site_id** | **str**|  | 
 
@@ -58,7 +62,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **sites_site_id_systems_post**
-> OkresponseWithId sites_site_id_systems_post(body, x_access_token, site_id)
+> OkresponseWithId sites_site_id_systems_post(body, origin, referer, x_access_token, site_id)
 
 create site system
 
@@ -75,12 +79,14 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = cool_open_client.client.SiteSystemsApi()
 body = cool_open_client.client.CreateSystemRequestBody() # CreateSystemRequestBody | 
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 site_id = 'site_id_example' # str | 
 
 try:
     # create site system
-    api_response = api_instance.sites_site_id_systems_post(body, x_access_token, site_id)
+    api_response = api_instance.sites_site_id_systems_post(body, origin, referer, x_access_token, site_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SiteSystemsApi->sites_site_id_systems_post: %s\n" % e)
@@ -91,6 +97,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**CreateSystemRequestBody**](CreateSystemRequestBody.md)|  | 
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
  **site_id** | **str**|  | 
 

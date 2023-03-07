@@ -165,6 +165,8 @@ class CoolAutomationClient(Singleton):
 
     UNAUTHORIZES_ERROR_CODE = 401
     SOCKET_URI = "wss://api.coolremote.net:443/ws/v2"
+    ORIGIN = "https://control.coolremote.net"
+    REFERER = "https://control.coolremote.net/"
 
     @classmethod
     async def create(cls, token, logger=None):
@@ -212,7 +214,7 @@ class CoolAutomationClient(Singleton):
     @with_exception
     async def get_me(self) -> UserResponseData:
         api = MeApi(api_client=self.api_client)
-        response = await api.users_me_get(self.token)
+        response = await api.users_me_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER)
         return response.data
 
     @with_exception
@@ -224,7 +226,7 @@ class CoolAutomationClient(Singleton):
             TypesResponseData: Dictionary from api service
         """
         api = ServicesApi(self.api_client)
-        response = await api.services_types_get(self.token)
+        response = await api.services_types_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER)
         return response.data
 
     @with_exception
@@ -234,7 +236,7 @@ class CoolAutomationClient(Singleton):
         """
         # pp = pprint.PrettyPrinter(indent=4).pprint
         api = UnitsApi(api_client=self.api_client)
-        units: UnitsResponse = await api.units_get(self.token)
+        units: UnitsResponse = await api.units_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER)
 
         return units
 
@@ -244,7 +246,7 @@ class CoolAutomationClient(Singleton):
         Retrieves the controllable units from the web api
         """
         api = UnitApi(api_client=self.api_client)
-        unit: UnitResponseData = (await api.units_unit_id_get(self.token, unit_id)).data
+        unit: UnitResponseData = (await api.units_unit_id_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_id=unit_id)).data
 
         message = UnitUpdateMessage(
             ambient_temperature=unit.ambient_temperature,
@@ -266,7 +268,7 @@ class CoolAutomationClient(Singleton):
             list[Union[DeviceResponseData, None]]: List of devices
         """
         api = DevicesApi(api_client=self.api_client)
-        devices: DevicesResponse = await api.devices_get(self.token)
+        devices: DevicesResponse = await api.devices_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER)
         data: DevicesResponseData = devices.data
         devices = [
             dict_to_model(DeviceResponseData, device)
@@ -290,7 +292,7 @@ class CoolAutomationClient(Singleton):
 
         # set unit operation status
         api_response = await api_instance.units_unit_id_controls_operation_statuses_put(
-            x_access_token=self.token, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -305,9 +307,8 @@ class CoolAutomationClient(Singleton):
         api_instance = UnitControlApi(api_client=self.api_client)
         status = self.operation_modes.get_inverse(mode)
         body = UnitControlModesBody(status)
-
         api_response = await api_instance.units_unit_id_controls_operation_modes_put(
-            x_access_token=self.token, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -323,7 +324,7 @@ class CoolAutomationClient(Singleton):
         body = UnitControlSwingsBody(mode)
 
         api_response = await api_instance.units_unit_id_controls_swing_modes_put(
-            x_access_token=self.token, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -339,7 +340,7 @@ class CoolAutomationClient(Singleton):
         body = UnitControlFansBody(mode)
 
         api_response = await api_instance.units_unit_id_controls_fan_modes_put(
-            x_access_token=self.token, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -354,7 +355,7 @@ class CoolAutomationClient(Singleton):
         body = UnitControlSetpointsBody(temp)
 
         api_response = await api_instance.units_unit_id_controls_setpoints_put(
-            x_access_token=self.token, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
         )
 
     def register_for_updates(self, unit: Updatable):

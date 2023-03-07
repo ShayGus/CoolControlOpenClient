@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**users_me_tree_get**](MeApi.md#users_me_tree_get) | **GET** /users/me/tree | get my control tree
 
 # **users_me_get**
-> UserResponse users_me_get(x_access_token)
+> UserResponse users_me_get(origin, referer, x_access_token)
 
 get me
 
@@ -24,11 +24,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.MeApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get me
-    api_response = api_instance.users_me_get(x_access_token)
+    api_response = api_instance.users_me_get(origin, referer, x_access_token)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling MeApi->users_me_get: %s\n" % e)
@@ -38,6 +40,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
 
 ### Return type
@@ -56,7 +60,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **users_me_tree_get**
-> ControlTreeResponse users_me_tree_get(x_access_token)
+> ControlTreeResponse users_me_tree_get(origin, referer, x_access_token)
 
 get my control tree
 
@@ -72,11 +76,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.MeApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get my control tree
-    api_response = api_instance.users_me_tree_get(x_access_token)
+    api_response = api_instance.users_me_tree_get(origin, referer, x_access_token)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling MeApi->users_me_tree_get: %s\n" % e)
@@ -86,6 +92,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
 
 ### Return type

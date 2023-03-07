@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**customers_customer_id_sites_post**](CustomerSitesApi.md#customers_customer_id_sites_post) | **POST** /customers/{customerId}/sites | create customer site
 
 # **customers_customer_id_sites_get**
-> SitesResponse customers_customer_id_sites_get(x_access_token, customer_id)
+> SitesResponse customers_customer_id_sites_get(origin, referer, x_access_token, customer_id)
 
 get customer sites
 
@@ -24,12 +24,14 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.CustomerSitesApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 customer_id = 'customer_id_example' # str | 
 
 try:
     # get customer sites
-    api_response = api_instance.customers_customer_id_sites_get(x_access_token, customer_id)
+    api_response = api_instance.customers_customer_id_sites_get(origin, referer, x_access_token, customer_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling CustomerSitesApi->customers_customer_id_sites_get: %s\n" % e)
@@ -39,6 +41,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
  **customer_id** | **str**|  | 
 
@@ -58,7 +62,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **customers_customer_id_sites_post**
-> OkresponseWithId customers_customer_id_sites_post(body, x_access_token, customer_id)
+> OkresponseWithId customers_customer_id_sites_post(body, origin, referer, x_access_token, customer_id)
 
 create customer site
 
@@ -75,12 +79,14 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = cool_open_client.client.CustomerSitesApi()
 body = cool_open_client.client.CreateSiteRequestBody() # CreateSiteRequestBody | 
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 customer_id = 'customer_id_example' # str | customer ID
 
 try:
     # create customer site
-    api_response = api_instance.customers_customer_id_sites_post(body, x_access_token, customer_id)
+    api_response = api_instance.customers_customer_id_sites_post(body, origin, referer, x_access_token, customer_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling CustomerSitesApi->customers_customer_id_sites_post: %s\n" % e)
@@ -91,6 +97,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **body** | [**CreateSiteRequestBody**](CreateSiteRequestBody.md)|  | 
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
  **customer_id** | **str**| customer ID | 
 

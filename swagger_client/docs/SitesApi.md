@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**sites_get**](SitesApi.md#sites_get) | **GET** /sites | get my sites
 
 # **sites_get**
-> SitesResponse sites_get(x_access_token)
+> SitesResponse sites_get(origin, referer, x_access_token)
 
 get my sites
 
@@ -23,11 +23,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.SitesApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get my sites
-    api_response = api_instance.sites_get(x_access_token)
+    api_response = api_instance.sites_get(origin, referer, x_access_token)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling SitesApi->sites_get: %s\n" % e)
@@ -37,6 +39,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
 
 ### Return type

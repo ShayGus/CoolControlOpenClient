@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**services_types_get**](ServicesApi.md#services_types_get) | **GET** /services/types | get system types for enumerations used in protocol
 
 # **services_types_get**
-> TypesResponse services_types_get(x_access_token)
+> TypesResponse services_types_get(origin, referer, x_access_token)
 
 get system types for enumerations used in protocol
 
@@ -23,11 +23,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.ServicesApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get system types for enumerations used in protocol
-    api_response = api_instance.services_types_get(x_access_token)
+    api_response = api_instance.services_types_get(origin, referer, x_access_token)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ServicesApi->services_types_get: %s\n" % e)
@@ -37,6 +39,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
 
 ### Return type

@@ -1,2574 +1,2534 @@
----
 openapi: 3.0.0
 info:
-  title: OpenClientCoolAutomationAPI
   description: Cool platform REST API
+  version: 2.0.1
+  title: OpenClientCoolAutomationAPI
   contact:
     name: Info
-    email: info@coolautomation.com
-  version: 2.0.0
+    email: none@gmail.com
 servers:
-- url: https://api.coolremote.net/api/v2
-- url: https://virtserver.swaggerhub.com/ShayGus/CoolAPI/1.0.2
-  description: SwaggerHub API Auto Mocking
+  - url: https://api.coolremote.net/api/v2
+  - url: https://virtserver.swaggerhub.com/ShayGus/CoolAPI/1.0.2
+    description: SwaggerHub API Auto Mocking
 tags:
-- name: authentication
-  description: authentication operations
-- name: websocket
-  description: websocket connection endpoint
-- name: admins
-  description: admin operations
-- name: customers
-  description: customers operations
-- name: customer
-  description: customer operations
-- name: customer sites
-  description: site operations with relation to owner customer
-- name: customer users
-  description: user operations with relation to owner customer
-- name: sites
-  description: sites operations
-- name: site
-  description: site operations
-- name: site devices
-  description: device operations with relation to owner site
-- name: site zones
-  description: zone operations with relation to owner site
-- name: site systems
-  description: system operations with relation to owner site
-- name: site users
-  description: user operations with relation to owner site
-- name: devices
-  description: devices operations
-- name: device
-  description: device operations
-- name: device units
-  description: unit operations with relation to owner device
-- name: zones
-  description: zones operations
-- name: zone
-  description: zone operations
-- name: zone control
-  description: zone control
-- name: zone units
-  description: unit operations with relation to owner zone
-- name: systems
-  description: systems operations
-- name: system
-  description: system operations
-- name: system control
-  description: system control
-- name: system units
-  description: unit operations with relation to owner system
-- name: units
-  description: units operations
-- name: unit
-  description: unit operations
-- name: unit control
-  description: unit control
-- name: users
-  description: users operations
-- name: user
-  description: user operations
-- name: me
-  description: me operations
-- name: types
-  description: system types operations
+  - name: authentication
+    description: authentication operations
+  - name: websocket
+    description: websocket connection endpoint
+  - name: admins
+    description: admin operations
+  - name: customers
+    description: customers operations
+  - name: customer
+    description: customer operations
+  - name: customer sites
+    description: site operations with relation to owner customer
+  - name: customer users
+    description: user operations with relation to owner customer
+  - name: sites
+    description: sites operations
+  - name: site
+    description: site operations
+  - name: site devices
+    description: device operations with relation to owner site
+  - name: site zones
+    description: zone operations with relation to owner site
+  - name: site systems
+    description: system operations with relation to owner site
+  - name: site users
+    description: user operations with relation to owner site
+  - name: devices
+    description: devices operations
+  - name: device
+    description: device operations
+  - name: device units
+    description: unit operations with relation to owner device
+  - name: zones
+    description: zones operations
+  - name: zone
+    description: zone operations
+  - name: zone control
+    description: zone control
+  - name: zone units
+    description: unit operations with relation to owner zone
+  - name: systems
+    description: systems operations
+  - name: system
+    description: system operations
+  - name: system control
+    description: system control
+  - name: system units
+    description: unit operations with relation to owner system
+  - name: units
+    description: units operations
+  - name: unit
+    description: unit operations
+  - name: unit control
+    description: unit control
+  - name: users
+    description: users operations
+  - name: user
+    description: user operations
+  - name: me
+    description: me operations
+  - name: types
+    description: system types operations
 paths:
   /ws/v2:
     get:
       tags:
-      - websocket
+        - websocket
       summary: Websocket connection endpoint
       description: Websocket connection endpoint
       responses:
-        "200":
+        '200':
           description: OK
   /customers:
     get:
       tags:
-      - customers
+        - customers
       summary: get my customers
       description: Get all the customers caller has permissions to see
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/customersResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /customers/{customerId}:
     get:
       tags:
-      - customer
+        - customer
       summary: get customer
       description: Get customer
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: customer ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customer ID
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'            
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/customerResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - customer
+        - customer
       summary: update customer
       description: update customer
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: customer ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customer ID
+          required: true
+          schema:
+            type: string
       requestBody:
-        description: properties to update
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateCustomerRequestBody'
+        description: properties to update
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
+    delete:
+      tags:
+        - customer
+      summary: delete customer
+      description: delete customer
+      parameters:
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customer ID
+          required: true
+          schema:
+            type: string
       deprecated: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/okresponse'
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse401'
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse403'
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse404'
+        '500':
+          description: server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badResponse500'
     post:
       tags:
-      - customer
+        - customer
       summary: create customer
       description: create customer
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: customer ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customer ID
+          required: true
+          schema:
+            type: string
       requestBody:
-        description: properties to update
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/createCustomerRequestBody'
+        description: properties to update
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
-    delete:
-      tags:
-      - customer
-      summary: delete customer
-      description: delete customer
-      parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: customer ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/okresponse'
-        "401":
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badResponse401'
-        "403":
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badResponse403'
-        "404":
-          description: not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badResponse404'
-        "500":
-          description: server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /customers/{customerId}/sites:
     get:
       tags:
-      - customer sites
+        - customer sites
       summary: get customer sites
       description: get customer sites
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/sitesResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     post:
       tags:
-      - customer sites
+        - customer sites
       summary: create customer site
       description: create customer site
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: customer ID
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customer ID
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/createSiteRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponseWithId'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /customers/{customerId}/users:
     get:
       tags:
-      - customer users
+        - customer users
       summary: get customer users
       description: get customer users
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/usersResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     post:
       tags:
-      - customer users
+        - customer users
       summary: create customer user
       description: create customer user
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: customerId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         $ref: '#/components/requestBodies/createUserRequestBody'
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponseWithId'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /sites:
     get:
       tags:
-      - sites
+        - sites
       summary: get my sites
       description: get my sites
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/sitesResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /sites/{siteId}:
     get:
       tags:
-      - site
+        - site
       summary: get site
       description: get site
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/siteResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - site
+        - site
       summary: update site
       description: update site
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateSiteRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     delete:
       tags:
-      - site
+        - site
       summary: delete site
       description: delete site
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
+ 
   /devices:
     get:
       tags:
-      - devices
+        - devices
       summary: get my devices
       description: get my devices
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/devicesResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /devices/{deviceId}:
     get:
       tags:
-      - device
+        - device
       summary: get device
       description: get device
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: deviceId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: deviceId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/deviceResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - device
+        - device
       summary: update device
       description: update device
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: deviceId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: deviceId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateDeviceRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     delete:
       tags:
-      - device
+        - device
       summary: delete device
       description: delete device
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: deviceId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: deviceId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /sites/{siteId}/systems:
     get:
       tags:
-      - site systems
+        - site systems
       summary: get site systems
       description: get site systems
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/systemsResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     post:
       tags:
-      - site systems
+        - site systems
       summary: create site system
       description: create site system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/createSystemRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponseWithId'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /sites/{siteId}/users:
     get:
       tags:
-      - site users
+        - site users
       summary: get site users
       description: get site users
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/usersResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     post:
       tags:
-      - site users
+        - site users
       summary: create site user
       description: create site user
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: siteId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         $ref: '#/components/requestBodies/createUserRequestBody'
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponseWithId'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems:
     get:
       tags:
-      - systems
+        - systems
       summary: get my systems
       description: get my systems
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/systemsResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems/{systemId}:
     get:
       tags:
-      - system
+        - system
       summary: get system
       description: get system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/systemResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - system
+        - system
       summary: update system
       description: update system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateSystemRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     delete:
       tags:
-      - system
+        - system
       summary: delete system
       description: delete system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems/{systemId}/controls/modes:
     put:
       tags:
-      - system control
+        - system control
       summary: set system active operation mode for all units
       description: set system active operation mode for all units
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/systemControlModesBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems/{systemId}/controls/switches:
     put:
       tags:
-      - system control
+        - system control
       summary: set system active operation status for all units
       description: set system active operation status for all units
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/systemControlSwitchesBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems/{systemId}/units:
     get:
       tags:
-      - system units
+        - system units
       summary: get system units
       description: get system units
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unitsResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /systems/{systemId}/units/{unitId}:
     post:
       tags:
-      - system units
+        - system units
       summary: add unit to system
       description: add unit to system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     delete:
       tags:
-      - system units
+        - system units
       summary: remove unit from system
       description: remove unit from system
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: systemId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: systemId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /devices/{deviceId}/units:
     get:
       tags:
-      - device units
+        - device units
       summary: get device units
       description: get device units
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: deviceId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: deviceId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unitsResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units:
     get:
       tags:
-      - units
+        - units
       summary: get my units
       description: get my units
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unitsResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}:
     get:
       tags:
-      - unit
+        - unit
       summary: get unit
       description: get unit
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/unitResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - unit
+        - unit
       summary: update unit
       description: update unit
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateUnitRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}/controls/setpoints:
     put:
       tags:
-      - unit control
+        - unit control
       summary: set unit temperature setpoint
       description: set unit temperature setpoint
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/unitControlSetpointsBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}/controls/operation-modes:
     put:
       tags:
-      - unit control
+        - unit control
       summary: set unit operation mode
       description: set unit operation mode
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/unitControlModesBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}/controls/fan-modes:
     put:
       tags:
-      - unit control
+        - unit control
       summary: set unit fan mode
       description: set unit fan mode
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/unitControlFansBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}/controls/swing-modes:
     put:
       tags:
-      - unit control
+        - unit control
       summary: set unit louver mode
       description: set unit louver mode
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/unitControlSwingsBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /units/{unitId}/controls/operation-statuses:
     put:
       tags:
-      - unit control
+        - unit control
       summary: set unit operation status
       description: set unit operation status
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: unitId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: unitId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/unitControlSwitchesBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /users:
     get:
       tags:
-      - users
+        - users
       summary: get my users
       description: get my users
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/usersResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /users/{userId}:
     get:
       tags:
-      - user
+        - user
       summary: get user
       description: get user
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: userId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/userResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     put:
       tags:
-      - user
+        - user
       summary: update user
       description: update user
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: userId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/updateUserRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
     delete:
       tags:
-      - user
+        - user
       summary: delete user
       description: delete user
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: userId
-        in: path
-        description: ""
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "403":
+        '403':
           description: forbidden
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse403'
-        "404":
+        '404':
           description: not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse404'
-        "500":
+        '500':
           description: server error
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /users/me:
     get:
       tags:
-      - me
+        - me
       summary: get me
       description: get me
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/userResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /users/me/tree:
     get:
       tags:
-      - me
+        - me
       summary: get my control tree
       description: get my control tree
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'      
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/controlTreeResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /services/types:
     get:
       tags:
-      - services
+        - services
       summary: get system types for enumerations used in protocol
       description: get system types
       parameters:
-      - name: x-access-token
-        in: header
-        description: access token
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: string
+        - $ref: '#/components/parameters/originHeader'
+        - $ref: '#/components/parameters/refererHeader'  
+        - name: x-access-token
+          in: header
+          description: access token
+          required: true
+          schema:
+            type: string
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/typesResponse'
-        "401":
+        '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse401'
-        "500":
+        '500':
           description: server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
   /users/authenticate:
     post:
       tags:
-      - authentication
+        - authentication
       summary: authenticate
       description: get access token
       requestBody:
@@ -2577,35 +2537,56 @@ paths:
             schema:
               $ref: '#/components/schemas/authenticateRequestBody'
         required: true
+      deprecated: false
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/okresponseWithToken'
-        "400":
+        '400':
           description: parameter error
-        "500":
+        '500':
           description: server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/badResponse500'
-      deprecated: false
 components:
+  requestBodies:
+    createUserRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/createUserRequestBody'
+      required: true
+  parameters:
+    originHeader:
+      in: header
+      name: origin
+      required: true
+      schema:
+        type: string
+        default: 'https://control.coolremote.net'
+    refererHeader:
+      in: header
+      name: referer
+      required: true
+      schema:
+        type: string
+        default: 'https://control.coolremote.net/'
   schemas:
     okresponse:
-      title: OK response
       type: object
       properties:
         success:
           type: boolean
           description: success status
+      title: OK response
       example:
         success: true
     okresponseWithId:
-      title: OK response with id
       type: object
       properties:
         success:
@@ -2613,8 +2594,8 @@ components:
           description: success status
         data:
           $ref: '#/components/schemas/okresponseWithId_data'
+      title: OK response with id
     okresponseWithToken:
-      title: OK response with token
       type: object
       properties:
         success:
@@ -2622,8 +2603,8 @@ components:
           description: success status
         data:
           $ref: '#/components/schemas/okresponseWithToken_data'
+      title: OK response with token
     badResponse401:
-      title: bad response
       type: object
       properties:
         success:
@@ -2632,11 +2613,11 @@ components:
         message:
           type: string
           description: text message describing the error
+      title: bad response
       example:
         success: false
         message: access token expired
     badResponse403:
-      title: bad response
       type: object
       properties:
         success:
@@ -2645,11 +2626,11 @@ components:
         message:
           type: string
           description: text message describing the error
+      title: bad response
       example:
         success: false
         message: user does not have sufficient permissions to perform this action
     badResponse404:
-      title: bad response
       type: object
       properties:
         success:
@@ -2658,11 +2639,11 @@ components:
         message:
           type: string
           description: text message describing the error
+      title: bad response
       example:
         success: false
         message: the requested resource was not found action
     badResponse500:
-      title: bad response
       type: object
       properties:
         success:
@@ -2671,6 +2652,7 @@ components:
         message:
           type: string
           description: text message describing the error
+      title: bad response
       example:
         success: false
         message: server internal error 1003
@@ -2704,8 +2686,8 @@ components:
           description: customer descriptions
         role:
           type: object
-          properties: {}
           description: caller permissions for this customer
+          properties: {}
         sites:
           type: array
           description: array of child site IDs
@@ -2774,8 +2756,8 @@ components:
             type: string
         role:
           type: object
-          properties: {}
           description: caller permissions for this site
+          properties: {}
     devicesResponse:
       type: object
       properties:
@@ -2803,8 +2785,8 @@ components:
           description: device serial number
         role:
           type: object
-          properties: {}
           description: caller permissions for this device
+          properties: {}
         site:
           type: string
           description: parent site id
@@ -2843,8 +2825,8 @@ components:
           description: zone name
         role:
           type: object
-          properties: {}
           description: caller permissions for this zone
+          properties: {}
         site:
           type: string
           description: parent site id
@@ -2880,8 +2862,8 @@ components:
           description: system name
         role:
           type: object
-          properties: {}
           description: caller permissions for this system
+          properties: {}
         site:
           type: string
           description: parent site id
@@ -2942,18 +2924,31 @@ components:
           items:
             type: integer
         temperatureLimits:
-          $ref: '#/components/schemas/unitResponseData_temperatureLimits'
+          type: object
+          properties:
+            "0": 
+              type: array
+              items:
+                type: integer
+            "1":
+              type: array
+              items:
+                type: integer
+            "2":
+              type: array
+              items:
+                type: integer
         brand:
           type: integer
-        activeSetpoint:
+        activeSetpoint: 
           type: integer
-        ambientTemperature:
+        ambientTemperature: 
           type: integer
-        activeOperationStatus:
+        activeOperationStatus: 
           type: integer
         activeOperationMode:
           type: integer
-        activeFanMode:
+        activeFanMode: 
           type: integer
         activeSwingMode:
           type: integer
@@ -3000,12 +2995,12 @@ components:
           description: user phone number
         role:
           type: object
-          properties: {}
           description: caller permissions for this user
+          properties: {}
         permissions:
           type: object
-          properties: {}
           description: user permissions
+          properties: {}
     typesResponse:
       type: object
       properties:
@@ -3036,11 +3031,11 @@ components:
         roles:
           $ref: '#/components/schemas/typesResponseData_roles'
         unitTypes:
-          $ref: '#/components/schemas/typesResponseData_unitTypes'
+          $ref:  '#/components/schemas/typesResponseData_unitTypes'
         hvacBrands:
-          $ref: '#/components/schemas/typesResponseData_hvacBrands'
+          $ref:  '#/components/schemas/typesResponseData_hvacBrands'
         deviceTypes:
-          $ref: '#/components/schemas/typesResponseData_deviceTypes'
+          $ref:  '#/components/schemas/typesResponseData_deviceTypes'
     controlTreeResponse:
       type: object
       properties:
@@ -3055,22 +3050,21 @@ components:
         customers:
           $ref: '#/components/schemas/controlTreeResponseData_customers'
     createCustomerRequestBody:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: customer name
+        description:
+          type: string
+          description: customer description
       title: create customer request body
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: customer name
-        description:
-          type: string
-          description: customer description
     updateCustomerRequestBody:
-      title: update customer request body
-      required:
-      - name
       type: object
+      required:
+        - name
       properties:
         name:
           type: string
@@ -3078,12 +3072,12 @@ components:
         description:
           type: string
           description: customer description
+      title: update customer request body
     createSiteRequestBody:
-      title: create site request body
-      required:
-      - name
-      - timezone
       type: object
+      required:
+        - name
+        - timezone
       properties:
         name:
           type: string
@@ -3106,8 +3100,8 @@ components:
         timezone:
           type: string
           description: site timezone
+      title: create site request body
     updateSiteRequestBody:
-      title: create site request body
       type: object
       properties:
         name:
@@ -3131,14 +3125,14 @@ components:
         timezone:
           type: string
           description: site timezone
+      title: create site request body
     createUserRequestBody:
-      title: create user request body
-      required:
-      - password
-      - permissions
-      - temperatureScale
-      - username
       type: object
+      required:
+        - password
+        - permissions
+        - temperatureScale
+        - username
       properties:
         username:
           type: string
@@ -3148,11 +3142,13 @@ components:
           description: user password
         temperatureScale:
           type: integer
-          description: user preffered temperature scale from the temperature scale enumeration
+          description: >-
+            user preffered temperature scale from the temperature scale
+            enumeration
         permissions:
           type: object
-          properties: {}
           description: user permissions
+          properties: {}
         firstName:
           type: string
           description: user first name
@@ -3165,8 +3161,8 @@ components:
         phone:
           type: string
           description: user phone number
+      title: create user request body
     updateUserRequestBody:
-      title: update user request body
       type: object
       properties:
         username:
@@ -3174,11 +3170,13 @@ components:
           description: user identifier
         temperatureScale:
           type: integer
-          description: user preffered temperature scale from the temperature scale enumeration
+          description: >-
+            user preffered temperature scale from the temperature scale
+            enumeration
         permissions:
           type: object
-          properties: {}
           description: user permissions
+          properties: {}
         firstName:
           type: string
           description: user first name
@@ -3191,12 +3189,12 @@ components:
         phone:
           type: string
           description: user phone number
+      title: update user request body
     createDeviceRequestBody:
-      title: add device to site request body
-      required:
-      - pin
-      - serial
       type: object
+      required:
+        - pin
+        - serial
       properties:
         name:
           type: string
@@ -3207,18 +3205,18 @@ components:
         pin:
           type: string
           description: device pin
+      title: add device to site request body
     updateDeviceRequestBody:
-      title: update device request body
       type: object
       properties:
         name:
           type: string
           description: device name
+      title: update device request body
     createZoneRequestBody:
-      title: create zone request body
-      required:
-      - name
       type: object
+      required:
+        - name
       properties:
         name:
           type: string
@@ -3226,8 +3224,8 @@ components:
         description:
           type: string
           description: zone description
+      title: create zone request body
     updateZoneRequestBody:
-      title: create zone request body
       type: object
       properties:
         name:
@@ -3236,47 +3234,49 @@ components:
         description:
           type: string
           description: zone description
+      title: create zone request body
     zoneControlSetpointsBody:
-      title: set zone setpoint for all units
-      required:
-      - setpoint
       type: object
+      required:
+        - setpoint
       properties:
         setpoint:
           type: integer
-          description: requested temperature on the same scale the acting user is configured to work with
+          description: >-
+            requested temperature on the same scale the acting user is
+            configured to work with
+      title: set zone setpoint for all units
     zoneControlFansBody:
-      title: set zone fan mode for all units
-      required:
-      - mode
       type: object
+      required:
+        - mode
       properties:
         mode:
           type: integer
           description: requested fan mode from the fan modes enumeration
+      title: set zone fan mode for all units
     zoneControlModesBody:
+      type: object
+      required:
+        - mode
+      properties:
+        mode:
+          type: integer
+          description: requested operation mode from the operation modes enumeration
       title: set zone operation mode for all units
-      required:
-      - mode
-      type: object
-      properties:
-        mode:
-          type: integer
-          description: requested operation mode from the operation modes enumeration
     zoneControlSwitchesBody:
-      title: set zone switch mode for all units (operation status)
-      required:
-      - mode
       type: object
+      required:
+        - mode
       properties:
         mode:
           type: integer
           description: requested operation status from the operation status enumeration
+      title: set zone switch mode for all units (operation status)
     createSystemRequestBody:
-      title: create system request body
-      required:
-      - name
       type: object
+      required:
+        - name
       properties:
         name:
           type: string
@@ -3284,8 +3284,8 @@ components:
         description:
           type: string
           description: system description
+      title: create system request body
     updateSystemRequestBody:
-      title: create system request body
       type: object
       properties:
         name:
@@ -3294,74 +3294,76 @@ components:
         description:
           type: string
           description: system description
+      title: create system request body
     systemControlModesBody:
-      title: set system operation mode for all units
-      required:
-      - mode
       type: object
+      required:
+        - mode
       properties:
         mode:
           type: integer
           description: requested operation mode from the operation modes enumeration
+      title: set system operation mode for all units
     systemControlSwitchesBody:
-      title: set system switch mode for all units (operation status)
-      required:
-      - mode
       type: object
+      required:
+        - mode
       properties:
         mode:
           type: integer
           description: requested operation status from the operation status enumeration
+      title: set system switch mode for all units (operation status)
     unitControlSetpointsBody:
-      title: set unit setpoint
-      required:
-      - setpoint
       type: object
+      required:
+        - setpoint
       properties:
         setpoint:
           type: integer
-          description: requested temperature on the same scale the acting user is configured to work with
+          description: >-
+            requested temperature on the same scale the acting user is
+            configured to work with
+      title: set unit setpoint
     unitControlFansBody:
-      title: set unit fan mode
-      required:
-      - fanMode
       type: object
+      required:
+        - fanMode
       properties:
         fanMode:
           type: integer
           description: requested fan mode from the fan modes enumeration
+      title: set unit fan mode
     unitControlModesBody:
-      title: set unit operation mode
-      required:
-      - operationMode
       type: object
+      required:
+        - operationMode
       properties:
         operationMode:
           type: integer
           description: requested operation mode from the operation modes enumeration
+      title: set unit operation mode
     unitControlSwitchesBody:
-      title: set unit switch mode (operation status)
-      required:
-      - operationStatus
       type: object
+      required:
+        - operationStatus
       properties:
         operationStatus:
           type: integer
-          description: requested operation status from the operation status enumeration
           enum:
-          - 1
-          - 2
+            - 1
+            - 2
+          description: requested operation status from the operation status enumeration
+      title: set unit switch mode (operation status)
     unitControlSwingsBody:
-      title: set unit swing mode (louver)
-      required:
-      - swingMode
       type: object
+      required:
+        - swingMode
       properties:
         swingMode:
           type: integer
           description: requested operation status from the swing mode enumeration
+      title: set unit swing mode (louver)
     updateUnitRequestBody:
-      title: update unit request body
       type: object
       properties:
         name:
@@ -3372,35 +3374,43 @@ components:
           description: unit type from the unit type enumeration
         supportedSwitchModes:
           type: array
-          description: operation status the unit supports - array of integers from the operation status enumeration
+          description: >-
+            operation status the unit supports - array of integers from the
+            operation status enumeration
           items:
             type: integer
         supportedModes:
           type: array
-          description: operation modes the unit supports - array of integers from the operation modes enumeration
+          description: >-
+            operation modes the unit supports - array of integers from the
+            operation modes enumeration
           items:
             type: integer
         supportedFanModes:
           type: array
-          description: fan modes the unit supports - array of integers from the fan modes enumeration
+          description: >-
+            fan modes the unit supports - array of integers from the fan modes
+            enumeration
           items:
             type: integer
         supportedSwingModes:
           type: array
-          description: swing modes the unit supports - array of integers from the swing modes enumeration
+          description: >-
+            swing modes the unit supports - array of integers from the swing
+            modes enumeration
           items:
             type: integer
         temperatureLimits:
           type: object
-          properties: {}
           description: TBD
+          properties: {}
+      title: update unit request body
     authenticateRequestBody:
-      title: authentication request body
-      required:
-      - appId
-      - password
-      - username
       type: object
+      required:
+        - password
+        - username
+        - appId
       properties:
         username:
           type: string
@@ -3408,7 +3418,8 @@ components:
           type: string
         appId:
           type: string
-          default: coolAutomationControl
+          default: "coolAutomationControl"
+      title: authentication request body
     okresponseWithId_data:
       type: object
       properties:
@@ -3435,10 +3446,10 @@ components:
       description: map of sites
     devicesResponse_data:
       type: object
+      additionalProperties: true
       properties:
         <deviceId>:
           $ref: '#/components/schemas/deviceResponseData'
-      additionalProperties: true
       description: dictionary of devices
     zonesResponse_data:
       type: object
@@ -3454,10 +3465,10 @@ components:
       description: dictionary of systems
     unitsResponse_data:
       type: object
+      additionalProperties: true
       properties:
         <unitId>:
           $ref: '#/components/schemas/unitResponseData'
-      additionalProperties: true
       description: dictionary of units
     usersResponse_data:
       type: object
@@ -3467,101 +3478,124 @@ components:
       description: dictionary of units
     typesResponseData_temperatureScale:
       type: object
+      additionalProperties: true
       properties:
         scale:
           type: string
           description: temperature scale name
-      additionalProperties: true
       description: map of supported temperature scale enums
     typesResponseData_operationStatuses:
       type: object
+      additionalProperties: true
       properties:
         status:
           type: string
           description: operation status name
-      additionalProperties: true
       description: map of supported operation status enums
     typesResponseData_operationModes:
       type: object
+      additionalProperties: true
       properties:
         mode:
           type: string
           description: operation mode name
-      additionalProperties: true
       description: map of supported operation mode enums
     typesResponseData_fanModes:
       type: object
+      additionalProperties: true
       properties:
         mode:
           type: string
           description: fan mode name
-      additionalProperties: true
       description: map of supported fan mode enums
     typesResponseData_swingModes:
       type: object
+      additionalProperties: true
       properties:
         mode:
           type: string
           description: swing mode name
-      additionalProperties: true
       description: map of supported swing (louver) mode enums
     typesResponseData_weekDays:
       type: object
+      additionalProperties: true
       properties:
         weekday:
           type: string
           description: weekday name
-      additionalProperties: true
       description: map of week days used for scheduling
     typesResponseData_permissions:
       type: object
+      additionalProperties: true
       properties:
         permission:
           type: string
           description: permission name
-      additionalProperties: true
       description: map of permission names used in permissions
     typesResponseData_resources:
       type: object
+      additionalProperties: true
       properties:
         resource:
           type: string
           description: resource name
-      additionalProperties: true
       description: map of resource names used in permissions
     typesResponseData_roles:
       type: object
+      additionalProperties: true
       properties:
         role ID:
           type: array
           items:
             type: string
             description: permission
-      additionalProperties: true
       description: map of role names used in permissions
     typesResponseData_unitTypes:
       type: object
+      additionalProperties: true
       properties:
         type_id:
           type: string
           description: type name
-      additionalProperties: true
       description: map of type names used in unit types
     typesResponseData_hvacBrands:
       type: array
       description: array of hvac brands
       items:
-        $ref: '#/components/schemas/typesResponseData_hvacBrands_inner'
+        type: object
+        properties:
+          value:
+            type: integer
+            description: hvac type id
+          'type':
+            type: string
+            description: Brand type
+          name:
+            type: string
+            description: Brand Name
+          isWaterHeater:
+            type: boolean
+            description: Is the device water heater
+          hasBooster:
+            type: boolean
+            description: Does the device has booster
     typesResponseData_deviceTypes:
       type: object
+      additionalProperties: true
       properties:
         type ID:
           type: string
           description: type name
         type_object:
-          $ref: '#/components/schemas/typesResponseData_deviceTypes_type_object'
-      additionalProperties: true
-      description: map of type names used in device types
+          type: object
+          properties:
+            name:
+              type: string
+              description: device name
+            shortName:
+              type: string
+              description: device short name
+      description: map of type names used in device types    
     controlTreeResponseData_customers_customer_id_sites_site_id:
       type: object
       properties:
@@ -3594,7 +3628,8 @@ components:
       type: object
       properties:
         site id:
-          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id_sites_site_id'
+          $ref: >-
+            #/components/schemas/controlTreeResponseData_customers_customer_id_sites_site_id
       description: dictionary of accessible customers
     controlTreeResponseData_customers_customer_id:
       type: object
@@ -3609,7 +3644,8 @@ components:
           type: string
           description: user role for this customer
         sites:
-          $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id_sites'
+          $ref: >-
+            #/components/schemas/controlTreeResponseData_customers_customer_id_sites
       description: single customer properties
     controlTreeResponseData_customers:
       type: object
@@ -3617,52 +3653,3 @@ components:
         customer id:
           $ref: '#/components/schemas/controlTreeResponseData_customers_customer_id'
       description: dictionary of accessible customers
-    unitResponseData_temperatureLimits:
-      type: object
-      properties:
-        "0":
-          type: array
-          items:
-            type: integer
-        "1":
-          type: array
-          items:
-            type: integer
-        "2":
-          type: array
-          items:
-            type: integer
-    typesResponseData_hvacBrands_inner:
-      type: object
-      properties:
-        value:
-          type: integer
-          description: hvac type id
-        type:
-          type: string
-          description: Brand type
-        name:
-          type: string
-          description: Brand Name
-        isWaterHeater:
-          type: boolean
-          description: Is the device water heater
-        hasBooster:
-          type: boolean
-          description: Does the device has booster
-    typesResponseData_deviceTypes_type_object:
-      type: object
-      properties:
-        name:
-          type: string
-          description: device name
-        shortName:
-          type: string
-          description: device short name
-  requestBodies:
-    createUserRequestBody:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/createUserRequestBody'
-      required: true

@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**customers_get**](CustomersApi.md#customers_get) | **GET** /customers | get my customers
 
 # **customers_get**
-> CustomersResponse customers_get(x_access_token)
+> CustomersResponse customers_get(x_access_token, origin, referer)
 
 get my customers
 
@@ -24,10 +24,12 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = cool_open_client.client.CustomersApi()
 x_access_token = 'x_access_token_example' # str | access token
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 
 try:
     # get my customers
-    api_response = api_instance.customers_get(x_access_token)
+    api_response = api_instance.customers_get(x_access_token, origin, referer)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling CustomersApi->customers_get: %s\n" % e)
@@ -38,6 +40,8 @@ except ApiException as e:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **x_access_token** | **str**| access token | 
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
 
 ### Return type
 

@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**devices_get**](DevicesApi.md#devices_get) | **GET** /devices | get my devices
 
 # **devices_get**
-> DevicesResponse devices_get(x_access_token)
+> DevicesResponse devices_get(origin, referer, x_access_token)
 
 get my devices
 
@@ -23,11 +23,13 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.DevicesApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 
 try:
     # get my devices
-    api_response = api_instance.devices_get(x_access_token)
+    api_response = api_instance.devices_get(origin, referer, x_access_token)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling DevicesApi->devices_get: %s\n" % e)
@@ -37,6 +39,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
 
 ### Return type

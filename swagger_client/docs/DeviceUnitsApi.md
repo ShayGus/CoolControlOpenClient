@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**devices_device_id_units_get**](DeviceUnitsApi.md#devices_device_id_units_get) | **GET** /devices/{deviceId}/units | get device units
 
 # **devices_device_id_units_get**
-> UnitsResponse devices_device_id_units_get(x_access_token, device_id)
+> UnitsResponse devices_device_id_units_get(origin, referer, x_access_token, device_id)
 
 get device units
 
@@ -23,12 +23,14 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = cool_open_client.client.DeviceUnitsApi()
+origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
+referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
 x_access_token = 'x_access_token_example' # str | access token
 device_id = 'device_id_example' # str | 
 
 try:
     # get device units
-    api_response = api_instance.devices_device_id_units_get(x_access_token, device_id)
+    api_response = api_instance.devices_device_id_units_get(origin, referer, x_access_token, device_id)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling DeviceUnitsApi->devices_device_id_units_get: %s\n" % e)
@@ -38,6 +40,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **origin** | **str**|  | [default to https://control.coolremote.net]
+ **referer** | **str**|  | [default to https://control.coolremote.net/]
  **x_access_token** | **str**| access token | 
  **device_id** | **str**|  | 
 
