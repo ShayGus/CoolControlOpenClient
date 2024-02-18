@@ -1,5 +1,5 @@
 from __future__ import annotations
-from bidict import bidict, OnDup, OD
+from bidict import bidict, OnDup, OnDupAction
 from abc import abstractmethod, ABC
 from typing import Dict, List, Union
 
@@ -31,8 +31,8 @@ class DictTypes(BaseTypes):
            Converts the dictionary to a bidict, and converts the keys to integers.
         """
         self.data = bidict()
-        self.data.on_dup = OnDup(key=OD.RAISE, val=OD.DROP_NEW, kv=OD.DROP_NEW)
-        self.data.putall([(int(k), v) for k, v in data.items()], on_dup=OnDup(key=OD.DROP_NEW, val=OD.DROP_NEW, kv=OD.DROP_NEW))
+        self.data.on_dup = OnDup(key=OnDupAction.RAISE, val=OnDupAction.DROP_NEW)
+        self.data.putall([(int(k), v) for k, v in data.items()], on_dup=OnDup(key=OnDupAction.DROP_NEW, val=OnDupAction.DROP_NEW))
 
     def get(self, key: int) -> str:
         """
