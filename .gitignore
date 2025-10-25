@@ -6,13 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-.codex
-.specify
-.opencode
-!.opencode/memory
-!.specify/memory
-specs/
-
 # Distribution / packaging
 .Python
 build/
@@ -44,6 +37,13 @@ pypi-token.txt
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
+.codex
+.specify
+.opencode
+!.opencode/memory
+!.specify/memory
+specs/
 
 # Unit test / coverage reports
 htmlcov/
