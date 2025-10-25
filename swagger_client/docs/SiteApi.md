@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**sites_site_id_get**](SiteApi.md#sites_site_id_get) | **GET** /sites/{siteId} | get site
 [**sites_site_id_put**](SiteApi.md#sites_site_id_put) | **PUT** /sites/{siteId} | update site
 
+
 # **sites_site_id_delete**
 > Okresponse sites_site_id_delete(origin, referer, x_access_token, site_id)
 
@@ -16,34 +17,48 @@ delete site
 delete site
 
 ### Example
+
+
 ```python
-from __future__ import print_function
-import time
 import cool_open_client.client
+from cool_open_client.client.models.okresponse import Okresponse
 from cool_open_client.client.rest import ApiException
 from pprint import pprint
 
-# create an instance of the API class
-api_instance = cool_open_client.client.SiteApi()
-origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
-referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
-x_access_token = 'x_access_token_example' # str | access token
-site_id = 'site_id_example' # str | 
+# Defining the host is optional and defaults to https://api.coolremote.net/api/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cool_open_client.client.Configuration(
+    host = "https://api.coolremote.net/api/v2"
+)
 
-try:
-    # delete site
-    api_response = api_instance.sites_site_id_delete(origin, referer, x_access_token, site_id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling SiteApi->sites_site_id_delete: %s\n" % e)
+
+# Enter a context with an instance of the API client
+async with cool_open_client.client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cool_open_client.client.SiteApi(api_client)
+    origin = 'https://control.coolremote.net' # str |  (default to 'https://control.coolremote.net')
+    referer = 'https://control.coolremote.net/' # str |  (default to 'https://control.coolremote.net/')
+    x_access_token = 'x_access_token_example' # str | access token
+    site_id = 'site_id_example' # str | 
+
+    try:
+        # delete site
+        api_response = await api_instance.sites_site_id_delete(origin, referer, x_access_token, site_id)
+        print("The response of SiteApi->sites_site_id_delete:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SiteApi->sites_site_id_delete: %s\n" % e)
 ```
+
+
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **origin** | **str**|  | [default to https://control.coolremote.net]
- **referer** | **str**|  | [default to https://control.coolremote.net/]
+ **origin** | **str**|  | [default to &#39;https://control.coolremote.net&#39;]
+ **referer** | **str**|  | [default to &#39;https://control.coolremote.net/&#39;]
  **x_access_token** | **str**| access token | 
  **site_id** | **str**|  | 
 
@@ -60,6 +75,16 @@ No authorization required
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+**401** | unauthorized |  -  |
+**403** | forbidden |  -  |
+**404** | not found |  -  |
+**500** | server error |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **sites_site_id_get**
@@ -70,34 +95,48 @@ get site
 get site
 
 ### Example
+
+
 ```python
-from __future__ import print_function
-import time
 import cool_open_client.client
+from cool_open_client.client.models.site_response import SiteResponse
 from cool_open_client.client.rest import ApiException
 from pprint import pprint
 
-# create an instance of the API class
-api_instance = cool_open_client.client.SiteApi()
-origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
-referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
-x_access_token = 'x_access_token_example' # str | access token
-site_id = 'site_id_example' # str | 
+# Defining the host is optional and defaults to https://api.coolremote.net/api/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cool_open_client.client.Configuration(
+    host = "https://api.coolremote.net/api/v2"
+)
 
-try:
-    # get site
-    api_response = api_instance.sites_site_id_get(origin, referer, x_access_token, site_id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling SiteApi->sites_site_id_get: %s\n" % e)
+
+# Enter a context with an instance of the API client
+async with cool_open_client.client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cool_open_client.client.SiteApi(api_client)
+    origin = 'https://control.coolremote.net' # str |  (default to 'https://control.coolremote.net')
+    referer = 'https://control.coolremote.net/' # str |  (default to 'https://control.coolremote.net/')
+    x_access_token = 'x_access_token_example' # str | access token
+    site_id = 'site_id_example' # str | 
+
+    try:
+        # get site
+        api_response = await api_instance.sites_site_id_get(origin, referer, x_access_token, site_id)
+        print("The response of SiteApi->sites_site_id_get:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SiteApi->sites_site_id_get: %s\n" % e)
 ```
+
+
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **origin** | **str**|  | [default to https://control.coolremote.net]
- **referer** | **str**|  | [default to https://control.coolremote.net/]
+ **origin** | **str**|  | [default to &#39;https://control.coolremote.net&#39;]
+ **referer** | **str**|  | [default to &#39;https://control.coolremote.net/&#39;]
  **x_access_token** | **str**| access token | 
  **site_id** | **str**|  | 
 
@@ -114,48 +153,73 @@ No authorization required
  - **Content-Type**: Not defined
  - **Accept**: application/json
 
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+**401** | unauthorized |  -  |
+**403** | forbidden |  -  |
+**404** | not found |  -  |
+**500** | server error |  -  |
+
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **sites_site_id_put**
-> Okresponse sites_site_id_put(body, origin, referer, x_access_token, site_id)
+> Okresponse sites_site_id_put(origin, referer, x_access_token, site_id, update_site_request_body)
 
 update site
 
 update site
 
 ### Example
+
+
 ```python
-from __future__ import print_function
-import time
 import cool_open_client.client
+from cool_open_client.client.models.okresponse import Okresponse
+from cool_open_client.client.models.update_site_request_body import UpdateSiteRequestBody
 from cool_open_client.client.rest import ApiException
 from pprint import pprint
 
-# create an instance of the API class
-api_instance = cool_open_client.client.SiteApi()
-body = cool_open_client.client.UpdateSiteRequestBody() # UpdateSiteRequestBody | 
-origin = 'https://control.coolremote.net' # str |  (default to https://control.coolremote.net)
-referer = 'https://control.coolremote.net/' # str |  (default to https://control.coolremote.net/)
-x_access_token = 'x_access_token_example' # str | access token
-site_id = 'site_id_example' # str | 
+# Defining the host is optional and defaults to https://api.coolremote.net/api/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cool_open_client.client.Configuration(
+    host = "https://api.coolremote.net/api/v2"
+)
 
-try:
-    # update site
-    api_response = api_instance.sites_site_id_put(body, origin, referer, x_access_token, site_id)
-    pprint(api_response)
-except ApiException as e:
-    print("Exception when calling SiteApi->sites_site_id_put: %s\n" % e)
+
+# Enter a context with an instance of the API client
+async with cool_open_client.client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cool_open_client.client.SiteApi(api_client)
+    origin = 'https://control.coolremote.net' # str |  (default to 'https://control.coolremote.net')
+    referer = 'https://control.coolremote.net/' # str |  (default to 'https://control.coolremote.net/')
+    x_access_token = 'x_access_token_example' # str | access token
+    site_id = 'site_id_example' # str | 
+    update_site_request_body = cool_open_client.client.UpdateSiteRequestBody() # UpdateSiteRequestBody | 
+
+    try:
+        # update site
+        api_response = await api_instance.sites_site_id_put(origin, referer, x_access_token, site_id, update_site_request_body)
+        print("The response of SiteApi->sites_site_id_put:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling SiteApi->sites_site_id_put: %s\n" % e)
 ```
+
+
 
 ### Parameters
 
+
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**UpdateSiteRequestBody**](UpdateSiteRequestBody.md)|  | 
- **origin** | **str**|  | [default to https://control.coolremote.net]
- **referer** | **str**|  | [default to https://control.coolremote.net/]
+ **origin** | **str**|  | [default to &#39;https://control.coolremote.net&#39;]
+ **referer** | **str**|  | [default to &#39;https://control.coolremote.net/&#39;]
  **x_access_token** | **str**| access token | 
  **site_id** | **str**|  | 
+ **update_site_request_body** | [**UpdateSiteRequestBody**](UpdateSiteRequestBody.md)|  | 
 
 ### Return type
 
@@ -169,6 +233,16 @@ No authorization required
 
  - **Content-Type**: application/json
  - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+**401** | unauthorized |  -  |
+**403** | forbidden |  -  |
+**404** | not found |  -  |
+**500** | server error |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

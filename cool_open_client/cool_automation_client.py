@@ -84,7 +84,7 @@ class UnitUpdateMessage:
     fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
     filter: bool = field(metadata={"required": False, "data_key": "filter"})
     operation_mode: Union[str, int] = field(
-        metadata={"required": True, "data_key": "operationMode"}
+        metadata={"required": True, "data_key": "realActiveOperationMode"}
     )
     operation_status: Union[str, int] = field(
         metadata={"required": True, "data_key": "operationStatus"}
@@ -369,7 +369,7 @@ class CoolAutomationClient(Singleton):
     def on_open_socket(self, ws):
         ws.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
 
-    def on_close_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
+    def on_close_socket(self, ws: websocket.WebSocketApp, status_code: int, message: str) -> None:
         """Callback to handle close event of the socket
            function will attempt to reopen the socket
 
@@ -377,7 +377,7 @@ class CoolAutomationClient(Singleton):
             ws (websocket.WebSocketApp): active websocket
             message (str): message received from socket
         """
-        self.logger.warning("Cool open client socket closed...")
+        self.logger.warning(f"Cool open client socket closed, with status code: {status_code}, message: {message}...")
 
     def on_message_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
         """Callback to handle message received from socket

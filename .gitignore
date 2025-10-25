@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+.codex
+.specify
+.opencode
+!.opencode/memory
+!.specify/memory
+specs/
+
 # Distribution / packaging
 .Python
 build/
