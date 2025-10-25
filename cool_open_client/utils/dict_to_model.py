@@ -1,23 +1,40 @@
-from typing import Any, Dict
+from __future__ import annotations
+
+from typing import Any, Dict, Type, TypeVar
 
 
-def dict_to_model(model: Any, dictionary: Dict[str, Any]):
+T = TypeVar("T")
+
+
+def dict_to_model(model: Type[T], dictionary: Dict[str, Any]) -> T:
     """
     Converts a dictionary to an OpenAPI model.
 
     Args:
-        model (Any): The model to convert.
+        model (Type[T]): The model class to instantiate.
         dictionary (dict): A dictionary to convert.
 
     Returns:
-        Model: The Generic Model
+        T: The instantiated model.
     """
-    result = {}
-    attribute_map: Dict[str, str] = dict((v, k) for k, v in model.attribute_map.items())
-    for key, value in dictionary.items():
-        try:
-            result[attribute_map[key]] = value
-        except KeyError:
-            pass
+    if dictionary is None:
+        raise TypeError("dictionary cannot be None")
 
-    return model(**result)
+    if isinstance(dictionary, model):
+        return dictionary
+
+    if hasattr(model, "model_validate"):
+        return model.model_validate(dictionary)
+
+    if hasattr(model, "from_dict"):
+        return model.from_dict(dictionary)
+
+    if isinstance(dictionary, dict):
+        attribute_map: Dict[str, str] = getattr(model, "attribute_map", {})
+        inverse_map = {value: key for key, value in attribute_map.items()}
+        payload = {
+            inverse_map.get(key, key): value for key, value in dictionary.items()
+        }
+        return model(**payload)
+
+    raise TypeError(f"Unsupported payload type {type(dictionary)!r} for model {model!r}")

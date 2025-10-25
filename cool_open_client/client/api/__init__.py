@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 # flake8: noqa
 
 # import apis into api package
@@ -27,3 +25,4 @@ from cool_open_client.client.api.units_api import UnitsApi
 from cool_open_client.client.api.user_api import UserApi
 from cool_open_client.client.api.users_api import UsersApi
 from cool_open_client.client.api.websocket_api import WebsocketApi
+

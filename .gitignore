@@ -38,6 +38,13 @@ pypi-token.txt
 pip-log.txt
 pip-delete-this-directory.txt
 
+.codex
+.specify
+.opencode
+!.opencode/memory
+!.specify/memory
+specs/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/

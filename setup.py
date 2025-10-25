@@ -5,7 +5,7 @@ path_to_client = str(pathlib.Path(__file__).parent.absolute())
 
 setup(
     name="cool-open-client",
-    version="0.0.13",
+    version="0.0.14",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",
@@ -36,5 +36,7 @@ setup(
         "typeguard >= 2.13.3",
         "aiohttp >= 3.8.1",
         "websockets >= 10.3",
+        "pydantic >=2.12.3",
+        "aiohttp_retry >=2.9.1",
     ],
 )

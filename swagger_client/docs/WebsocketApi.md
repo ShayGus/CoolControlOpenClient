@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**ws_v2_get**](WebsocketApi.md#ws_v2_get) | **GET** /ws/v2 | Websocket connection endpoint
 
+
 # **ws_v2_get**
 > ws_v2_get()
 
@@ -14,24 +15,36 @@ Websocket connection endpoint
 Websocket connection endpoint
 
 ### Example
+
+
 ```python
-from __future__ import print_function
-import time
 import cool_open_client.client
 from cool_open_client.client.rest import ApiException
 from pprint import pprint
 
-# create an instance of the API class
-api_instance = cool_open_client.client.WebsocketApi()
+# Defining the host is optional and defaults to https://api.coolremote.net/api/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cool_open_client.client.Configuration(
+    host = "https://api.coolremote.net/api/v2"
+)
 
-try:
-    # Websocket connection endpoint
-    api_instance.ws_v2_get()
-except ApiException as e:
-    print("Exception when calling WebsocketApi->ws_v2_get: %s\n" % e)
+
+# Enter a context with an instance of the API client
+async with cool_open_client.client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cool_open_client.client.WebsocketApi(api_client)
+
+    try:
+        # Websocket connection endpoint
+        await api_instance.ws_v2_get()
+    except Exception as e:
+        print("Exception when calling WebsocketApi->ws_v2_get: %s\n" % e)
 ```
 
+
+
 ### Parameters
+
 This endpoint does not need any parameter.
 
 ### Return type
@@ -46,6 +59,12 @@ No authorization required
 
  - **Content-Type**: Not defined
  - **Accept**: Not defined
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
