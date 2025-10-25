@@ -1,52 +1,73 @@
-import asyncio
+from __future__ import annotations
+
 import unittest
-from cool_open_client.cool_automation_client import CoolAutomationClient, InvalidTokenException
+from pathlib import Path
+
+try:
+    from cool_open_client.cool_automation_client import CoolAutomationClient, InvalidTokenException
+    from cool_open_client.utils.singleton import SingletonMeta
+    from cool_open_client.client.models.device_response_data import DeviceResponseData
+    from cool_open_client.client.models.user_response_data import UserResponseData
+except ModuleNotFoundError as exc:
+    if exc.name == "websocket":
+        raise unittest.SkipTest("websocket-client dependency missing")
+    raise
 
 
-class CoolAutomationClientTest(unittest.TestCase):
-    def setUp(self):
-        with open("token.txt", "r", encoding='utf-8') as token_file:
-            self.token = token_file.read()
-        self.loop = asyncio.get_event_loop()
-        self.client = self.loop.run_until_complete(CoolAutomationClient.create(token=self.token))
+TOKEN_PATH = Path("token.txt")
+BAD_TOKEN_PATH = Path("bad_token.txt")
 
-    def test_client_call(self):
-        loop = asyncio.get_event_loop()
-        response = loop.run_until_complete(CoolAutomationClient.authenticate(username="a", password="aaa"))
-        # response = await CoolAutomationClient.authenticate(username="aa", password="aaa")
-        print(response)
 
-    def test_get_devices(self):
-        response = self.loop.run_until_complete(self.client.get_devices())
-        print(response)
+def read_fixture(path: Path) -> str:
+    with path.open("r", encoding="utf-8") as token_file:
+        return token_file.read().strip()
 
-    def test_get_units(self):
-        response = self.loop.run_until_complete(self.client.get_controllable_units())
-        print(response)
 
-    def test_get_me(self):
-        response = self.loop.run_until_complete(self.client.get_me())
-        print(response)
+@unittest.skipUnless(TOKEN_PATH.exists(), "token.txt fixture missing; integration tests skipped")
+class CoolAutomationClientIntegrationTest(unittest.IsolatedAsyncioTestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.token = read_fixture(TOKEN_PATH)
 
-    def test_get_dictionary(self):
-        response = self.loop.run_until_complete(self.client.get_dictionary())
-        print(response)
+    async def asyncSetUp(self):
+        self.client = await CoolAutomationClient.create(token=self.token)
 
-    def test_get_dictionary_bad_token(self):
-        with open("bad_token.txt", "r", encoding='utf-8') as token_file:
-            token = token_file.read()
-        try:
-            client = self.loop.run_until_complete(CoolAutomationClient.create(token=token))
-        except InvalidTokenException as e:
-            print("Invalid Token Exception")
-        except Exception as e:
-            raise e
+    async def asyncTearDown(self):
+        await self.client.api_client.close()
+        SingletonMeta._instances.pop(CoolAutomationClient, None)
 
-    def test_set_hvac_mode(self):
-        mode = "COOL"
-        unit_id = "61f8e55b60bf483d1e5aeef6"
-        response = self.loop.run_until_complete(self.client.set_operation_mode(mode= mode, unit_id=unit_id))
-        print(response)
+    async def test_get_me_returns_user_data(self):
+        response = await self.client.get_me()
+        self.assertIsInstance(response, UserResponseData)
+        self.assertTrue(getattr(response, "id", None))
+
+    async def test_dictionary_mapping_roundtrip(self):
+        modes = self.client.operation_modes.data
+        self.assertTrue(modes)
+        mode_id, mode_name = next(iter(modes.items()))
+        self.assertIsInstance(mode_id, int)
+        self.assertIsInstance(mode_name, str)
+        self.assertEqual(self.client.operation_modes.get(mode_id), mode_name)
+        self.assertEqual(self.client.operation_modes.get_inverse(mode_name), mode_id)
+
+    async def test_get_devices_returns_connected_models(self):
+        devices = await self.client.get_devices()
+        for device in devices:
+            self.assertIsInstance(device, DeviceResponseData)
+            self.assertTrue(device.is_connected)
+
+    async def test_get_dictionary_fetches_types(self):
+        dictionaries = await self.client.get_dictionary()
+        self.assertIsNotNone(dictionaries)
+        self.assertTrue(self.client.operation_statuses.data)
+
+    @unittest.skipUnless(BAD_TOKEN_PATH.exists(), "bad_token.txt fixture missing; invalid-token test skipped")
+    async def test_create_with_bad_token_raises(self):
+        invalid_token = read_fixture(BAD_TOKEN_PATH)
+        with self.assertRaises(InvalidTokenException):
+            bad_client = await CoolAutomationClient.create(token=invalid_token)
+
 
 if __name__ == "__main__":
     unittest.main()

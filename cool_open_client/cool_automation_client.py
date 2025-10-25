@@ -9,7 +9,7 @@ import marshmallow
 import marshmallow_dataclass
 import sys
 
-from typing import Callable, Iterable, Union, cast
+from typing import Any, Callable, Dict, Union
 from threading import Thread
 
 from dataclasses import dataclass, field
@@ -17,7 +17,6 @@ from dataclasses import dataclass, field
 from websocket import (
     WebSocketConnectionClosedException,
     WebSocketException,
-    WebSocketConnectionClosedException,
 )
 from .client.api_client import ApiClient
 
@@ -40,6 +39,7 @@ from .client.models.units_response import UnitsResponse
 from .client.models.unit_response_data import UnitResponseData
 from .client.rest import ApiException
 from .client.api.authentication_api import AuthenticationApi
+from .client.models.authenticate_request_body import AuthenticateRequestBody
 from .client.models.unit_control_modes_body import UnitControlModesBody
 from .client.models.unit_control_setpoints_body import UnitControlSetpointsBody
 from .client.models.unit_control_swings_body import UnitControlSwingsBody
@@ -122,7 +122,7 @@ class WebSocketThread(Thread):
     ):
         threading.Thread.__init__(self)
         self.name = "CoolAutomationClientWebsocketClient"
-        self.setDaemon(True)
+        self.daemon = True
         self.websocket = None
         self.close_flag = False
         self.logger = _LOGGER if logger is None else logger
@@ -188,7 +188,11 @@ class CoolAutomationClient(Singleton):
         """
         Perform Authentication
         """
-        body = {"username": username, "password": password, "appId": "coolAutomationControl"}
+        body = AuthenticateRequestBody(
+            username=username,
+            password=password,
+            app_id="coolAutomationControl",
+        )
         api = AuthenticationApi()
         try:
             result = await api.users_authenticate_post(body)
@@ -261,7 +265,7 @@ class CoolAutomationClient(Singleton):
         return self._transform_message(message)
 
     @with_exception
-    async def get_devices(self) -> list[Union[DeviceResponseData, None]]:
+    async def get_devices(self) -> list[DeviceResponseData]:
         """Returns a list of connected devices
 
         Returns:
@@ -270,12 +274,16 @@ class CoolAutomationClient(Singleton):
         api = DevicesApi(api_client=self.api_client)
         devices: DevicesResponse = await api.devices_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER)
         data: DevicesResponseData = devices.data
-        devices = [
-            dict_to_model(DeviceResponseData, device)
-            for device in cast(Iterable[DeviceResponseData], data.values())
-            if device["isConnected"]
-        ]
-        return devices
+        raw_devices = self._extract_mapping(data)
+        connected_devices: list[DeviceResponseData] = []
+        for device_payload in raw_devices.values():
+            try:
+                device = dict_to_model(DeviceResponseData, device_payload)
+            except TypeError:
+                continue
+            if getattr(device, "is_connected", False):
+                connected_devices.append(device)
+        return connected_devices
 
     @with_exception
     async def set_operation_status(self, unit_id: str, status: str):
@@ -288,11 +296,11 @@ class CoolAutomationClient(Singleton):
         """
         api_instance = UnitControlApi(api_client=self.api_client)
         status = self.operation_statuses.get_inverse(status)
-        body = UnitControlSwitchesBody(status)
+        body = UnitControlSwitchesBody(operation_status=status)
 
         # set unit operation status
         api_response = await api_instance.units_unit_id_controls_operation_statuses_put(
-            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_switches_body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -306,9 +314,9 @@ class CoolAutomationClient(Singleton):
         """
         api_instance = UnitControlApi(api_client=self.api_client)
         status = self.operation_modes.get_inverse(mode)
-        body = UnitControlModesBody(status)
+        body = UnitControlModesBody(operation_mode=status)
         api_response = await api_instance.units_unit_id_controls_operation_modes_put(
-            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_modes_body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -321,10 +329,10 @@ class CoolAutomationClient(Singleton):
         """
         api_instance = UnitControlApi(api_client=self.api_client)
         mode = self.swing_modes.get_inverse(mode)
-        body = UnitControlSwingsBody(mode)
+        body = UnitControlSwingsBody(swing_mode=mode)
 
         api_response = await api_instance.units_unit_id_controls_swing_modes_put(
-            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_swings_body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -337,10 +345,10 @@ class CoolAutomationClient(Singleton):
         """
         api_instance = UnitControlApi(api_client=self.api_client)
         mode = self.fan_modes.get_inverse(mode)
-        body = UnitControlFansBody(mode)
+        body = UnitControlFansBody(fan_mode=mode)
 
         api_response = await api_instance.units_unit_id_controls_fan_modes_put(
-            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_fans_body=body, unit_id=unit_id
         )
 
     @with_exception
@@ -352,10 +360,10 @@ class CoolAutomationClient(Singleton):
             temp (int): The desired setpoint temperature
         """
         api_instance = UnitControlApi(self.api_client)
-        body = UnitControlSetpointsBody(temp)
+        body = UnitControlSetpointsBody(setpoint=temp)
 
         api_response = await api_instance.units_unit_id_controls_setpoints_put(
-            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, body=body, unit_id=unit_id
+            x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_setpoints_body=body, unit_id=unit_id
         )
 
     def register_for_updates(self, unit: Updatable):
@@ -491,6 +499,20 @@ class CoolAutomationClient(Singleton):
         message.operation_status = self.operation_statuses.get(message.operation_status)
         return message
 
+    @staticmethod
+    def _extract_mapping(payload: Any) -> Dict[str, Any]:
+        if payload is None:
+            return {}
+        if isinstance(payload, dict):
+            return payload
+        additional = getattr(payload, "additional_properties", None)
+        if isinstance(additional, dict):
+            return additional
+        if hasattr(payload, "to_dict"):
+            dumped = payload.to_dict()
+            if isinstance(dumped, dict):
+                return dumped
+        return {}
 
 class UnauthorizedException(Exception):
     pass
