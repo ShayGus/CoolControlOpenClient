@@ -24,7 +24,19 @@ def dict_to_model(model: Type[T], dictionary: Dict[str, Any]) -> T:
         return dictionary
 
     if hasattr(model, "model_validate"):
-        return model.model_validate(dictionary)
+        payload = dictionary
+
+        if (
+            getattr(model, "__name__", None) == "UnitResponseData"
+            and isinstance(dictionary, dict)
+        ):
+            ambient_value = dictionary.get("ambientTemperature")
+            if isinstance(ambient_value, float):
+                # Round half-degree readings so the StrictInt schema accepts the value.
+                payload = {**dictionary}
+                payload["ambientTemperature"] = int(round(ambient_value))
+
+        return model.model_validate(payload)
 
     if hasattr(model, "from_dict"):
         return model.from_dict(dictionary)

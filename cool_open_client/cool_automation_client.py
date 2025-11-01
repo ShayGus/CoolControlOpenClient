@@ -77,7 +77,7 @@ _LOGGER.setLevel(logging.WARNING)
 class UnitUpdateMessage:
     """Data class representing the update message received from the server"""
 
-    ambient_temperature: int = field(
+    ambient_temperature: Union[int, float] = field(
         metadata={"required": False, "data_key": "ambientTemperature"}
     )
     unit_id: str = field(metadata={"required": True, "data_key": "unitId"})
