@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Dict, Type, TypeVar
 
+from .temperature import normalize_temperature_fields
+
 
 T = TypeVar("T")
 
@@ -30,11 +32,7 @@ def dict_to_model(model: Type[T], dictionary: Dict[str, Any]) -> T:
             getattr(model, "__name__", None) == "UnitResponseData"
             and isinstance(dictionary, dict)
         ):
-            ambient_value = dictionary.get("ambientTemperature")
-            if isinstance(ambient_value, float):
-                # Round half-degree readings so the StrictInt schema accepts the value.
-                payload = {**dictionary}
-                payload["ambientTemperature"] = int(round(ambient_value))
+            payload = normalize_temperature_fields(dictionary)
 
         return model.model_validate(payload)
 

@@ -48,6 +48,7 @@ from .utils.dictionaries import DictTypes
 from .utils.singleton import Singleton
 from .utils.updatable import Updatable
 from .utils.dict_to_model import dict_to_model
+from .utils.temperature import normalize_temperature_fields, round_temperature_value
 
 
 _LOGGER = logging.getLogger(__package__)
@@ -253,10 +254,10 @@ class CoolAutomationClient(Singleton):
         unit: UnitResponseData = (await api.units_unit_id_get(x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_id=unit_id)).data
 
         message = UnitUpdateMessage(
-            ambient_temperature=unit.ambient_temperature,
+            ambient_temperature=round_temperature_value(unit.ambient_temperature),
             fan_mode=unit.active_fan_mode,
             operation_mode=unit.active_operation_mode,
-            setpoint=unit.active_setpoint,
+            setpoint=round_temperature_value(unit.active_setpoint),
             swing=unit.active_swing_mode,
             operation_status=unit.active_operation_status,
             filter=unit.filter,
@@ -352,15 +353,16 @@ class CoolAutomationClient(Singleton):
         )
 
     @with_exception
-    async def set_temperature_set_point(self, unit_id: str, temp: int):
+    async def set_temperature_set_point(self, unit_id: str, temp: float | int):
         """Set the desired setpoint on the HVAC unit
 
         Args:
             unit_id (str): The identifier of the unit
-            temp (int): The desired setpoint temperature
+            temp (float | int): The desired setpoint temperature
         """
         api_instance = UnitControlApi(self.api_client)
-        body = UnitControlSetpointsBody(setpoint=temp)
+        serialized_temp = int(round(float(temp)))
+        body = UnitControlSetpointsBody(setpoint=serialized_temp)
 
         api_response = await api_instance.units_unit_id_controls_setpoints_put(
             x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_setpoints_body=body, unit_id=unit_id
@@ -435,8 +437,9 @@ class CoolAutomationClient(Singleton):
         data = loaded_json.get("data", None)
         if data is not None:
             self.logger.debug("Received data from websocket: %s", str(data))
+            normalized_data = normalize_temperature_fields(data)
             update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(
-                data, unknown=marshmallow.EXCLUDE
+                normalized_data, unknown=marshmallow.EXCLUDE
             )
             self.logger.debug("Update message: %s", update_message)
             if update_message is not None:

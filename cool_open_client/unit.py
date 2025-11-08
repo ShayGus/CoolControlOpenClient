@@ -22,10 +22,10 @@ class HVACUnit(Updatable):
         self,
         id: str,
         name: str,
-        active_setpoint: int,
+        active_setpoint: float | int | None,
         active_operation_status: int,
         active_operation_mode: int,
-        ambient_temperature: float,
+        ambient_temperature: float | int | None,
         active_fan_mode: int,
         active_swing_mode: int,
         temerature_range: list[int],
@@ -40,8 +40,8 @@ class HVACUnit(Updatable):
     ) -> None:
         self._id = id
         self._change_filter_status: bool = False
-        self._active_setpoint: int = active_setpoint
-        self._ambient_temperature = ambient_temperature
+        self._active_setpoint: int | None = self._round_temperature(active_setpoint)
+        self._ambient_temperature: int | None = self._round_temperature(ambient_temperature)
         self._active_operation_status: int = active_operation_status
         self._active_operation_mode: int = active_operation_mode
         self._active_fan_mode: int = active_fan_mode
@@ -87,13 +87,15 @@ class HVACUnit(Updatable):
         """
         await self._client.set_swing_mode(unit_id=self._id, mode=mode)
 
-    async def set_temperature_set_point(self, setpoint: int):
+    async def set_temperature_set_point(self, setpoint: float | int):
         """Set the set point temperature of the HVAC unit
 
         Args:
-            setpoint (int): The desired setpoint of the HVAC unit
+            setpoint (float | int): The desired setpoint of the HVAC unit
         """
-        await self._client.set_temperature_set_point(unit_id=self._id, temp=setpoint)
+        rounded = self._round_temperature(setpoint)
+        await self._client.set_temperature_set_point(unit_id=self._id, temp=rounded)
+        self._active_setpoint = rounded
 
     async def set_fan_mode(self, mode: str):
         """Set the fan mode of the HVAC unit
@@ -110,9 +112,9 @@ class HVACUnit(Updatable):
         self._active_operation_mode = message.operation_mode
         self._active_fan_mode = message.fan_mode
         self._active_operation_status = message.operation_status
-        self._active_setpoint = message.setpoint
+        self._active_setpoint = self._round_temperature(message.setpoint)
         self._active_swing_mode = message.swing
-        self._ambient_temperature = message.ambient_temperature
+        self._ambient_temperature = self._round_temperature(message.ambient_temperature)
         self.logger.debug("Unit updated %s", self.name)
         self._update_pending = True
         if with_callback:
@@ -155,7 +157,7 @@ class HVACUnit(Updatable):
         return self._active_operation_status
 
     @property
-    def setpoint(self):
+    def setpoint(self) -> int | None:
         return self._active_setpoint
 
     @property
@@ -193,7 +195,7 @@ class HVACUnit(Updatable):
             return ["off"]
 
     @property
-    def ambient_temperature(self) -> float:
+    def ambient_temperature(self) -> int | None:
         return self._ambient_temperature
 
     @property
@@ -219,3 +221,9 @@ class HVACUnit(Updatable):
             type(self).__name__,
             ", ".join("%s=%s" % item for item in vars(self).items()),
         )
+
+    @staticmethod
+    def _round_temperature(value: float | int | None) -> int | None:
+        if value is None:
+            return None
+        return int(round(float(value)))
