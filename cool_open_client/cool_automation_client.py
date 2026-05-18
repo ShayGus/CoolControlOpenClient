@@ -75,12 +75,8 @@ _LOGGER.setLevel(logging.WARNING)
 class UnitUpdateMessage:
     """Data class representing the update message received from the server"""
 
-    ambient_temperature: Union[int, float] = field(
-        metadata={"required": False, "data_key": "ambientTemperature"}
-    )
     unit_id: str = field(metadata={"required": True, "data_key": "unitId"})
     fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
-    filter: bool = field(metadata={"required": False, "data_key": "filter"})
     operation_mode: Union[str, int] = field(
         metadata={"required": True, "data_key": "operationMode"}
     )
@@ -89,6 +85,10 @@ class UnitUpdateMessage:
     )
     setpoint: int = field(metadata={"required": True, "data_key": "setpoint"})
     swing: Union[str, int] = field(metadata={"required": True, "data_key": "swing"})
+    ambient_temperature: Union[int, float, None] = field(
+        metadata={"required": False, "data_key": "ambientTemperature"}, default=None
+    )
+    filter: bool = field(metadata={"required": False, "data_key": "filter"}, default=False)
     temperature_scale: int = field(
         metadata={"required": False, "data_key": "temperatureScale"}, default=1
     )
