@@ -85,7 +85,7 @@ class UnitUpdateMessage:
     fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
     filter: bool = field(metadata={"required": False, "data_key": "filter"})
     operation_mode: Union[str, int] = field(
-        metadata={"required": True, "data_key": "realActiveOperationMode"}
+        metadata={"required": True, "data_key": "operationMode"}
     )
     operation_status: Union[str, int] = field(
         metadata={"required": True, "data_key": "operationStatus"}
