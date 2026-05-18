@@ -407,7 +407,6 @@ class CoolAutomationClient(Singleton):
             raise error
         except Exception as error:
             self.logger.error("Error handling message from socket: %s", error)
-            raise error
 
     def _handle_ping_pong(self, ws: websocket.WebSocketApp, loaded_json: dict) -> None:
         """Handle ping pong message from websocket, return pong on ping
@@ -433,6 +432,9 @@ class CoolAutomationClient(Singleton):
             loaded_json (dict): dict baring data loaded from message json
         """
         self.logger.debug("Entered Message Handler %s", str(loaded_json))
+
+        if loaded_json.get("name") != "UPDATE_UNIT":
+            return
 
         data = loaded_json.get("data", None)
         if data is not None:
