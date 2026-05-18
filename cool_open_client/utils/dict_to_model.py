@@ -26,14 +26,7 @@ def dict_to_model(model: Type[T], dictionary: Dict[str, Any]) -> T:
         return dictionary
 
     if hasattr(model, "model_validate"):
-        payload = dictionary
-
-        if (
-            getattr(model, "__name__", None) == "UnitResponseData"
-            and isinstance(dictionary, dict)
-        ):
-            payload = normalize_temperature_fields(dictionary)
-
+        payload = normalize_temperature_fields(dictionary) if isinstance(dictionary, dict) else dictionary
         return model.model_validate(payload)
 
     if hasattr(model, "from_dict"):
