@@ -5,6 +5,12 @@ import threading
 import time
 import websocket
 import json
+import asyncio
+from typing import AsyncIterator
+
+import aiohttp
+
+from .ws_events import Reconnected, UnitUpdate, WsEvent
 import marshmallow
 import marshmallow_dataclass
 import sys
@@ -313,6 +319,79 @@ class CoolAutomationClient(Singleton):
             updates[message.unit_id] = self._transform_message(message)
 
         return updates
+    async def subscribe_unit_updates(self) -> AsyncIterator[WsEvent]:
+        """Subscribe to real-time unit state changes via WebSocket.
+
+        Yields a `UnitUpdate` for each server `UPDATE_UNIT` message and a
+        `Reconnected` event each time the underlying connection is
+        re-established following a drop. Reconnect uses exponential
+        backoff (1s, 2s, 4s, 8s, 16s, 32s, capped at 60s; reset to 1s on
+        successful authenticate). Iteration only ends when the caller
+        breaks out or the consuming task is cancelled.
+        """
+        session = aiohttp.ClientSession()
+        backoff = 1
+        first_connect = True
+        try:
+            while True:
+                try:
+                    async with session.ws_connect(
+                        self.SOCKET_URI,
+                        ssl=self.api_client.rest_client.ssl_context,
+                        heartbeat=30,
+                    ) as ws:
+                        await ws.send_json({
+                            "type": "authenticate",
+                            "content": {"token": self.token},
+                        })
+                        if not first_connect:
+                            yield Reconnected()
+                        first_connect = False
+                        backoff = 1
+
+                        async for raw in ws:
+                            if raw.type != aiohttp.WSMsgType.TEXT:
+                                continue
+                            try:
+                                msg = json.loads(raw.data)
+                            except (TypeError, ValueError):
+                                continue
+                            if msg.get("type") == "ping":
+                                await ws.send_json({"type": "pong"})
+                                continue
+                            if msg.get("name") != "UPDATE_UNIT":
+                                continue
+                            data = msg.get("data")
+                            if data is None:
+                                continue
+                            try:
+                                normalized = normalize_temperature_fields(data)
+                                update_message = UnitUpdateMessageSchema().load(
+                                    normalized, unknown=marshmallow.EXCLUDE,
+                                )
+                            except (marshmallow.ValidationError, TypeError, KeyError):
+                                self.logger.warning(
+                                    "Skipping malformed UPDATE_UNIT message",
+                                    exc_info=True,
+                                )
+                                continue
+                            if update_message is None:
+                                continue
+                            update_message = self._transform_message(update_message)
+                            yield UnitUpdate(update_message)
+                except asyncio.CancelledError:
+                    raise
+                except Exception:
+                    self.logger.warning(
+                        "WS subscription error; reconnecting in %ds",
+                        backoff,
+                        exc_info=True,
+                    )
+                    await asyncio.sleep(backoff)
+                    backoff = min(backoff * 2, 60)
+        finally:
+            await session.close()
+
 
     @with_exception
     async def get_devices(self) -> list[DeviceResponseData]:

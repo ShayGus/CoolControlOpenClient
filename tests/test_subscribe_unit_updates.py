@@ -9,7 +9,7 @@ import asyncio
 import json
 import unittest
 from contextlib import asynccontextmanager
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import aiohttp
 
@@ -63,13 +63,13 @@ def _make_unit_update_payload(unit_id: str, setpoint: int = 22) -> dict:
     return {
         "name": "UPDATE_UNIT",
         "data": {
-            "id": unit_id,
+            "unitId": unit_id,
             "ambientTemperature": 23,
             "fan": 1,
             "filter": False,
             "operationMode": 2,
             "operationStatus": 1,
-            "activeSetpoint": setpoint,
+            "setpoint": setpoint,
             "swing": 0,
         },
     }
@@ -161,7 +161,7 @@ class SubscribeUnitUpdatesTest(unittest.IsolatedAsyncioTestCase):
             return
 
         with self._patch_ws_connect([ws1, ws2]), \
-             patch("asyncio.sleep", new=_instant_sleep):
+             patch("cool_open_client.cool_automation_client.asyncio.sleep", new=_instant_sleep):
             events = []
             try:
                 async for ev in self.client.subscribe_unit_updates():
@@ -201,16 +201,20 @@ class SubscribeUnitUpdatesTest(unittest.IsolatedAsyncioTestCase):
         self.assertIsInstance(events[0], UnitUpdate)
 
     async def test_cancellation_closes_session(self):
+        from contextlib import aclosing
+
         fake = _FakeWs(
             incoming=[_make_text_msg(_make_unit_update_payload("unit-A"))],
             terminate_with=asyncio.CancelledError(),
         )
         holder = []
         with self._patch_ws_connect([fake], fake_session_holder=holder):
-            try:
-                async for _ in self.client.subscribe_unit_updates():
-                    raise asyncio.CancelledError()
-            except asyncio.CancelledError:
-                pass
+            async with aclosing(self.client.subscribe_unit_updates()) as agen:
+                try:
+                    async for _ in agen:
+                        raise asyncio.CancelledError()
+                except asyncio.CancelledError:
+                    pass
+            # aclose() ran the generator's finally, which closed the session.
 
         self.assertTrue(holder[0].closed)
