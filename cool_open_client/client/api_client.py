@@ -79,14 +79,15 @@ class ApiClient:
         configuration=None,
         header_name=None,
         header_value=None,
-        cookie=None
+        cookie=None,
+        ssl_context=None,
     ) -> None:
         # use default configuration if none is provided
         if configuration is None:
             configuration = Configuration.get_default()
         self.configuration = configuration
 
-        self.rest_client = rest.RESTClientObject(configuration)
+        self.rest_client = rest.RESTClientObject(configuration, ssl_context=ssl_context)
         self.default_headers = {}
         if header_name is not None:
             self.default_headers[header_name] = header_value

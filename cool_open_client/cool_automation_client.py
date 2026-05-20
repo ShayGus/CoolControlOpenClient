@@ -171,8 +171,8 @@ class CoolAutomationClient(Singleton):
     REFERER = "https://control.coolremote.net/"
 
     @classmethod
-    async def create(cls, token, logger=None):
-        self = cls(logger=logger)
+    async def create(cls, token, logger=None, ssl_context=None):
+        self = cls(logger=logger, ssl_context=ssl_context)
         if token is None:
             raise ValueError("Toke cannot be None")
         self.token = token
@@ -186,24 +186,30 @@ class CoolAutomationClient(Singleton):
         return self
 
     @classmethod
-    async def authenticate(cls, username: str, password: str) -> str:
+    async def authenticate(cls, username: str, password: str, ssl_context=None) -> str:
         """
-        Perform Authentication
+        Perform Authentication.
+
+        When called from an async event loop (e.g. Home Assistant), pass a
+        pre-built ssl_context so the underlying RESTClientObject does not
+        load the CA bundle on the event loop.
         """
         body = AuthenticateRequestBody(
             username=username,
             password=password,
             app_id="coolAutomationControl",
         )
-        api = AuthenticationApi()
+        api = AuthenticationApi(api_client=ApiClient(ssl_context=ssl_context))
         try:
             result = await api.users_authenticate_post(body)
         except ApiException as error:
             if error.status == cls.UNAUTHORIZES_ERROR_CODE:
                 return "Unauthorized"
+        finally:
+            await api.api_client.close()
         return result.data.token
 
-    def __init__(self, logger: logging.Logger = None) -> None:
+    def __init__(self, logger: logging.Logger = None, ssl_context=None) -> None:
         self.token = None
         self._dictionaries: TypesResponseData = None
         self.temperature_scale = None
@@ -213,7 +219,7 @@ class CoolAutomationClient(Singleton):
         self.swing_modes = None
         self.socket = None
         self._registered_units: dict[str, Updatable] = {}
-        self.api_client = ApiClient()
+        self.api_client = ApiClient(ssl_context=ssl_context)
         self.logger = logger if logger is not None else _LOGGER
         self.ws_thread: Thread = None
 

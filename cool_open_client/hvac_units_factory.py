@@ -11,11 +11,11 @@ from .utils.units_payload import ensure_dict, extract_units_mapping
 
 class HVACUnitsFactory:
     @classmethod
-    async def create(cls, token: str = None):
+    async def create(cls, token: str = None, ssl_context=None):
         if token is None:
             raise ValueError("token is required")
 
-        client = await CoolAutomationClient.create(token)
+        client = await CoolAutomationClient.create(token, ssl_context=ssl_context)
         return cls(client)
 
     def __init__(self, client=None, event_loop=None) -> None:
