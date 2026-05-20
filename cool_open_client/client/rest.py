@@ -52,23 +52,29 @@ class RESTResponse(io.IOBase):
 
 class RESTClientObject:
 
-    def __init__(self, configuration) -> None:
+    def __init__(self, configuration, ssl_context: "ssl.SSLContext | None" = None) -> None:
 
         # maxsize is number of requests to host that are allowed in parallel
         self.maxsize = configuration.connection_pool_maxsize
 
-        self.ssl_context = ssl.create_default_context(
-            cafile=configuration.ssl_ca_cert,
-            cadata=configuration.ca_cert_data,
-        )
-        if configuration.cert_file:
-            self.ssl_context.load_cert_chain(
-                configuration.cert_file, keyfile=configuration.key_file
+        if ssl_context is not None:
+            # Caller (e.g. Home Assistant) pre-built the SSL context off the
+            # event loop. Use it as-is — do not touch cert_file / verify_ssl,
+            # which are caller-side concerns when bringing your own context.
+            self.ssl_context = ssl_context
+        else:
+            self.ssl_context = ssl.create_default_context(
+                cafile=configuration.ssl_ca_cert,
+                cadata=configuration.ca_cert_data,
             )
+            if configuration.cert_file:
+                self.ssl_context.load_cert_chain(
+                    configuration.cert_file, keyfile=configuration.key_file
+                )
 
-        if not configuration.verify_ssl:
-            self.ssl_context.check_hostname = False
-            self.ssl_context.verify_mode = ssl.CERT_NONE
+            if not configuration.verify_ssl:
+                self.ssl_context.check_hostname = False
+                self.ssl_context.verify_mode = ssl.CERT_NONE
 
         self.proxy = configuration.proxy
         self.proxy_headers = configuration.proxy_headers

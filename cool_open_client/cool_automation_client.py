@@ -48,6 +48,7 @@ from .utils.dictionaries import DictTypes
 from .utils.singleton import Singleton
 from .utils.updatable import Updatable
 from .utils.dict_to_model import dict_to_model
+from .utils.units_payload import ensure_dict, extract_units_mapping
 from .utils.temperature import normalize_temperature_fields, round_temperature_value
 
 
@@ -170,8 +171,8 @@ class CoolAutomationClient(Singleton):
     REFERER = "https://control.coolremote.net/"
 
     @classmethod
-    async def create(cls, token, logger=None):
-        self = cls(logger=logger)
+    async def create(cls, token, logger=None, ssl_context=None):
+        self = cls(logger=logger, ssl_context=ssl_context)
         if token is None:
             raise ValueError("Toke cannot be None")
         self.token = token
@@ -185,24 +186,30 @@ class CoolAutomationClient(Singleton):
         return self
 
     @classmethod
-    async def authenticate(cls, username: str, password: str) -> str:
+    async def authenticate(cls, username: str, password: str, ssl_context=None) -> str:
         """
-        Perform Authentication
+        Perform Authentication.
+
+        When called from an async event loop (e.g. Home Assistant), pass a
+        pre-built ssl_context so the underlying RESTClientObject does not
+        load the CA bundle on the event loop.
         """
         body = AuthenticateRequestBody(
             username=username,
             password=password,
             app_id="coolAutomationControl",
         )
-        api = AuthenticationApi()
+        api = AuthenticationApi(api_client=ApiClient(ssl_context=ssl_context))
         try:
             result = await api.users_authenticate_post(body)
         except ApiException as error:
             if error.status == cls.UNAUTHORIZES_ERROR_CODE:
                 return "Unauthorized"
+        finally:
+            await api.api_client.close()
         return result.data.token
 
-    def __init__(self, logger: logging.Logger = None) -> None:
+    def __init__(self, logger: logging.Logger = None, ssl_context=None) -> None:
         self.token = None
         self._dictionaries: TypesResponseData = None
         self.temperature_scale = None
@@ -212,7 +219,7 @@ class CoolAutomationClient(Singleton):
         self.swing_modes = None
         self.socket = None
         self._registered_units: dict[str, Updatable] = {}
-        self.api_client = ApiClient()
+        self.api_client = ApiClient(ssl_context=ssl_context)
         self.logger = logger if logger is not None else _LOGGER
         self.ws_thread: Thread = None
 
@@ -264,6 +271,48 @@ class CoolAutomationClient(Singleton):
             unit_id=unit.id,
         )
         return self._transform_message(message)
+
+    @with_exception
+    async def get_updated_controllable_units(self) -> dict[str, UnitUpdateMessage]:
+        """
+        Bulk equivalent of get_updated_controllable_unit. One HTTP request;
+        returns a mapping of unit_id -> UnitUpdateMessage for every
+        controllable unit (type in (None, 1)). Mirrors the transform applied
+        by the per-unit method so callers can feed the messages straight into
+        HVACUnit._update_unit.
+        """
+        api = UnitsApi(api_client=self.api_client)
+        response: UnitsResponse = await api.units_get(
+            x_access_token=self.token,
+            origin=self.ORIGIN,
+            referer=self.REFERER,
+        )
+
+        updates: dict[str, UnitUpdateMessage] = {}
+        payload = extract_units_mapping(response.data)
+
+        for unit_id, raw in payload.items():
+            raw_dict = ensure_dict(raw)
+            if isinstance(raw_dict, dict) and raw_dict.get("type") not in (None, 1):
+                continue
+            try:
+                unit = dict_to_model(UnitResponseData, raw)
+            except TypeError:
+                continue
+
+            message = UnitUpdateMessage(
+                ambient_temperature=round_temperature_value(unit.ambient_temperature),
+                fan_mode=unit.active_fan_mode,
+                operation_mode=unit.active_operation_mode,
+                setpoint=round_temperature_value(unit.active_setpoint),
+                swing=unit.active_swing_mode,
+                operation_status=unit.active_operation_status,
+                filter=unit.filter,
+                unit_id=unit.id or unit_id,
+            )
+            updates[message.unit_id] = self._transform_message(message)
+
+        return updates
 
     @with_exception
     async def get_devices(self) -> list[DeviceResponseData]:

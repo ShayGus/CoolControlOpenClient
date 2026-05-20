@@ -1,20 +1,21 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import List
 
 from .cool_automation_client import CoolAutomationClient
 from .unit import HVACUnit
 from .client.models.unit_response_data import UnitResponseData
 from .utils.dict_to_model import dict_to_model
+from .utils.units_payload import ensure_dict, extract_units_mapping
 
 
 class HVACUnitsFactory:
     @classmethod
-    async def create(cls, token: str = None):
+    async def create(cls, token: str = None, ssl_context=None):
         if token is None:
             raise ValueError("token is required")
 
-        client = await CoolAutomationClient.create(token)
+        client = await CoolAutomationClient.create(token, ssl_context=ssl_context)
         return cls(client)
 
     def __init__(self, client=None, event_loop=None) -> None:
@@ -24,10 +25,10 @@ class HVACUnitsFactory:
     async def generate_units_from_api(self) -> List[HVACUnit]:
         units = await self._client.get_controllable_units()
         hvac_units: List[HVACUnit] = []
-        units_payload = self._extract_mapping(units.data)
+        units_payload = extract_units_mapping(units.data)
 
         for unit_id, payload in units_payload.items():
-            raw_unit = self._ensure_dict(payload)
+            raw_unit = ensure_dict(payload)
             if isinstance(raw_unit, dict) and raw_unit.get("type") not in (None, 1):
                 continue
 
@@ -93,32 +94,3 @@ class HVACUnitsFactory:
             )
             hvac_units.append(hvac_unit)
         return hvac_units
-
-    @staticmethod
-    def _extract_mapping(payload: Any) -> Dict[str, Any]:
-        if payload is None:
-            return {}
-        if isinstance(payload, dict):
-            return payload
-        additional = getattr(payload, "additional_properties", None)
-        if isinstance(additional, dict):
-            return additional
-        if hasattr(payload, "to_dict"):
-            dumped = payload.to_dict()
-            if isinstance(dumped, dict):
-                return dumped
-        return {}
-
-    @staticmethod
-    def _ensure_dict(payload: Any) -> Dict[str, Any]:
-        if isinstance(payload, dict):
-            return payload
-        if hasattr(payload, "model_dump"):
-            dumped = payload.model_dump(by_alias=True, exclude_none=True)
-            if isinstance(dumped, dict):
-                return dumped
-        if hasattr(payload, "to_dict"):
-            dumped = payload.to_dict()
-            if isinstance(dumped, dict):
-                return dumped
-        return {}
