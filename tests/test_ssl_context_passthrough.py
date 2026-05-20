@@ -11,14 +11,9 @@ import ssl
 import unittest
 from unittest.mock import patch
 
-try:
-    from cool_open_client.client.api_client import ApiClient
-    from cool_open_client.client.rest import RESTClientObject
-    from cool_open_client.cool_automation_client import CoolAutomationClient
-except ModuleNotFoundError as exc:
-    if exc.name == "websocket":
-        raise unittest.SkipTest("websocket-client dependency missing")
-    raise
+from cool_open_client.client.api_client import ApiClient
+from cool_open_client.client.rest import RESTClientObject
+from cool_open_client.cool_automation_client import CoolAutomationClient
 
 
 class SSLContextPassthroughTest(unittest.TestCase):

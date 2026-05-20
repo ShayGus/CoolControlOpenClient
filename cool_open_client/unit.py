@@ -1,21 +1,13 @@
-from abc import ABC, abstractmethod
 import asyncio
 from functools import cached_property
 import logging
 
-from .utils.updatable import Updatable
 from .cool_automation_client import CoolAutomationClient, UnitUpdateMessage
 
 LOGGER = logging.getLogger(__package__)
 
 
-class UnitCallback(ABC):
-    @abstractmethod
-    def unit_update_callback(self):
-        pass
-
-
-class HVACUnit(Updatable):
+class HVACUnit:
     """The logical clas repressentation of the HVAC unit"""
 
     def __init__(
@@ -35,7 +27,6 @@ class HVACUnit(Updatable):
         supported_swing_modes: list[str],
         is_half_degree: bool,
         client: CoolAutomationClient,
-        callbacks: list[UnitCallback] = None,
         event_loop: asyncio.AbstractEventLoop = None,
     ) -> None:
         self._id = id
@@ -54,14 +45,9 @@ class HVACUnit(Updatable):
         self._supported_swing_modes: list[str] = supported_swing_modes
         self._is_half_degree: bool = is_half_degree
         self._client = client
-        self._client.register_for_updates(self)
-        self._callbacks: list[UnitCallback] = callbacks if callbacks is not None else []
         self.logger = client.logger
         self.event_loop = event_loop
         self._update_pending: bool = True
-
-    def regiter_callback(self, unit_callback: UnitCallback) -> None:
-        self._callbacks.append(unit_callback)
 
     async def set_operation_status(self, status: str):
         """Set the operation status of the HVAC unit
@@ -105,10 +91,7 @@ class HVACUnit(Updatable):
         """
         await self._client.set_fan_mode(unit_id=self._id, mode=mode)
 
-    def notify(self, message: UnitUpdateMessage):
-        self._update_unit(message)
-
-    def _update_unit(self, message: UnitUpdateMessage, with_callback: bool = True):
+    def _update_unit(self, message: UnitUpdateMessage):
         self._active_operation_mode = message.operation_mode
         self._active_fan_mode = message.fan_mode
         self._active_operation_status = message.operation_status
@@ -117,17 +100,11 @@ class HVACUnit(Updatable):
         self._ambient_temperature = self._round_temperature(message.ambient_temperature)
         self.logger.debug("Unit updated %s", self.name)
         self._update_pending = True
-        if with_callback:
-            for callback in self._callbacks:
-                if not asyncio.iscoroutinefunction(callback.unit_update_callback):
-                    callback.unit_update_callback()
-                else:
-                    self.event_loop.run_until_complete(callback.unit_update_callback())
 
     async def refresh(self) -> None:
         if not self._update_pending:
             units = await self._client.get_updated_controllable_unit(self._id)
-            self._update_unit(units, with_callback=False)
+            self._update_unit(units)
 
     def reset_update(self) -> None:
         self._update_pending = False

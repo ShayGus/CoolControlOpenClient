@@ -13,14 +13,9 @@ from unittest.mock import MagicMock, patch
 
 import aiohttp
 
-try:
-    from cool_open_client.cool_automation_client import CoolAutomationClient
-    from cool_open_client.utils.singleton import SingletonMeta
-    from cool_open_client.ws_events import Reconnected, UnitUpdate
-except ModuleNotFoundError as exc:
-    if exc.name == "websocket":
-        raise unittest.SkipTest("websocket-client dependency missing")
-    raise
+from cool_open_client.cool_automation_client import CoolAutomationClient
+from cool_open_client.utils.singleton import SingletonMeta
+from cool_open_client.ws_events import Reconnected, UnitUpdate
 
 
 def _make_text_msg(payload: dict) -> MagicMock:

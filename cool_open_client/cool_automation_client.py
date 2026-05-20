@@ -1,9 +1,5 @@
 import functools
-import gc
 import logging
-import threading
-import time
-import websocket
 import json
 import asyncio
 from typing import AsyncIterator
@@ -15,15 +11,10 @@ import marshmallow
 import marshmallow_dataclass
 import sys
 
-from typing import Any, Callable, Dict, Union
-from threading import Thread
+from typing import Any, Dict, Union
 
 from dataclasses import dataclass, field
 
-from websocket import (
-    WebSocketConnectionClosedException,
-    WebSocketException,
-)
 from .client.api_client import ApiClient
 
 from .client.models.unit_control_fans_body import UnitControlFansBody
@@ -52,7 +43,6 @@ from .client.models.unit_control_swings_body import UnitControlSwingsBody
 
 from .utils.dictionaries import DictTypes
 from .utils.singleton import Singleton
-from .utils.updatable import Updatable
 from .utils.dict_to_model import dict_to_model
 from .utils.units_payload import ensure_dict, extract_units_mapping
 from .utils.temperature import normalize_temperature_fields, round_temperature_value
@@ -122,50 +112,6 @@ def with_exception(function):
     return wrapper
 
 
-class WebSocketThread(Thread):
-    """Extension of Thread class to handle the websocket connection"""
-
-    def __init__(
-        self, socket_params: dict[str, Callable], logger: logging.Logger = None
-    ):
-        threading.Thread.__init__(self)
-        self.name = "CoolAutomationClientWebsocketClient"
-        self.daemon = True
-        self.websocket = None
-        self.close_flag = False
-        self.logger = _LOGGER if logger is None else logger
-        self.socket_params = socket_params
-
-    def run(self):
-        self.close_flag = False
-        while not self.close_flag:
-            try:
-                if self.websocket is not None:
-                    try:
-                        self.websocket.keep_running = False
-                        self.websocket.close()
-                        gc.collect()
-                    except:
-                        pass
-                self.websocket = websocket.WebSocketApp(**self.socket_params)
-                self.websocket.run_forever()
-
-            except WebSocketException as socket_exception:
-                gc.collect()
-                self.logger.error(
-                    "Exception when calling open socket: %s", socket_exception
-                )
-            except Exception as exception:
-                gc.collect()
-                self.logger.error("Exception when calling open socket: %s", exception)
-
-            time.sleep(10)
-
-    def close(self):
-        self.close_flag = True
-        self.websocket.close()
-
-
 class CoolAutomationClient(Singleton):
     """
     The coolautomation_client for CoolAutomationCloud service
@@ -223,11 +169,8 @@ class CoolAutomationClient(Singleton):
         self.operation_modes = None
         self.fan_modes = None
         self.swing_modes = None
-        self.socket = None
-        self._registered_units: dict[str, Updatable] = {}
         self.api_client = ApiClient(ssl_context=ssl_context)
         self.logger = logger if logger is not None else _LOGGER
-        self.ws_thread: Thread = None
 
     @with_exception
     async def get_me(self) -> UserResponseData:
@@ -495,127 +438,6 @@ class CoolAutomationClient(Singleton):
         api_response = await api_instance.units_unit_id_controls_setpoints_put(
             x_access_token=self.token, origin=self.ORIGIN, referer=self.REFERER, unit_control_setpoints_body=body, unit_id=unit_id
         )
-
-    def register_for_updates(self, unit: Updatable):
-        """Register an HVAC unit to receive updates from service calls or WebSocket
-
-        Args:
-            unit (Updatable): The identifier of the unit
-        """
-        self._registered_units[unit.get_updatable_id()] = unit
-
-    def on_open_socket(self, ws):
-        ws.send(f'{{"type":"authenticate","content":{{"token":"{self.token}"}}}}')
-
-    def on_close_socket(self, ws: websocket.WebSocketApp, status_code: int, message: str) -> None:
-        """Callback to handle close event of the socket
-           function will attempt to reopen the socket
-
-        Args:
-            ws (websocket.WebSocketApp): active websocket
-            message (str): message received from socket
-        """
-        self.logger.warning(f"Cool open client socket closed, with status code: {status_code}, message: {message}...")
-
-    def on_message_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
-        """Callback to handle message received from socket
-
-        Args:
-            ws (websocket.WebSocketApp): active websocket
-            message (str): message received from socket
-        """
-
-        try:
-            loaded_json = json.loads(message)
-            self.logger.debug("Message from socket: %s", message)
-            self._handle_ping_pong(ws, loaded_json)
-            self._handle_ws_message(loaded_json)
-        except WebSocketException as error:
-            self.logger.error("Error handling message from socket: %s", error)
-            raise error
-        except Exception as error:
-            self.logger.error("Error handling message from socket: %s", error)
-
-    def _handle_ping_pong(self, ws: websocket.WebSocketApp, loaded_json: dict) -> None:
-        """Handle ping pong message from websocket, return pong on ping
-           with the correct format
-
-        Args:
-            ws (websocket.WebSocketApp): active websocket
-            loaded_json (dict): dictionary with data loaded from the websocket message
-        """
-        self.logger.debug(
-            "Entered Ping Pong Handler %s", loaded_json.get("type", "Not Ping Pong")
-        )
-        if loaded_json.get("type", None) == "ping":
-            self.logger.debug("...Ping Pong...")
-            ws.send('{"type":"pong"}')
-        self.logger.debug("Exiting Ping Pong Handler")
-
-    def _handle_ws_message(self, loaded_json: dict) -> None:
-        """Handle update message from websocket
-           Will handle all messages except fot ping
-
-        Args:
-            loaded_json (dict): dict baring data loaded from message json
-        """
-        self.logger.debug("Entered Message Handler %s", str(loaded_json))
-
-        if loaded_json.get("name") != "UPDATE_UNIT":
-            return
-
-        data = loaded_json.get("data", None)
-        if data is not None:
-            self.logger.debug("Received data from websocket: %s", str(data))
-            normalized_data = normalize_temperature_fields(data)
-            update_message: UnitUpdateMessage = UnitUpdateMessageSchema().load(
-                normalized_data, unknown=marshmallow.EXCLUDE
-            )
-            self.logger.debug("Update message: %s", update_message)
-            if update_message is not None:
-                unit = self._registered_units.get(update_message.unit_id)
-                update_message = self._transform_message(update_message)
-                if unit is not None:
-                    unit.notify(update_message)
-        self.logger.debug("Exiting Message Handler")
-
-    def on_error_socket(self, ws: websocket.WebSocketApp, message: str) -> None:
-        """Handle error from the websocket
-
-        Args:
-            ws (websocket.WebSocketApp): active websocket
-            message (str): error message arriving from the socket
-
-        Raises:
-            WebSocketConnectionClosedException: Propagates received error
-        """
-        self.logger.error("Error from socket: %s", message)
-        raise WebSocketConnectionClosedException()
-
-    def open_socket(self) -> None:
-        """
-        Open a websocket to the CoolAutomationsServer
-        """
-        self.logger.debug("Entered open socket")
-
-        if self.socket is not None and self.socket.sock.connected:
-            self.socket.close()
-
-        try:
-            socket_params = {
-                "url": self.SOCKET_URI,
-                "on_open": self.on_open_socket,
-                "on_message": self.on_message_socket,
-                "on_error": self.on_error_socket,
-                "on_close": self.on_close_socket,
-            }
-            self.ws_thread = WebSocketThread(socket_params, logger=self.logger)
-            self.ws_thread.start()
-
-        except WebSocketException as socket_exception:
-            self.logger.error(
-                "Exception when calling open socket: %s", socket_exception
-            )
 
     def _transform_message(self, message: UnitUpdateMessage) -> UnitUpdateMessage:
         """Transform message from numeric type ids to string values

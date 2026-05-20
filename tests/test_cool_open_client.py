@@ -3,15 +3,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-try:
-    from cool_open_client.cool_automation_client import CoolAutomationClient, InvalidTokenException
-    from cool_open_client.utils.singleton import SingletonMeta
-    from cool_open_client.client.models.device_response_data import DeviceResponseData
-    from cool_open_client.client.models.user_response_data import UserResponseData
-except ModuleNotFoundError as exc:
-    if exc.name == "websocket":
-        raise unittest.SkipTest("websocket-client dependency missing")
-    raise
+from cool_open_client.cool_automation_client import CoolAutomationClient, InvalidTokenException
+from cool_open_client.utils.singleton import SingletonMeta
+from cool_open_client.client.models.device_response_data import DeviceResponseData
+from cool_open_client.client.models.user_response_data import UserResponseData
 
 
 TOKEN_PATH = Path("token.txt")
