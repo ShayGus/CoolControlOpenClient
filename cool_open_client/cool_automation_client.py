@@ -86,7 +86,7 @@ class UnitUpdateMessage:
     fan_mode: Union[str, int] = field(metadata={"required": True, "data_key": "fan"})
     filter: bool = field(metadata={"required": False, "data_key": "filter"})
     operation_mode: Union[str, int] = field(
-        metadata={"required": True, "data_key": "realActiveOperationMode"}
+        metadata={"required": True, "data_key": "operationMode"}
     )
     operation_status: Union[str, int] = field(
         metadata={"required": True, "data_key": "operationStatus"}
@@ -456,7 +456,6 @@ class CoolAutomationClient(Singleton):
             raise error
         except Exception as error:
             self.logger.error("Error handling message from socket: %s", error)
-            raise error
 
     def _handle_ping_pong(self, ws: websocket.WebSocketApp, loaded_json: dict) -> None:
         """Handle ping pong message from websocket, return pong on ping
@@ -482,6 +481,9 @@ class CoolAutomationClient(Singleton):
             loaded_json (dict): dict baring data loaded from message json
         """
         self.logger.debug("Entered Message Handler %s", str(loaded_json))
+
+        if loaded_json.get("name") != "UPDATE_UNIT":
+            return
 
         data = loaded_json.get("data", None)
         if data is not None:
