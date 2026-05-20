@@ -30,7 +30,6 @@ setup(
         "urllib3 >= 1.15.1",
         "bidict == 0.23.0",
         "rel >= 0.4.7",
-        "websocket-client >= 1.3.3",
         "marshmallow >= 3.17.0",
         "marshmallow-dataclass >= 8.5.8",
         "typeguard >= 2.13.3",
