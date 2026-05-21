@@ -3,15 +3,10 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-try:
-    from cool_open_client.hvac_units_factory import HVACUnitsFactory
-    from cool_open_client.cool_automation_client import CoolAutomationClient
-    from cool_open_client.utils.singleton import SingletonMeta
-    from cool_open_client.unit import HVACUnit
-except ModuleNotFoundError as exc:
-    if exc.name == "websocket":
-        raise unittest.SkipTest("websocket-client dependency missing")
-    raise
+from cool_open_client.hvac_units_factory import HVACUnitsFactory
+from cool_open_client.cool_automation_client import CoolAutomationClient
+from cool_open_client.utils.singleton import SingletonMeta
+from cool_open_client.unit import HVACUnit
 
 
 TOKEN_PATH = Path("token.txt")

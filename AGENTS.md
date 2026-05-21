@@ -33,8 +33,8 @@
 - Review debug logs and websocket traces for device identifiers before sharing them in issues or PR discussions.
 
 ## Active Technologies
-- Python ≥3.9 + aiohttp, marshmallow (+ dataclass integration), rel, websocket-client, bidict (001-migrate-aiohttp-client)
+- Python ≥3.9 + aiohttp, marshmallow (+ dataclass integration), rel, bidict (001-migrate-aiohttp-client)
 - N/A (stateless client interacting with Coolemaster API) (001-migrate-aiohttp-client)
 
 ## Recent Changes
-- 001-migrate-aiohttp-client: Added Python ≥3.9 + aiohttp, marshmallow (+ dataclass integration), rel, websocket-client, bidict
+- 001-migrate-aiohttp-client: Added Python ≥3.9 + aiohttp, marshmallow (+ dataclass integration), rel, bidict
