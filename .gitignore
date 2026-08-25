@@ -41,6 +41,7 @@ pip-delete-this-directory.txt
 .codex
 .specify
 .opencode
+.serena
 !.opencode/memory
 !.specify/memory
 specs/
