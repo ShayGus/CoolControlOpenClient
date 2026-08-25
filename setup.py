@@ -1,15 +1,15 @@
 import pathlib
 from setuptools import setup, find_packages
 
-path_to_client = str(pathlib.Path(__file__).parent.absolute())
+long_description = (pathlib.Path(__file__).parent / "README.md").read_text(encoding="utf-8")
 
 setup(
     name="cool-open-client",
-    version="0.0.22",
+    version="0.0.23",
     author="Shay Gus",
     author_email="sgusin@gmail.com",
     description="This library will enable the use of the CoolAutomation API by third party projects",
-    long_description="file:README.md",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ShayGus/CoolControlOpenClient",
     license="GPLv3+",
