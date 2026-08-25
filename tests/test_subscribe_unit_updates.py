@@ -71,6 +71,12 @@ def _make_unit_update_payload(unit_id: str, setpoint: int = 22) -> dict:
 
 
 class SubscribeUnitUpdatesTest(unittest.IsolatedAsyncioTestCase):
+    def test_uses_websocket_endpoint(self):
+        self.assertEqual(
+            CoolAutomationClient.SOCKET_URI,
+            "wss://ws.coolremote.net/ws/v2",
+        )
+
     async def asyncSetUp(self):
         SingletonMeta._instances.pop(CoolAutomationClient, None)
         self.client = CoolAutomationClient.__new__(CoolAutomationClient)

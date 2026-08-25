@@ -118,7 +118,7 @@ class CoolAutomationClient(Singleton):
     """
 
     UNAUTHORIZES_ERROR_CODE = 401
-    SOCKET_URI = "wss://api.coolremote.net:443/ws/v2"
+    SOCKET_URI = "wss://ws.coolremote.net/ws/v2"
     ORIGIN = "https://control.coolremote.net"
     REFERER = "https://control.coolremote.net/"
 
